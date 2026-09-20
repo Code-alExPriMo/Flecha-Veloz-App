@@ -1,0 +1,427 @@
+/* =========================================================
+   SISTEMA DE DISEÑO BASE
+   ========================================================= */
+
+:root {
+    --bg-primary: #f7f9fa;
+    --bg-panel: #ffffff;
+
+    --text-main: #1c1d1f;
+    --text-muted: #6a6f73;
+
+    --accent-color: #111111;
+    --accent-hover: #292929;
+
+    --border-color: #d1d7dc;
+}
+
+
+/* =========================================================
+   RESET
+   ========================================================= */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+
+    font-family:
+        'Segoe UI',
+        Tahoma,
+        sans-serif;
+}
+
+
+html,
+body {
+    width: 100%;
+    min-height: 100%;
+}
+
+
+body {
+    background-color: var(--bg-primary);
+    color: var(--text-main);
+}
+
+
+/* =========================================================
+   ESTRUCTURA PANTALLA DIVIDIDA
+   ========================================================= */
+
+.split-layout {
+    display: flex;
+
+    width: 100%;
+    min-height: 100vh;
+}
+
+
+/* =========================================================
+   LADO IZQUIERDO
+   ========================================================= */
+
+.split-left {
+    flex: 1;
+
+    display: flex;
+    flex-direction: column;
+
+    justify-content: center;
+    align-items: center;
+
+    background-color: var(--bg-primary);
+
+    padding: 40px;
+
+    border-right:
+        1px solid var(--border-color);
+}
+
+
+.split-left img {
+    width: 100%;
+    max-width: 320px;
+
+    height: auto;
+
+    display: block;
+
+    object-fit: contain;
+}
+
+
+/* =========================================================
+   LADO DERECHO
+   ========================================================= */
+
+.split-right {
+    flex: 1;
+
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+
+    background-color:
+        var(--bg-panel);
+}
+
+
+/* =========================================================
+   CONTENEDOR DEL LOGIN
+   ========================================================= */
+
+.login-container {
+    width: 100%;
+
+    max-width: 420px;
+
+    padding: 50px;
+}
+
+
+/* =========================================================
+   ENCABEZADO
+   ========================================================= */
+
+.login-header {
+    margin-bottom: 50px;
+    text-align: center;
+}
+
+
+/* Pequeño texto superior */
+
+
+
+/* TÍTULO */
+
+.login-header h2 {
+    margin: 0;
+
+    font-size: 38px;
+
+    font-weight: 700;
+
+    line-height: 1.1;
+
+    letter-spacing: -1px;
+
+    color: var(--text-main);
+}
+
+
+/* Línea decorativa */
+
+.login-header h2::after {
+    content: "";
+
+    display: block;
+
+    width: 38px;
+
+    height: 2px;
+
+    margin: 13px auto 0;
+
+    background-color: #111111;
+
+    border-radius: 2px;
+}
+
+
+/* SUBTÍTULO */
+.login-header p {
+    margin-top: 15px;
+
+    color: var(--text-muted);
+
+    font-size: 14px;
+
+    line-height: 1.6;
+}
+
+/* =========================================================
+   GRUPO DE INPUT
+   ========================================================= */
+
+.input-group {
+    margin-bottom: 22px;
+}
+
+
+/* ETIQUETA */
+
+.input-group label {
+    display: block;
+
+    margin-bottom: 8px;
+
+    font-size: 13px;
+
+    font-weight: 600;
+
+    color: var(--text-main);
+}
+
+
+/* =========================================================
+   INPUTS
+   ========================================================= */
+
+.input-group input {
+    width: 100%;
+
+    min-height: 51px;
+
+    padding: 14px;
+
+    background-color:
+        #ffffff;
+
+    border:
+        1px solid var(--border-color);
+
+    border-radius: 8px;
+
+    font-size: 14px;
+
+    color: var(--text-main);
+
+    outline: none;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease,
+        background-color 0.2s ease;
+}
+
+
+/* Hover */
+
+.input-group input:hover {
+    border-color: #aeb5bb;
+}
+
+
+/* Focus */
+
+.input-group input:focus {
+    border-color: #111111;
+
+    box-shadow:
+        0 0 0 3px
+        rgba(0, 0, 0, 0.05);
+}
+
+
+/* =========================================================
+   PASSWORD
+   ========================================================= */
+
+.password-wrapper {
+    position: relative !important;
+
+    display: flex !important;
+
+    align-items: center !important;
+}
+
+
+.password-wrapper input {
+    width: 100% !important;
+
+    padding-right: 48px !important;
+}
+
+
+/* ICONO OJO */
+
+#togglePassword {
+    position: absolute !important;
+
+    right: 13px !important;
+
+    top: 50% !important;
+
+    transform:
+        translateY(-50%) !important;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    color: #6f767c !important;
+
+    cursor: pointer;
+
+    transition:
+        color 0.2s ease;
+}
+
+
+#togglePassword:hover {
+    color: #111111 !important;
+}
+
+
+/* =========================================================
+   BOTÓN PRINCIPAL
+   ========================================================= */
+
+.btn-submit {
+    width: 100%;
+
+    min-height: 52px;
+
+    margin-top: 7px;
+
+    padding: 15px 18px;
+
+    background-color:
+        #111111;
+
+    color:
+        #ffffff;
+
+    border: none;
+
+    border-radius: 8px;
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition:
+        background-color 0.2s ease,
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+
+.btn-submit:hover {
+    background-color:
+        #292929;
+
+    transform:
+        translateY(-1px);
+
+    box-shadow:
+        0 8px 18px
+        rgba(0, 0, 0, 0.12);
+}
+
+
+.btn-submit:active {
+    transform:
+        translateY(0);
+}
+
+
+/* =========================================================
+   MENSAJE DE ERROR
+   ========================================================= */
+
+.error-text {
+    margin-top: 15px;
+
+    min-height: 18px;
+
+    text-align: center;
+
+    font-size: 12px;
+
+    font-weight: 600;
+
+    color: #b42318;
+}
+
+
+/* =========================================================
+   RESPONSIVIDAD
+   ========================================================= */
+
+@media (max-width: 768px) {
+
+    .split-left {
+        display: none;
+    }
+
+    .split-right {
+        width: 100%;
+
+        min-height: 100vh;
+    }
+
+    .login-container {
+        width: 100%;
+
+        max-width: 430px;
+
+        padding:
+            40px 28px;
+    }
+
+    .login-header h2 {
+        font-size: 34px;
+    }
+}
+
+
+@media (max-width: 400px) {
+
+    .login-container {
+        padding:
+            30px 20px;
+    }
+
+    .login-header h2 {
+        font-size: 31px;
+    }
+
+}

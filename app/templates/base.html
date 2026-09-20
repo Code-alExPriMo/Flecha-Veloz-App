@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel - Flecha Veloz</title>
+    
+    <!-- Importando fuentes elegantes -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+    /* =========================================================
+       PALETA DE COLORES Y ESTILOS GLOBALES
+       ========================================================= */
+    :root {
+        --bg-primary: #f3f4f6; 
+        --bg-panel: #ffffff; 
+        --text-main: #111827; 
+        --text-muted: #6b7280; 
+        --accent-color: #000000; 
+        --border-color: #e5e7eb; 
+    }
+
+    body { 
+        margin: 0; 
+        padding: 0; 
+        display: flex; 
+        flex-direction: column; 
+        min-height: 100vh; 
+        background-color: var(--bg-primary); 
+        font-family: 'Inter', sans-serif; 
+        color: var(--text-main);
+    }
+
+    h1, h2, h3 {
+        font-family: 'Montserrat', sans-serif;
+    }
+
+    /* =========================================================
+       BARRA DE NAVEGACIÓN SUPERIOR
+       ========================================================= */
+    .navbar {
+        height: 70px; 
+        background-color: var(--bg-panel); 
+        border-bottom: 1px solid var(--border-color); 
+        display: flex; 
+        align-items: center; 
+        justify-content: space-between; 
+        padding: 0 32px; 
+        position: sticky; 
+        top: 0; 
+        z-index: 1000; 
+    }
+
+    .nav-left { 
+        display: flex; 
+        align-items: center; 
+        gap: 40px; 
+    }
+    
+    .navbar-logo { 
+        height: 45px; 
+        width: auto;
+        cursor: pointer; 
+        object-fit: contain;
+    } 
+    
+    .nav-links { 
+        display: flex; 
+        gap: 24px; 
+    }
+    
+    .nav-item {
+        color: var(--text-muted); 
+        text-decoration: none; 
+        font-weight: 500; 
+        font-size: 14px; 
+        padding: 8px 0;
+        transition: color 0.2s; 
+    }
+    
+    .nav-item:hover, .nav-item.active { 
+        color: var(--accent-color); 
+    }
+
+    /* =========================================================
+       MENÚ DE PERFIL Y DROPDOWN
+       ========================================================= */
+    .profile-container { position: relative; cursor: pointer; }
+    .profile-trigger { display: flex; align-items: center; gap: 12px; }
+    
+    .profile-avatar {
+        background-color: var(--accent-color);
+        color: white;
+        width: 36px; 
+        height: 36px;
+        border-radius: 50%; 
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-weight: 600;
+        font-size: 13px;
+    }
+
+    .dropdown-menu {
+        display: none; 
+        position: absolute; 
+        right: 0; 
+        top: 50px; 
+        background-color: var(--bg-panel);
+        border: 1px solid var(--border-color);
+        border-radius: 8px; 
+        width: 220px;
+        box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); 
+        z-index: 1000;
+        overflow: hidden;
+    }
+    
+    .dropdown-header { padding: 16px; border-bottom: 1px solid var(--border-color); background-color: #fafafa; }
+    
+    .dropdown-item {
+        display: block;
+        padding: 12px 16px;
+        color: var(--text-main);
+        text-decoration: none;
+        font-size: 13px;
+        font-weight: 500;
+        transition: background 0.2s;
+    }
+    
+    .dropdown-item:hover { 
+        background-color: var(--bg-primary); 
+    }
+
+    .content-area { 
+        padding: 40px 30px; 
+        max-width: 1200px; 
+        margin: 0 auto; 
+        width: 100%; 
+        flex: 1; 
+        box-sizing: border-box; 
+    }
+
+    /* =========================================================
+       NUEVO: MOTOR DE ALERTAS FLOTANTES (TOAST NOTIFICATIONS)
+       ========================================================= */
+    .toast-container {
+        position: fixed;
+        top: 25px;
+        right: 25px;
+        z-index: 10000; /* Asegura que esté por encima de Leaflet y modales */
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        pointer-events: none; /* Evita que bloquee clics en el mapa */
+    }
+
+    .toast-msg {
+        background: rgba(15, 15, 15, 0.88);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        color: #ffffff;
+        padding: 16px 22px;
+        border-radius: 12px;
+        font-family: 'Inter', sans-serif;
+        font-size: 14px;
+        font-weight: 500;
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+        /* Animación doble: Entra deslizando, sale flotando y desaparece */
+        animation: toastSlideIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), toastFadeOut 0.4s ease 3.5s forwards;
+    }
+
+    /* Variantes de color en el borde izquierdo para indicar el estado */
+    .toast-success { border-left: 4px solid #10b981; }
+    .toast-error   { border-left: 4px solid #ef4444; }
+    .toast-info    { border-left: 4px solid #3b82f6; }
+    .toast-warning { border-left: 4px solid #f59e0b; }
+
+    /* Animaciones Keyframes para las Alertas */
+    @keyframes toastSlideIn {
+        from { transform: translateX(120%); opacity: 0; }
+        to { transform: translateX(0); opacity: 1; }
+    }
+
+    @keyframes toastFadeOut {
+        to { opacity: 0; transform: translateY(-15px) scale(0.95); }
+    }
+    </style>
+</head>
+<body>
+    
+    <!-- BARRA SUPERIOR -->
+    <header class="navbar">
+        <div class="nav-left">
+            <img src="/static/img/logo.png" alt="Logo Flecha Veloz" class="navbar-logo">
+            <nav class="nav-links">
+                <a href="/dashboard" class="nav-item">Inicio</a>
+                
+                <!-- Botones con ID para filtrarlos por Rol -->
+                <a href="/registro_chofer" class="nav-item" id="menu-registro">Registrar Chofer</a>
+                <a href="/panel_chofer" class="nav-item" id="menu-panel">Panel Chofer</a>
+                <a href="/central" class="nav-item" id="menu-central">Central Operativa</a>
+                <a href="/reportes" class="nav-item" id="menu-reportes">Reportes</a>
+            </nav>
+        </div>
+
+        <div class="profile-container" id="profileBtn">
+            <div class="profile-trigger">
+                <div style="text-align: right; line-height: 1.2;">
+                    <span id="ui-nombre" style="display: block; font-weight: 600; font-size: 14px; color: var(--text-main);">Cargando...</span>
+                    <span id="ui-rol" style="font-size: 12px; color: var(--text-muted);">...</span>
+                </div>
+                <div id="ui-iniciales" class="profile-avatar">--</div>
+            </div>
+
+            <div class="dropdown-menu" id="dropdownMenu">
+                <div class="dropdown-header">
+                    <div id="ui-nombre-menu" style="font-weight: 600; font-size: 14px;">Cargando...</div>
+                    <div id="ui-correo" style="font-size: 12px; color: var(--text-muted); margin-top: 4px;">...</div>
+                </div>
+                <a href="/ajustes" class="dropdown-item">Ajustes de cuenta</a>
+                <a href="#" class="dropdown-item" id="btn-logout" style="border-top: 1px solid var(--border-color); color: #dc2626;">Cerrar Sesión</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- ÁREA CENTRAL DONDE CARGAN LAS DEMÁS VISTAS -->
+    <main class="content-area">
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <!-- =========================================================
+         LÓGICA DEL SISTEMA (ROLES, DATOS Y CIERRE DE SESIÓN)
+         ========================================================= -->
+    <script>
+        // 1. Desplegar el menú del perfil al hacer clic
+        document.addEventListener('click', function(event) {
+            const profileBtn = document.getElementById('profileBtn');
+            const dropdown = document.getElementById('dropdownMenu');
+            if (profileBtn.contains(event.target)) {
+                dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+            } else {
+                dropdown.style.display = 'none';
+            }
+        });
+
+        // 2. Inyectar datos y aplicar reglas de seguridad (RBAC)
+        window.addEventListener('DOMContentLoaded', () => {
+            const nombre = localStorage.getItem('usuarioNombre');
+            const correo = localStorage.getItem('usuarioCorreo');
+            const rol = localStorage.getItem('usuarioRol');
+            const idRol = String(localStorage.getItem('id_rol')); 
+            const rutaActual = window.location.pathname;
+
+            // 🚨 EL GUARDIÁN DE RUTAS (SECURITY CHECK)
+            const rutasAdmin = ['/central', '/reportes', '/registro_chofer'];
+            const rutasChofer = ['/panel_chofer'];
+
+            if (idRol === "3" && rutasAdmin.includes(rutaActual)) {
+                // Si es chofer y quiere entrar a zonas de gerencia, patada a su panel
+                window.location.replace('/panel_chofer');
+                return;
+            }
+
+            if ((idRol === "1" || idRol === "2") && rutasChofer.includes(rutaActual)) {
+                // Si es gerente y quiere entrar al panel de chofer, patada al dashboard
+                window.location.replace('/dashboard');
+                return;
+            }
+            if (nombre) {
+                // Llenar los datos visuales
+                document.getElementById('ui-nombre').textContent = nombre;
+                document.getElementById('ui-nombre-menu').textContent = nombre;
+                document.getElementById('ui-correo').textContent = correo;
+                document.getElementById('ui-rol').textContent = rol;
+
+                const palabras = nombre.split(" ");
+                let iniciales = palabras[0].charAt(0);
+                if (palabras.length > 1) {
+                    iniciales += palabras[1].charAt(0);
+                }
+                document.getElementById('ui-iniciales').textContent = iniciales.toUpperCase();
+
+                const saludo = document.getElementById('saludo-dashboard');
+                if (saludo) {
+                    saludo.textContent = "Hola de nuevo, " + palabras[0];
+                }
+
+                // B. FILTRO VISUAL POR ROLES (RBAC) - Todo unificado
+                const menuRegistro = document.getElementById('menu-registro');
+                const menuPanel = document.getElementById('menu-panel');
+                const menuReportes = document.getElementById('menu-reportes');
+                const menuCentral = document.getElementById('menu-central');
+                const botonesHero = document.getElementById('botones-gerencia-hero'); 
+
+                if (idRol === "3") { 
+                    // Reglas para el CHOFER (Rol 3)
+                    if (menuRegistro) menuRegistro.style.display = "none";
+                    if (menuReportes) menuReportes.style.display = "none";
+                    if (botonesHero) botonesHero.style.display = "none"; 
+                    if (menuCentral) menuCentral.style.display = "none"; 
+                    if (menuPanel) menuPanel.style.display = "block"; 
+                } else {
+                    // Reglas para GERENCIA (Rol 1) y ADMINISTRACIÓN (Rol 2)
+                    if (menuRegistro) menuRegistro.style.display = "block";
+                    if (menuReportes) menuReportes.style.display = "block";
+                    if (botonesHero) botonesHero.style.display = "flex"; 
+                    if (menuCentral) menuCentral.style.display = "block"; 
+                    if (menuPanel) menuPanel.style.display = "none"; 
+                }
+
+            } else {
+                window.location.href = "/";
+            }
+        });
+
+        // 3. Destruir la sesión correctamente
+        const btnLogout = document.getElementById('btn-logout');
+        if (btnLogout) {
+            btnLogout.addEventListener('click', function(e) {
+                e.preventDefault(); 
+                localStorage.clear(); 
+                window.location.href = "/"; 
+            });
+        }
+
+        /* =========================================================
+           NUEVO: MOTOR JAVASCRIPT DE NOTIFICACIONES (TOASTS)
+           ========================================================= */
+        /**
+         * Función global para lanzar notificaciones elegantes en cualquier parte del sistema
+         * @param {string} mensaje - El texto a mostrar en la alerta
+         * @param {string} tipo - Opciones: 'success', 'error', 'info', 'warning'
+         */
+        function notificar(mensaje, tipo = 'info') {
+            
+            // 1. Crear el contenedor maestro de notificaciones si no existe en el DOM
+            let container = document.getElementById('toast-container');
+            if (!container) {
+                container = document.createElement('div');
+                container.id = 'toast-container';
+                container.className = 'toast-container';
+                document.body.appendChild(container);
+            }
+
+            // 2. Crear la tarjeta flotante de notificación
+            const toast = document.createElement('div');
+            toast.className = `toast-msg toast-${tipo}`;
+
+            // 3. Seleccionar el ícono SVG dinámico según el tipo de mensaje
+            let icono = '';
+            if (tipo === 'success') {
+                icono = '<svg width="22" height="22" fill="none" stroke="#10b981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>';
+            } else if (tipo === 'error') {
+                icono = '<svg width="22" height="22" fill="none" stroke="#ef4444" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>';
+            } else if (tipo === 'warning') {
+                icono = '<svg width="22" height="22" fill="none" stroke="#f59e0b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>';
+            } else {
+                icono = '<svg width="22" height="22" fill="none" stroke="#3b82f6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>';
+            }
+
+            // 4. Inyectar el HTML dentro de la tarjeta
+            toast.innerHTML = `${icono} <span>${mensaje}</span>`;
+            
+            // Agregar la tarjeta al contenedor visual
+            container.appendChild(toast);
+
+            // 5. Autodestruir y limpiar el DOM tras 4 segundos (coincide con la animación CSS)
+            setTimeout(() => {
+                if (toast.parentNode) {
+                    toast.parentNode.removeChild(toast);
+                }
+            }, 3900);
+        }
+    </script>
+</body>
+</html>

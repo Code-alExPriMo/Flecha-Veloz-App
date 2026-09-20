@@ -1,0 +1,1125 @@
+{% extends "base.html" %}
+
+{% block content %}
+<style>
+    /* ==========================================================================
+       0. SISTEMA DE VARIABLES (DISEÑO ESCALABLE)
+       ========================================================================== */
+    :root {
+        --color-background-base: #050505;
+        --color-footer-bg: #0a0a0a;
+        --color-text-main: #ffffff;
+        --color-text-muted: #9ca3af;
+        --color-text-dark: #111827;
+        
+        --glass-bg-light: rgba(255, 255, 255, 0.05);
+        --glass-bg-medium: rgba(15, 15, 15, 0.6);
+        --glass-bg-dark: rgba(5, 5, 5, 0.85);
+        
+        --glass-border-light: rgba(255, 255, 255, 0.11);
+        --glass-border-hover: rgba(255, 255, 255, 0.25);
+        
+        --spacing-section-y: 140px;
+        --spacing-element-y: 40px;
+        
+        --font-primary: 'Montserrat', sans-serif;
+        --font-secondary: 'Inter', sans-serif;
+        
+        --shadow-soft: 0 10px 30px rgba(0, 0, 0, 0.3);
+        --shadow-strong: 0 20px 50px rgba(0, 0, 0, 0.5);
+        
+        --transition-standard: all 0.4s ease-in-out;
+        --transition-fast: all 0.2s ease;
+        
+        --z-index-background: 0;
+        --z-index-overlay: 1;
+        --z-index-content: 2;
+        --z-index-navbar: 9999;
+    }
+
+    /* ==========================================================================
+       1. REINICIO Y PREPARACIÓN DEL LIENZO
+       ========================================================================== */
+    html, 
+    body {
+        overflow-x: hidden !important;
+        width: 100%;
+        margin-top: 0;
+        margin-right: 0;
+        margin-bottom: 0;
+        margin-left: 0;
+        padding-top: 0;
+        padding-right: 0;
+        padding-bottom: 0;
+        padding-left: 0;
+        background-color: var(--color-background-base);
+        scroll-behavior: smooth;
+    }
+
+    /* ==========================================================================
+       2. BARRA DE NAVEGACIÓN TRANSPARENTE
+       ========================================================================== */
+    .navbar {
+        background-color: transparent !important;
+        border-bottom-width: 0 !important;
+        border-bottom-style: none !important;
+        position: absolute !important;
+        top: 0; 
+        left: 0; 
+        right: 0; 
+        z-index: var(--z-index-navbar);
+    }
+
+    .nav-item { 
+        color: rgba(255, 255, 255, 0.8) !important; 
+        transition: var(--transition-fast);
+    }
+    
+    .nav-item:hover { 
+        color: var(--color-text-main) !important; 
+    }
+    
+    #ui-nombre { 
+        color: var(--color-text-main) !important; 
+    }
+    
+    #ui-rol { 
+        color: rgba(255, 255, 255, 0.7) !important; 
+    }
+    
+    #ui-iniciales { 
+        background-color: var(--color-text-main) !important; 
+        color: #000000 !important; 
+    }
+    
+    .navbar-logo { 
+        filter: invert(1) brightness(100) !important; 
+    }
+
+    /* ==========================================================================
+       3. ENVOLTORIO MAESTRO Y FONDO GLOBAL
+       ========================================================================== */
+    .unified-page {
+        position: relative;
+        width: 100vw;
+        min-height: 100vh;
+        margin-left: calc(-50vw + 50%); 
+        margin-top: -40px; 
+        background-image: url('/static/img/portada.png');
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed; 
+        background-repeat: no-repeat;
+        box-sizing: border-box;
+    }
+
+    .unified-overlay {
+        position: absolute;
+        top: 0; 
+        left: 0; 
+        right: 0; 
+        bottom: 0;
+        background: linear-gradient(
+            180deg, 
+            rgba(0,0,0,0.6) 0%, 
+            rgba(5,5,5,0.85) 30%, 
+            rgba(5,5,5,0.98) 100%
+        );
+        z-index: var(--z-index-overlay);
+        pointer-events: none; 
+    }
+
+    .unified-content {
+        position: relative;
+        z-index: var(--z-index-content);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+    }
+
+    /* ==========================================================================
+       4. SECCIÓN HÉROE (PORTADA INICIAL)
+       ========================================================================== */
+    .hero-section {
+        height: 100vh;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding-top: 60px; 
+    }
+
+    .hero-content {
+        color: var(--color-text-main);
+        max-width: 800px;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding-top: 0;
+        padding-right: 20px;
+        padding-bottom: 0;
+        padding-left: 20px;
+    }
+
+    .hero-title {
+        font-family: var(--font-primary);
+        font-size: 56px;
+        font-weight: 700;
+        margin-top: 0;
+        margin-right: 0;
+        margin-bottom: 16px;
+        margin-left: 0;
+        line-height: 1.1;
+        letter-spacing: -1px;
+    }
+
+    .hero-subtitle {
+        font-family: var(--font-secondary);
+        font-size: 18px;
+        margin-top: 0;
+        margin-right: 0;
+        margin-bottom: 32px;
+        margin-left: 0;
+        opacity: 0.9;
+        line-height: 1.6;
+    }
+
+    .hero-buttons { 
+        display: flex; 
+        gap: 16px; 
+    }
+
+    .btn-hero-primary {
+        background-color: var(--color-text-main);
+        color: var(--color-text-dark);
+        font-family: var(--font-secondary);
+        padding-top: 14px;
+        padding-right: 28px;
+        padding-bottom: 14px;
+        padding-left: 28px;
+        border-radius: 8px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: var(--transition-fast);
+    }
+
+    .btn-hero-primary:hover { 
+        background-color: #f3f4f6; 
+        transform: translateY(-2px);
+    }
+
+    .btn-hero-secondary {
+        background-color: var(--glass-bg-light);
+        color: var(--color-text-main);
+        font-family: var(--font-secondary);
+        border-width: 1px;
+        border-style: solid;
+        border-color: rgba(255, 255, 255, 0.3);
+        backdrop-filter: blur(4px);
+        -webkit-backdrop-filter: blur(4px);
+        padding-top: 14px;
+        padding-right: 28px;
+        padding-bottom: 14px;
+        padding-left: 28px;
+        border-radius: 8px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: var(--transition-standard);
+    }
+
+    .btn-hero-secondary:hover { 
+        background-color: rgba(255, 255, 255, 0.2); 
+        transform: translateY(-2px);
+    }
+
+    /* ==========================================================================
+       5. SECCIÓN INFORMACIÓN Y MAPA
+       ========================================================================== */
+    .info-section {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        gap: 80px;
+        padding-top: var(--spacing-section-y);
+        padding-right: 0;
+        padding-bottom: var(--spacing-section-y);
+        padding-left: 0;
+        max-width: 1200px;
+        width: 100%;
+        margin-top: 0;
+        margin-right: auto;
+        margin-bottom: 0;
+        margin-left: auto;
+    }
+
+    .info-content {
+        flex-grow: 1;
+        flex-shrink: 1;
+        flex-basis: 0%;
+        max-width: 550px;
+    }
+
+    .info-title {
+        font-family: var(--font-primary);
+        font-size: 38px;
+        font-weight: 400;
+        line-height: 1.2;
+        margin-top: 0;
+        margin-right: 0;
+        margin-bottom: 40px;
+        margin-left: 0;
+        color: var(--color-text-main);
+    }
+
+    .info-title span { 
+        color: var(--color-text-muted); 
+    }
+
+    .info-text {
+        font-family: var(--font-secondary);
+        font-size: 15px;
+        color: rgba(255, 255, 255, 0.7);
+        line-height: 1.8;
+        margin-top: 0;
+        margin-right: 0;
+        margin-bottom: 24px;
+        margin-left: 0;
+    }
+
+    .info-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        color: var(--color-text-main);
+        text-decoration: none;
+        font-family: var(--font-secondary);
+        font-size: 14px;
+        font-weight: 500;
+        border-bottom-width: 1px;
+        border-bottom-style: solid;
+        border-bottom-color: var(--color-text-main);
+        padding-bottom: 4px;
+        margin-top: 20px;
+        transition: opacity 0.2s;
+    }
+
+    .info-link:hover { 
+        opacity: 0.6; 
+    }
+
+    .info-image-container {
+        flex-grow: 1;
+        flex-shrink: 1;
+        flex-basis: 0%;
+        display: flex;
+        justify-content: flex-end;
+    }
+
+    /* ==========================================================================
+       6. MAPA LEAFLET (ESTILO ORIGINAL A COLOR CON MARCO DE CRISTAL)
+       ========================================================================== */
+    #mapa {
+        width: 100%;
+        height: 420px;
+        border-radius: 16px;
+        overflow: hidden;
+        border-width: 1px;
+        border-style: solid;
+        border-color: var(--glass-border-light);
+        box-shadow: var(--shadow-strong);
+        /* Quitamos filtros oscuros, el mapa de OpenStreetMap se mostrará a color natural */
+    }
+
+    /* Limpiar logo de leaflet para estética */
+    .leaflet-control-attribution { 
+        display: none !important; 
+    }
+
+    /* ==========================================================================
+       7. PROPUESTA DE VALOR (TARJETAS GLASSMORPHISM)
+       ========================================================================== */
+    .contenedor-roles { 
+        display: flex; 
+        flex-direction: row;
+        gap: 40px; 
+        padding-top: var(--spacing-section-y); 
+        padding-right: 0; 
+        padding-bottom: var(--spacing-section-y); 
+        padding-left: 0; 
+        max-width: 1200px;
+        width: 100%;
+        margin-top: 0;
+        margin-right: auto;
+        margin-bottom: 0;
+        margin-left: auto;
+    }
+
+    .tarjeta-rol {
+        flex-grow: 1;
+        flex-shrink: 1;
+        flex-basis: 0%;
+        background-color: var(--glass-bg-medium);
+        backdrop-filter: blur(18px);
+        -webkit-backdrop-filter: blur(18px);
+        border-width: 1px;
+        border-style: solid;
+        border-color: var(--glass-border-light);
+        border-radius: 18px;
+        overflow: hidden;
+        box-shadow: var(--shadow-soft); 
+        transition: var(--transition-standard);
+    }
+
+    .tarjeta-rol:hover {
+        transform: scale(1.03) translateY(-8px);
+        box-shadow: var(--shadow-strong);
+        border-color: var(--glass-border-hover);
+    }
+
+    .caja-imagen-rol {
+        background-color: rgba(0, 0, 0, 0.4);
+        height: 280px; 
+        display: flex;
+        flex-direction: row;
+        align-items: flex-start;
+        padding-top: 30px;
+        padding-right: 30px;
+        padding-bottom: 30px;
+        padding-left: 30px;
+        border-bottom-width: 1px;
+        border-bottom-style: solid;
+        border-bottom-color: var(--glass-border-light);
+    }
+
+    .etiqueta-oscura {
+        background-color: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        border-width: 1px;
+        border-style: solid;
+        border-color: rgba(255, 255, 255, 0.2);
+        color: var(--color-text-main);
+        padding-top: 8px;
+        padding-right: 18px;
+        padding-bottom: 8px;
+        padding-left: 18px;
+        font-family: var(--font-secondary);
+        font-weight: 700;
+        border-radius: 8px;
+        font-size: 14px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .lista-beneficios { 
+        padding-top: 40px; 
+        padding-right: 40px; 
+        padding-bottom: 40px; 
+        padding-left: 40px; 
+        list-style-type: none; 
+        margin-top: 0;
+        margin-right: 0;
+        margin-bottom: 0;
+        margin-left: 0;
+    }
+    
+    .lista-beneficios li {
+        margin-top: 0;
+        margin-right: 0;
+        margin-bottom: 20px;
+        margin-left: 0;
+        font-weight: 500;
+        font-family: var(--font-secondary);
+        font-size: 15px; 
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 15px;
+        color: #d1d5db;
+    }
+
+    .lista-beneficios li:last-child { 
+        margin-bottom: 0; 
+    }
+
+    .check-icono {
+        background-color: rgba(255, 255, 255, 0.1);
+        color: var(--color-text-main);
+        border-width: 1px;
+        border-style: solid;
+        border-color: rgba(255, 255, 255, 0.2);
+        border-radius: 50%;
+        min-width: 26px; 
+        height: 26px;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        font-size: 12px;
+    }
+
+    /* ==========================================================================
+       8. CARRUSEL CONTINUO
+       ========================================================================== */
+    .carousel-section {
+        padding-top: var(--spacing-section-y);
+        padding-right: 0;
+        padding-bottom: var(--spacing-section-y);
+        padding-left: 0;
+        overflow: hidden; 
+        width: 100vw;
+        margin-left: calc(-50vw + 50%); 
+        background-color: transparent; 
+    }
+
+    .carousel-header {
+        max-width: 1200px;
+        margin-top: 0;
+        margin-right: auto;
+        margin-bottom: 40px;
+        margin-left: auto;
+        padding-top: 0;
+        padding-right: 30px;
+        padding-bottom: 0;
+        padding-left: 30px;
+    }
+
+    .carousel-title {
+        font-size: 38px;
+        font-weight: 400;
+        font-family: var(--font-primary);
+        color: var(--color-text-main);
+        margin-top: 0;
+        margin-right: 0;
+        margin-bottom: 8px;
+        margin-left: 0;
+    }
+
+    .carousel-title strong { 
+        font-weight: 700; 
+    }
+
+    .carousel-subtitle {
+        font-size: 15px;
+        color: rgba(255, 255, 255, 0.7);
+        font-family: var(--font-secondary);
+        margin-top: 0;
+        margin-right: 0;
+        margin-bottom: 0;
+        margin-left: 0;
+    }
+
+    .carousel-track {
+        display: flex;
+        flex-direction: row;
+        gap: 20px;
+        width: max-content;
+        animation-name: scroll-carousel;
+        animation-duration: 35s;
+        animation-timing-function: linear;
+        animation-iteration-count: infinite;
+        padding-top: 0;
+        padding-right: 20px;
+        padding-bottom: 0;
+        padding-left: 20px;
+    }
+
+    .carousel-track:hover { 
+        animation-play-state: paused; 
+    }
+
+    .carousel-card {
+        width: 280px;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .carousel-image {
+        width: 100%;
+        height: 400px; 
+        object-fit: cover; 
+        border-radius: 12px; 
+        border-width: 1px;
+        border-style: solid;
+        border-color: rgba(255, 255, 255, 0.1);
+        transition: filter 0.3s ease;
+    }
+
+    .carousel-card:hover .carousel-image { 
+        filter: brightness(0.85); 
+    }
+
+    .carousel-label {
+        font-family: var(--font-primary);
+        font-size: 15px;
+        font-weight: 700;
+        color: var(--color-text-main);
+        margin-top: 8px;
+        margin-right: 0;
+        margin-bottom: 0;
+        margin-left: 0;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 12px;
+        letter-spacing: -0.3px;
+        cursor: pointer;
+    }
+
+    .carousel-label::before {
+        content: "";
+        display: block;
+        width: 24px;
+        height: 2px;
+        background-color: var(--color-text-main); 
+        transition: width 0.3s ease; 
+    }
+
+    .carousel-card:hover .carousel-label::before { 
+        width: 45px; 
+    }
+
+    @keyframes scroll-carousel {
+        0% { transform: translateX(0); }
+        100% { transform: translateX(-1500px); } 
+    }
+
+    /* ==========================================================================
+       9. PRE-FOOTER CALL TO ACTION (ELIMINA EL VACÍO NEGRO)
+       ========================================================================== */
+    .pre-footer-section {
+        width: 100vw;
+        margin-left: calc(-50vw + 50%);
+        padding-top: 80px;
+        padding-bottom: 80px;
+        background: linear-gradient(
+            0deg, 
+            var(--color-footer-bg) 0%, 
+            transparent 100%
+        );
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .pre-footer-card {
+        background-color: var(--glass-bg-medium);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border-width: 1px;
+        border-style: solid;
+        border-color: var(--glass-border-light);
+        border-radius: 20px;
+        padding-top: 60px;
+        padding-right: 80px;
+        padding-bottom: 60px;
+        padding-left: 80px;
+        text-align: center;
+        max-width: 900px;
+        box-shadow: var(--shadow-strong);
+    }
+
+    .pre-footer-title {
+        font-family: var(--font-primary);
+        font-size: 32px;
+        font-weight: 700;
+        color: var(--color-text-main);
+        margin-top: 0;
+        margin-right: 0;
+        margin-bottom: 20px;
+        margin-left: 0;
+    }
+
+    .pre-footer-subtitle {
+        font-family: var(--font-secondary);
+        font-size: 16px;
+        color: var(--color-text-muted);
+        margin-top: 0;
+        margin-right: 0;
+        margin-bottom: 30px;
+        margin-left: 0;
+    }
+
+    /* ==========================================================================
+       10. FOOTER (PISA A RAS DEL FINAL)
+       ========================================================================== */
+    .footer-section {
+        background-color: var(--color-footer-bg); 
+        border-top-width: 1px;
+        border-top-style: solid;
+        border-top-color: rgba(255, 255, 255, 0.05);
+        color: var(--color-text-main);
+        width: 100vw;
+        margin-left: calc(-50vw + 50%);
+        padding-top: 80px;
+        padding-right: 0;
+        padding-bottom: 30px;
+        padding-left: 0;
+        font-family: var(--font-secondary);
+        margin-bottom: 0; 
+    }
+
+    .footer-container {
+        max-width: 1200px;
+        margin-top: 0;
+        margin-right: auto;
+        margin-bottom: 0;
+        margin-left: auto;
+        padding-top: 0;
+        padding-right: 30px;
+        padding-bottom: 0;
+        padding-left: 30px;
+        display: grid;
+        grid-template-columns: 1.5fr 1fr 1fr 1fr;
+        gap: 40px;
+    }
+
+    .footer-logo {
+        filter: invert(1) brightness(100); 
+        max-width: 140px;
+        margin-bottom: 20px;
+    }
+
+    .footer-heading {
+        font-family: var(--font-primary);
+        font-size: 12px;
+        font-weight: 600;
+        margin-top: 0;
+        margin-right: 0;
+        margin-bottom: 24px;
+        margin-left: 0;
+        color: var(--color-text-main);
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .footer-list { 
+        list-style-type: none; 
+        padding-top: 0;
+        padding-right: 0;
+        padding-bottom: 0;
+        padding-left: 0; 
+        margin-top: 0;
+        margin-right: 0;
+        margin-bottom: 0;
+        margin-left: 0;
+    }
+
+    .footer-list li { 
+        margin-top: 0;
+        margin-right: 0;
+        margin-bottom: 14px;
+        margin-left: 0;
+    }
+
+    .footer-list a, 
+    .footer-list span {
+        text-decoration: none;
+        color: var(--color-text-muted); 
+        font-size: 13px;
+        transition: color 0.3s ease;
+        display: inline-flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .footer-list a:hover { 
+        color: var(--color-text-main); 
+    }
+
+    .footer-bottom {
+        max-width: 1200px;
+        margin-top: 60px;
+        margin-right: auto;
+        margin-bottom: 0;
+        margin-left: auto;
+        padding-top: 24px;
+        padding-right: 30px;
+        padding-bottom: 0;
+        padding-left: 30px;
+        border-top-width: 1px;
+        border-top-style: solid;
+        border-top-color: rgba(255, 255, 255, 0.05); 
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 12px;
+        color: #6b7280;
+    }
+
+    /* ==========================================================================
+       11. CLASES DE ANIMACIÓN AL HACER SCROLL (INTERSECTION OBSERVER)
+       ========================================================================== */
+    .fade-up {
+        opacity: 0;
+        transform: translateY(40px);
+        transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    
+    .fade-up.visible {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    /* ==========================================================================
+       12. RESPONSIVE GLOBAL Y MEDIA QUERIES
+       ========================================================================== */
+    @media (max-width: 960px) {
+        .info-section { 
+            flex-direction: column; 
+            text-align: left; 
+            padding-top: 80px;
+            padding-right: 20px;
+            padding-bottom: 80px;
+            padding-left: 20px; 
+            gap: 40px; 
+        }
+        .info-content { 
+            max-width: 100%; 
+        }
+        .info-image-container { 
+            justify-content: center; 
+            width: 100%; 
+        }
+        #mapa { 
+            width: 100%; 
+            height: 350px; 
+        }
+        .contenedor-roles { 
+            flex-direction: column; 
+            padding-top: 80px;
+            padding-right: 20px;
+            padding-bottom: 80px;
+            padding-left: 20px; 
+            gap: 30px; 
+        }
+        .carousel-section { 
+            padding-top: 80px; 
+            padding-bottom: 80px;
+        }
+        .pre-footer-card {
+            padding: 40px 20px;
+            margin: 0 20px;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .footer-container { 
+            grid-template-columns: 1fr; 
+            gap: 40px; 
+        }
+        .footer-bottom { 
+            flex-direction: column; 
+            gap: 15px; 
+            text-align: center; 
+        }
+        .hero-title { 
+            font-size: 42px; 
+        }
+    }
+</style>
+
+<!-- ==========================================================================
+     INCLUSIÓN DE LIBRERÍAS EXTERNAS (LEAFLET CSS)
+     ========================================================================== -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+
+<!-- ==========================================================================
+     ESTRUCTURA HTML PRINCIPAL
+     ========================================================================== -->
+<div class="unified-page">
+    
+    <!-- Filtro de oscurecimiento sobre el fondo -->
+    <div class="unified-overlay"></div>
+
+    <!-- Contenedor principal que se eleva sobre el fondo -->
+    <div class="unified-content">
+
+        <!-- ==================================================================
+             SECCIÓN 1: HÉROE (PORTADA PRINCIPAL)
+             ================================================================== -->
+        <div class="hero-section">
+            <div class="hero-content">
+                <h1 class="hero-title fade-up">Movilidad inteligente, a tu medida.</h1>
+                <p class="hero-subtitle fade-up" style="transition-delay: 0.1s;">
+                    Conecta pasajeros y conductores con total transparencia. Supervisa tu flota con el mejor sistema de gestión estratégica del mercado actual.
+                </p>
+                <div class="hero-buttons fade-up" style="transition-delay: 0.2s;">
+                    <a href="/registro_chofer" class="btn-hero-primary">Registrar Chofer</a>
+                    <a href="/reportes" class="btn-hero-secondary">Ver Reportes</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==================================================================
+             SECCIÓN 2: INFORMACIÓN Y MAPA
+             ================================================================== -->
+        <div class="info-section">
+            <!-- Columna de texto -->
+            <div class="info-content fade-up">
+                <h2 class="info-title">
+                    Optimizamos rutas con <br>
+                    <span>precisión, velocidad y seguridad total.</span>
+                </h2>
+                <p class="info-text">
+                    Nuestra plataforma combina tecnología de vanguardia y mapeo inteligente, asegurando que cada viaje no solo sea eficiente, sino también confiable tanto para el pasajero como para el conductor.
+                </p>
+                <p class="info-text">
+                    Desde viajes cortos hasta gestión de flotas a gran escala, abordamos cada trayecto con un equilibrio entre innovación y control, creando una red de transporte que enriquece la movilidad urbana adaptándose a las necesidades de tu ciudad.
+                </p>
+                <a href="#" class="info-link">Conocer detalles técnicos &#8599;</a>
+            </div>
+
+            <!-- Columna del Mapa Interactivo (Original OpenStreetMap Color) -->
+            <div class="info-image-container fade-up" style="transition-delay: 0.2s;">
+                <div id="mapa"></div>
+            </div>
+        </div>
+
+        <!-- ==================================================================
+             SECCIÓN 3: PROPUESTA DE VALOR Y ROLES
+             ================================================================== -->
+        <div class="contenedor-roles">
+            
+            <!-- Tarjeta 1: Pasajero -->
+            <div class="tarjeta-rol fade-up">
+                <div class="caja-imagen-rol" style="background-image: url('/static/img/pasajero.png'); background-size: cover; background-position: center;">
+                    <span class="etiqueta-oscura">Pasajero</span>
+                </div>
+                <ul class="lista-beneficios">
+                    <li><span class="check-icono">✓</span> Elección justa de precio</li>
+                    <li><span class="check-icono">✓</span> Selección de vehículo ideal</li>
+                    <li><span class="check-icono">✓</span> Control del tiempo de llegada</li>
+                    <li><span class="check-icono">✓</span> Elige a tu conductor</li>
+                </ul>
+            </div>
+
+            <!-- Tarjeta 2: Conductor -->
+            <div class="tarjeta-rol fade-up" style="transition-delay: 0.2s;">
+                <div class="caja-imagen-rol" style="background-image: url('/static/img/conductor1.png'); background-size: cover; background-position: center;">
+                    <span class="etiqueta-oscura">Conductor</span>
+                </div>
+                <ul class="lista-beneficios">
+                    <li><span class="check-icono">✓</span> Comisión operativa baja</li>
+                    <li><span class="check-icono">✓</span> Elige a tu pasajero</li>
+                    <li><span class="check-icono">✓</span> Negocia tu propia tarifa</li>
+                    <li><span class="check-icono">✓</span> Sin penalizaciones por rechazo</li>
+                </ul>
+            </div>
+
+        </div>
+
+        <!-- ==================================================================
+             SECCIÓN 4: CARRUSEL CONTINUO
+             ================================================================== -->
+        <div class="carousel-section">
+            <div class="carousel-header fade-up">
+                <h2 class="carousel-title">Cada viaje <strong>importa</strong></h2>
+                <p class="carousel-subtitle">Estándares de calidad de primer nivel en toda nuestra red.</p>
+            </div>
+
+            <div class="carousel-track fade-up" style="transition-delay: 0.2s;">
+                <!-- Bloque 1 de Imágenes -->
+                <div class="carousel-card">
+                    <img src="/static/img/cad1.png" alt="Tecnología App" class="carousel-image">
+                    <span class="carousel-label">Tecnología predictiva</span>
+                </div>
+                <div class="carousel-card">
+                    <img src="/static/img/cad2.png" alt="Auto en la ciudad" class="carousel-image">
+                    <span class="carousel-label">Flota moderna</span>
+                </div>
+                <div class="carousel-card">
+                    <img src="/static/img/cad3.png" alt="Interior Confortable" class="carousel-image">
+                    <span class="carousel-label">Máximo confort</span>
+                </div>
+                <div class="carousel-card">
+                    <img src="/static/img/cad4.png" alt="Conductor Profesional" class="carousel-image">
+                    <span class="carousel-label">Conductores verificados</span>
+                </div>
+                <div class="carousel-card">
+                    <img src="/static/img/cad5.png" alt="Servicio Nocturno" class="carousel-image">
+                    <span class="carousel-label">Monitoreo 24/7</span>
+                </div>
+
+                <!-- Bloque 2 de Imágenes (Clon para efecto infinito) -->
+                <div class="carousel-card">
+                    <img src="/static/img/cad1.png" alt="Tecnología App" class="carousel-image">
+                    <span class="carousel-label">Tecnología predictiva</span>
+                </div>
+                <div class="carousel-card">
+                    <img src="/static/img/cad2.png" alt="Auto en la ciudad" class="carousel-image">
+                    <span class="carousel-label">Flota moderna</span>
+                </div>
+                <div class="carousel-card">
+                    <img src="/static/img/cad3.png" alt="Interior Confortable" class="carousel-image">
+                    <span class="carousel-label">Máximo confort</span>
+                </div>
+                <div class="carousel-card">
+                    <img src="/static/img/cad4.png" alt="Conductor Profesional" class="carousel-image">
+                    <span class="carousel-label">Conductores verificados</span>
+                </div>
+                <div class="carousel-card">
+                    <img src="/static/img/cad5.png" alt="Servicio Nocturno" class="carousel-image">
+                    <span class="carousel-label">Monitoreo 24/7</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==================================================================
+             SECCIÓN 5: PRE-FOOTER (CONEXIÓN Y LLAMADO A LA ACCIÓN)
+             ================================================================== -->
+        <div class="pre-footer-section">
+            <div class="pre-footer-card fade-up">
+                <h2 class="pre-footer-title">¿Listo para unirte a la revolución del transporte?</h2>
+                <p class="pre-footer-subtitle">
+                    Inicia sesión en tu central operativa o registra nuevos conductores para expandir los límites de tu ciudad hoy mismo.
+                </p>
+                <a href="/registro_chofer" class="btn-hero-primary">Empezar a operar</a>
+            </div>
+        </div>
+
+        <!-- ==================================================================
+             SECCIÓN 6: FOOTER (PIE DE PÁGINA)
+             ================================================================== -->
+        <footer class="footer-section">
+            <div class="footer-container">
+                
+                <!-- Columna 1: Branding -->
+                <div>
+                    <img src="/static/img/logo.png" alt="Logo Flecha Veloz" class="footer-logo">
+                    <p style="font-size: 13px; color: #9ca3af; margin-top: 10px; line-height: 1.5;">
+                        Innovando el transporte a través de ingeniería de sistemas y control logístico avanzado.
+                    </p>
+                </div>
+
+                <!-- Columna 2: Organización y Enlaces Legales -->
+                <div>
+                    <h4 class="footer-heading">Organización</h4>
+                    <ul class="footer-list">
+                        <li><a href="#">Términos y Condiciones</a></li>
+                        <li><a href="#">Política de Privacidad</a></li>
+                        <li><a href="#">Tratamiento de Datos</a></li>
+                        <li><a href="#">Libro de Reclamaciones</a></li>
+                    </ul>
+                </div>
+
+                <!-- Columna 3: Información de Contacto -->
+                <div>
+                    <h4 class="footer-heading">Contacto Directo</h4>
+                    <ul class="footer-list">
+                        <li><span>Oficina Central: Villa el Salvador, Lima, Perú</span></li>
+                        <li><a href="mailto:soporte@flechaveloz.com">soporte@flechaveloz.com</a></li>
+                        <li><span>+51 987 654 321</span></li>
+                        <li><span>Atención al Cliente: Lun - Dom (24/7)</span></li>
+                    </ul>
+                </div>
+
+                <!-- Columna 4: Enlaces a Redes Sociales -->
+                <div>
+                    <h4 class="footer-heading">Redes Sociales</h4>
+                    <ul class="footer-list">
+                        <li><a href="#">LinkedIn Oficial &#8599;</a></li>
+                        <li><a href="#">Instagram &#8599;</a></li>
+                        <li><a href="#">Facebook &#8599;</a></li>
+                        <li><a href="#">WhatsApp Bussines &#8599;</a></li>
+                    </ul>
+                </div>
+
+            </div>
+
+            <!-- Barra Inferior de Copyright y Reconocimientos -->
+            <div class="footer-bottom">
+                <div>&copy; 2026 FLECHA VELOZ INC. TODOS LOS DERECHOS RESERVADOS.</div>
+                <div>Desarrollado para la gestión estratégica de movilidad urbana.</div>
+            </div>
+        </footer>
+
+    </div> <!-- Cierre del contenedor unified-content -->
+</div> <!-- Cierre del envoltorio unified-page -->
+
+<!-- ==========================================================================
+     SCRIPTS DE FUNCIONALIDAD E INTERACTIVIDAD
+     ========================================================================== -->
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<script>
+    /**
+     * INICIALIZACIÓN DEL MAPA LEAFLET
+     * ------------------------------------------------------------------------
+     * Configuramos el mapa para utilizar OpenStreetMap (Color Original).
+     * Se centra por defecto en la zona de operaciones principal (Lima, Perú).
+     */
+    document.addEventListener("DOMContentLoaded", function() {
+        // Validación para evitar errores si el contenedor del mapa no carga
+        const mapContainer = document.getElementById('mapa');
+        
+        if (mapContainer) {
+            // Inicialización de la instancia Leaflet
+            const mapaPrincipal = L.map('mapa', {
+                center: [-12.0464, -77.0428], // Coordenadas del centro histórico de Lima
+                zoom: 12,
+                scrollWheelZoom: false // Se deshabilita para no interferir con el scroll de la página
+            });
+
+            // Capa de mapas estandarizada y a color (OpenStreetMap Standard)
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; OpenStreetMap contributors',
+                maxZoom: 19
+            }).addTo(mapaPrincipal);
+
+            // Ejemplo de marcador visual para ilustrar la zona de trabajo principal
+            const iconoOperaciones = L.icon({
+                iconUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png',
+                iconRetinaUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png',
+                shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
+                iconSize: [25, 41],
+                iconAnchor: [12, 41],
+                popupAnchor: [1, -34],
+                shadowSize: [41, 41]
+            });
+
+            L.marker([-12.2130, -76.9360], {icon: iconoOperaciones}) // Coordenada de Villa El Salvador
+                .addTo(mapaPrincipal)
+                .bindPopup("<b>Zona Sur: Activa</b><br>Alta demanda de vehículos.");
+        }
+        
+        /**
+         * MOTOR DE ANIMACIONES AL HACER SCROLL
+         * ------------------------------------------------------------------------
+         * Utiliza IntersectionObserver API para detectar cuándo un elemento con
+         * la clase '.fade-up' entra en el área visible de la pantalla (Viewport).
+         * Esto le agrega la clase '.visible' que dispara la transición CSS.
+         */
+        const elementosAnimables = document.querySelectorAll('.fade-up');
+        
+        if (elementosAnimables.length > 0) {
+            const observadorDeScroll = new IntersectionObserver((entradas, observador) => {
+                entradas.forEach(entrada => {
+                    if (entrada.isIntersecting) {
+                        // El elemento acaba de entrar a la pantalla
+                        entrada.target.classList.add('visible');
+                        // Dejamos de observar el elemento para que la animación solo ocurra una vez
+                        observador.unobserve(entrada.target);
+                    }
+                });
+            }, {
+                root: null, // Escucha el viewport completo
+                rootMargin: '0px', 
+                threshold: 0.15 // Dispara cuando el 15% del elemento sea visible
+            });
+
+            // Asignamos el observador a cada elemento capturado
+            elementosAnimables.forEach(elemento => {
+                observadorDeScroll.observe(elemento);
+            });
+        }
+    });
+</script>
+
+{% endblock %}

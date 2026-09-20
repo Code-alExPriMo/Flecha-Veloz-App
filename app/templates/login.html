@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Acceso - Flecha Veloz</title>
+    <link rel="stylesheet" href="/static/css/styles.css">
+</head>
+<body>
+    <div class="split-layout">
+        <!-- Lado Izquierdo: Branding -->
+        <div class="split-left">
+            <!-- Asegúrate de guardar el logo verde con este nombre en la carpeta img -->
+            <img src="/static/img/logo.png" alt="Logo Flecha Veloz">
+        </div>
+
+        <!-- Lado Derecho: Formulario -->
+        <div class="split-right">
+            <div class="login-container">
+                <div class="login-header">
+                    <h2>Bienvenido</h2>
+                    <p>Ingresa tus credenciales de acceso.</p>
+                </div>
+                <form id="loginForm">
+                    <div class="input-group">
+                        <label for="dni">Documento de Identidad (DNI)</label>
+                        <input type="text" id="dni" name="dni" required autocomplete="off">
+                    </div>
+                    <div class="input-group">
+                        <label for="password">Contraseña</label>
+                        <div class="password-wrapper" style="position: relative; display: flex; align-items: center;">
+                            <input type="password" id="password" name="password" required style="width: 100%; padding-right: 40px;">
+                            <span id="togglePassword" style="position: absolute; right: 10px; cursor: pointer; color: var(--text-main);">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                    <circle cx="12" cy="12" r="3"></circle>
+                                </svg>
+                            </span>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn-submit">Ingresar al Sistema</button>
+                </form>
+                <div id="mensaje-error" class="error-text" style="margin-top: 15px; font-weight: bold; text-align: center;"></div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="/static/js/login.js?v=2"></script>
+</body>
+</html>

@@ -1,0 +1,1039 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<!-- ==========================================================================
+     LIBRERÍAS EXTERNAS DE LEAFLET Y MOTOR DE RUTAS
+     ========================================================================== -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.css" />
+<script src="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.js"></script>
+
+<style>
+
+    /* ==========================================================================
+       0. SISTEMA DE VARIABLES GLOBALES Y LIENZO PRINCIPAL
+       ========================================================================== */
+    :root {
+        --color-background-base: #050505;
+        --color-text-main: #ffffff;
+        --color-text-muted: #9ca3af;
+        --color-text-dark: #111827;
+        
+        --glass-bg-light: rgba(255, 255, 255, 0.06);
+        --glass-bg-medium: rgba(20, 20, 20, 0.78);
+        --glass-bg-dark: rgba(10, 10, 10, 0.90);
+        
+        --glass-border-light: rgba(255, 255, 255, 0.12);
+        --glass-border-hover: rgba(255, 255, 255, 0.22);
+        
+        --font-primary: 'Montserrat', sans-serif;
+        --font-secondary: 'Inter', sans-serif;
+        
+        --shadow-soft: 0 10px 30px rgba(0, 0, 0, 0.2);
+        --shadow-strong: 0 20px 50px rgba(0, 0, 0, 0.4);
+        
+        --transition-fast: all 0.2s ease;
+        --transition-standard: all 0.3s ease;
+    }
+
+    html,
+    body {
+        overflow-x: hidden;
+        margin-top: 0;
+        margin-right: 0;
+        margin-bottom: 0;
+        margin-left: 0;
+        padding-top: 0;
+        padding-right: 0;
+        padding-bottom: 0;
+        padding-left: 0;
+        background-color: var(--color-background-base);
+    }
+
+    /* Ocultar el cuadro de texto feo del GPS de Leaflet Routing Machine */
+    .leaflet-routing-container { display: none !important; }
+
+    /* ==========================================================================
+       1. NAVBAR TRANSPARENTE
+       ========================================================================== */
+    .navbar {
+        background-color: transparent !important;
+        border-bottom-width: 0 !important;
+        border-bottom-style: none !important;
+        position: absolute !important;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 9999;
+    }
+
+    .nav-item {
+        color: rgba(255, 255, 255, 0.8) !important;
+        transition: var(--transition-fast);
+    }
+
+    .nav-item:hover {
+        color: var(--color-text-main) !important;
+    }
+
+    #ui-nombre {
+        color: var(--color-text-main) !important;
+    }
+
+    #ui-rol {
+        color: rgba(255, 255, 255, 0.7) !important;
+    }
+
+    #ui-iniciales {
+        background-color: var(--color-text-main) !important;
+        color: #000000 !important;
+    }
+
+    .navbar-logo {
+        filter: invert(1) brightness(100) !important;
+    }
+
+    /* ==========================================================================
+       2. FONDO GENERAL DEL PANEL Y CAPA DE OSCURECIMIENTO
+       ========================================================================== */
+    .chofer-page {
+        position: relative;
+        width: 100vw;
+        min-height: 100vh;
+        margin-left: calc(-50vw + 50%);
+        margin-top: -40px;
+        padding-top: 110px;
+        padding-right: 0;
+        padding-bottom: 80px;
+        padding-left: 0;
+        background-image: url('/static/img/portada.png');
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+        background-repeat: no-repeat;
+    }
+
+    .chofer-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-image: linear-gradient(
+            180deg,
+            rgba(0, 0, 0, 0.72) 0%,
+            rgba(0, 0, 0, 0.78) 45%,
+            rgba(0, 0, 0, 0.88) 100%
+        );
+        z-index: 1;
+        pointer-events: none;
+    }
+
+    /* ==========================================================================
+       3. CONTENEDOR PRINCIPAL
+       ========================================================================== */
+    .panel-container {
+        position: relative;
+        z-index: 2;
+        width: 100%;
+        max-width: 1100px;
+        margin-top: 0;
+        margin-right: auto;
+        margin-bottom: 0;
+        margin-left: auto;
+        padding-top: 0;
+        padding-right: 25px;
+        padding-bottom: 0;
+        padding-left: 25px;
+        box-sizing: border-box;
+        color: var(--color-text-main);
+    }
+
+    /* ==========================================================================
+       4. TARJETAS SUPERIORES (GRID LAYOUT)
+       ========================================================================== */
+    .top-cards {
+        display: grid;
+        grid-template-columns: 1.5fr 1fr;
+        gap: 18px;
+        margin-top: 0;
+        margin-right: 0;
+        margin-bottom: 22px;
+        margin-left: 0;
+    }
+
+    /* ==========================================================================
+       TARJETA ESTADO OPERATIVO
+       ========================================================================== */
+    .estado-card {
+        background-color: var(--glass-bg-medium);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border-width: 1px;
+        border-style: solid;
+        border-color: var(--glass-border-light);
+        padding-top: 20px;
+        padding-right: 22px;
+        padding-bottom: 20px;
+        padding-left: 22px;
+        border-radius: 16px;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        box-shadow: var(--shadow-strong);
+        transition: var(--transition-standard);
+    }
+
+    .estado-card:hover {
+        transform: translateY(-2px);
+        border-color: var(--glass-border-hover);
+    }
+
+    .info-estado h2 {
+        margin-top: 0;
+        margin-right: 0;
+        margin-bottom: 0;
+        margin-left: 0;
+        font-family: var(--font-primary);
+        font-size: 21px;
+        font-weight: 600;
+        letter-spacing: -0.3px;
+        color: var(--color-text-main);
+    }
+
+    .info-estado p {
+        margin-top: 7px;
+        margin-right: 0;
+        margin-bottom: 0;
+        margin-left: 0;
+        color: var(--color-text-muted);
+        font-family: var(--font-secondary);
+        font-size: 13px;
+    }
+
+    .placa-badge {
+        display: inline-flex;
+        flex-direction: row;
+        align-items: center;
+        margin-top: 0;
+        margin-right: 0;
+        margin-bottom: 0;
+        margin-left: 7px;
+        padding-top: 4px;
+        padding-right: 9px;
+        padding-bottom: 4px;
+        padding-left: 9px;
+        border-radius: 6px;
+        background-color: var(--glass-bg-light);
+        border-width: 1px;
+        border-style: solid;
+        border-color: var(--glass-border-light);
+        color: var(--color-text-main);
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 0.7px;
+        vertical-align: middle;
+    }
+
+    /* ==========================================================================
+       BOTÓN DE CONTROL DE ESTADO
+       ========================================================================== */
+    #btn-estado {
+        display: inline-flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        padding-top: 10px;
+        padding-right: 14px;
+        padding-bottom: 10px;
+        padding-left: 14px;
+        border-radius: 999px;
+        font-weight: 600;
+        font-size: 12px;
+        font-family: var(--font-secondary);
+        border-width: 1px;
+        border-style: solid;
+        border-color: transparent;
+        cursor: pointer;
+        transition: var(--transition-standard);
+        white-space: nowrap;
+    }
+
+    .btn-inactivo {
+        background-color: var(--glass-bg-light);
+        color: #d1d5db;
+        border-color: rgba(255, 255, 255, 0.14) !important;
+    }
+
+    .btn-activo {
+        background-color: rgba(255, 255, 255, 0.10);
+        color: var(--color-text-main);
+        border-color: rgba(255, 255, 255, 0.22) !important;
+    }
+
+    .status-dot {
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background-color: #737373;
+        box-shadow: 0 0 8px rgba(255, 255, 255, 0.15);
+        transition: var(--transition-standard);
+    }
+
+    .btn-activo .status-dot {
+        background-color: var(--color-text-main);
+        box-shadow: 0 0 8px rgba(255, 255, 255, 0.75);
+    }
+
+    /* ==========================================================================
+       5. TARJETA BILLETERA FINANCIERA
+       ========================================================================== */
+    .wallet-card {
+        background-image: linear-gradient(
+            145deg,
+            rgba(255, 255, 255, 0.11),
+            rgba(255, 255, 255, 0.05)
+        );
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        color: var(--color-text-main);
+        padding-top: 18px;
+        padding-right: 20px;
+        padding-bottom: 18px;
+        padding-left: 20px;
+        border-radius: 16px;
+        border-width: 1px;
+        border-style: solid;
+        border-color: var(--glass-border-light);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        box-shadow: var(--shadow-strong);
+        min-height: 88px;
+        box-sizing: border-box;
+        position: relative;
+    }
+
+    .wallet-header {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 0;
+        margin-right: 0;
+        margin-bottom: 8px;
+        margin-left: 0;
+    }
+
+    .wallet-title {
+        margin-top: 0;
+        margin-right: 0;
+        margin-bottom: 0;
+        margin-left: 0;
+        color: var(--color-text-muted);
+        font-family: var(--font-secondary);
+        font-size: 12px;
+        text-transform: uppercase;
+        letter-spacing: 0.7px;
+        font-weight: 600;
+    }
+
+    .wallet-amount-container {
+        display: flex;
+        flex-direction: row;
+        align-items: baseline;
+        gap: 5px;
+    }
+
+    .wallet-currency {
+        font-family: var(--font-primary);
+        font-size: 16px;
+        font-weight: 600;
+        color: rgba(255, 255, 255, 0.7);
+    }
+
+    .wallet-amount {
+        margin-top: 0;
+        margin-right: 0;
+        margin-bottom: 0;
+        margin-left: 0;
+        font-family: var(--font-primary);
+        font-size: 32px;
+        font-weight: 700;
+        letter-spacing: -1px;
+        color: var(--color-text-main);
+    }
+
+    .btn-retiro-premium {
+        margin-top: 15px;
+        background: rgba(16, 185, 129, 0.15);
+        color: #10b981;
+        border: 1px solid rgba(16, 185, 129, 0.3);
+        padding: 8px 12px;
+        border-radius: 8px;
+        font-family: var(--font-secondary);
+        font-size: 12px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+    
+    .btn-retiro-premium:hover {
+        background: rgba(16, 185, 129, 0.25);
+    }
+
+    /* ==========================================================================
+       6. ALERTA DE NUEVO VIAJE Y MODALES FLOTANTES
+       ========================================================================== */
+    .alerta-viaje {
+        display: none;
+        background-image: linear-gradient(
+            145deg,
+            rgba(20, 20, 20, 0.90),
+            rgba(8, 8, 8, 0.88)
+        );
+        backdrop-filter: blur(18px);
+        -webkit-backdrop-filter: blur(18px);
+        color: var(--color-text-main);
+        padding-top: 24px;
+        padding-right: 24px;
+        padding-bottom: 24px;
+        padding-left: 24px;
+        border-radius: 18px;
+        margin-top: 0;
+        margin-right: 0;
+        margin-bottom: 22px;
+        margin-left: 0;
+        border-width: 1px;
+        border-style: solid;
+        border-color: rgba(255, 255, 255, 0.13);
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.42);
+    }
+
+    .alerta-animada {
+        animation-name: aparecer-viaje;
+        animation-duration: 0.4s;
+        animation-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    @keyframes aparecer-viaje {
+        0% { opacity: 0; transform: translateY(15px) scale(0.98); }
+        100% { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    #titulo-viaje {
+        margin-top: 0;
+        margin-right: 0;
+        margin-bottom: 0;
+        margin-left: 0;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 9px;
+        font-family: var(--font-primary);
+        font-size: 20px;
+        font-weight: 700;
+        letter-spacing: -0.3px;
+        color: var(--color-text-main);
+    }
+
+    /* Modal de Retiro (NUEVO) */
+    .modal-oculto {
+        display: none;
+        position: fixed;
+        top: 0; left: 0; width: 100%; height: 100%;
+        background: rgba(0,0,0,0.75);
+        backdrop-filter: blur(5px);
+        z-index: 10000;
+        justify-content: center;
+        align-items: center;
+    }
+    .modal-contenido-retiro {
+        background: linear-gradient(145deg, rgba(28,28,28,0.95), rgba(10,10,10,0.95));
+        border: 1px solid rgba(255,255,255,0.1);
+        padding: 30px;
+        border-radius: 16px;
+        width: 100%;
+        max-width: 350px;
+        box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+        text-align: center;
+    }
+
+    .input-monto-retiro {
+        width: 100%;
+        padding: 15px;
+        border-radius: 8px;
+        border: 1px solid rgba(255,255,255,0.2);
+        background: rgba(0,0,0,0.5);
+        color: #10b981;
+        font-weight: 700;
+        text-align: center;
+        font-size: 32px;
+        font-family: var(--font-primary);
+        box-sizing: border-box;
+        margin-bottom: 20px;
+        outline: none;
+        transition: border-color 0.3s;
+    }
+    .input-monto-retiro:focus {
+        border-color: #10b981;
+    }
+
+    /* ==========================================================================
+       DETALLES INTERNOS DEL VIAJE
+       ========================================================================== */
+    .viaje-detalles {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+        margin-top: 20px;
+        margin-right: 0;
+        margin-bottom: 0;
+        margin-left: 0;
+        background-color: rgba(255, 255, 255, 0.03);
+        padding-top: 18px;
+        padding-right: 18px;
+        padding-bottom: 18px;
+        padding-left: 18px;
+        border-radius: 12px;
+        border-width: 1px;
+        border-style: solid;
+        border-color: rgba(255, 255, 255, 0.05);
+    }
+
+    .viaje-item { display: flex; flex-direction: column; }
+    .viaje-item span {
+        display: block; font-size: 10px; color: var(--color-text-muted);
+        font-family: var(--font-secondary); text-transform: uppercase;
+        letter-spacing: 1px; margin-bottom: 6px; font-weight: 600;
+    }
+    .viaje-item strong {
+        display: block; font-size: 16px; font-weight: 600; line-height: 1.4;
+        color: var(--color-text-main); font-family: var(--font-primary);
+    }
+    .tarifa-gigante {
+        font-size: 24px !important; color: #10b981 !important; font-weight: 700 !important; letter-spacing: -0.5px;
+    }
+
+    /* Nueva cajita de resumen de OSRM en el chofer */
+    .ruta-info-box {
+        background: rgba(59, 130, 246, 0.1);
+        border: 1px solid rgba(59, 130, 246, 0.3);
+        color: #93c5fd;
+        padding: 15px;
+        border-radius: 10px;
+        margin-top: 15px;
+        font-size: 13px;
+        font-weight: 500;
+        display: none;
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    /* ==========================================================================
+       7. BOTONES DE INTERACCIÓN (ACEPTAR / RECHAZAR / COMPLETAR)
+       ========================================================================== */
+    .botones-accion {
+        display: flex; flex-direction: row; gap: 12px; margin-top: 22px;
+    }
+
+    .btn-aceptar {
+        flex-grow: 2; padding: 14px 16px; background-color: var(--color-text-main);
+        color: var(--color-text-dark); font-size: 15px; font-weight: 700;
+        font-family: var(--font-secondary); border: none; border-radius: 10px;
+        cursor: pointer; transition: var(--transition-fast);
+    }
+    .btn-aceptar:hover { background-color: #e5e7eb; transform: translateY(-2px); }
+
+    .btn-rechazar {
+        flex-grow: 1; padding: 14px 16px; background-color: transparent;
+        color: #d1d5db; font-size: 14px; font-weight: 600; font-family: var(--font-secondary);
+        border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 10px;
+        cursor: pointer; transition: var(--transition-fast);
+    }
+    .btn-rechazar:hover { background-color: rgba(239, 68, 68, 0.1); color: #fca5a5; border-color: rgba(239, 68, 68, 0.3); }
+
+    .btn-completar {
+        width: 100%; padding: 15px; background-color: var(--color-text-main);
+        color: var(--color-text-dark); font-size: 15px; font-weight: 700;
+        font-family: var(--font-secondary); border: none; border-radius: 10px;
+        margin-top: 22px; cursor: pointer; display: none; transition: var(--transition-fast);
+    }
+    .btn-completar:hover { background-color: #e5e7eb; transform: translateY(-2px); }
+
+    .btn-origen { background-color: #3b82f6 !important; color: #ffffff !important; }
+    .btn-origen:hover { background-color: #2563eb !important; }
+
+    /* ==========================================================================
+       8. CONTENEDOR DEL MAPA LEAFLET
+       ========================================================================== */
+    .mapa-wrapper {
+        padding: 8px; background-image: linear-gradient(145deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.03));
+        border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 20px;
+        box-shadow: 0 25px 60px rgba(0, 0, 0, 0.5); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+    }
+    #mapa-chofer { height: 480px; width: 100%; border-radius: 14px; z-index: 1; }
+    
+    .leaflet-control-zoom { border: none !important; box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4) !important; }
+    .leaflet-control-zoom a { background-color: rgba(20, 20, 20, 0.9) !important; color: var(--color-text-main) !important; border: none !important; }
+    .leaflet-control-zoom a:hover { background-color: rgba(45, 45, 45, 1) !important; }
+
+    /* ==========================================================================
+       9. MEDIA QUERIES (DISEÑO RESPONSIVO)
+       ========================================================================== */
+    @media (max-width: 900px) {
+        .top-cards { grid-template-columns: 1fr; }
+        .estado-card { gap: 15px; }
+        .chofer-page { padding-top: 100px; }
+        .wallet-card { min-height: 100px; }
+    }
+    @media (max-width: 600px) {
+        .panel-container { padding: 0 15px; }
+        .estado-card { flex-direction: column; align-items: flex-start; }
+        #btn-estado { width: 100%; margin-top: 10px; }
+        .viaje-detalles { grid-template-columns: 1fr; }
+        .viaje-item[style*="grid-column"] { grid-column: span 1 !important; }
+        .botones-accion { flex-direction: column; }
+        .btn-aceptar, .btn-rechazar { width: 100%; }
+        #mapa-chofer { height: 380px; }
+    }
+
+</style>
+
+<div class="chofer-page">
+    <div class="chofer-overlay"></div>
+    <div class="panel-container">
+
+        <!-- ==================================================================
+             SECCIÓN SUPERIOR: ESTADO Y BILLETERA
+             ================================================================== -->
+        <div class="top-cards" id="tarjetas-superiores">
+
+            <div class="estado-card">
+                <div class="info-estado">
+                    <h2>Terminal del Conductor</h2>
+                    <p>
+                        Unidad operativa:
+                        <strong id="ui-placa" class="placa-badge">Validando...</strong>
+                    </p>
+                </div>
+                <button id="btn-estado" class="btn-inactivo" onclick="cambiarEstado()">
+                    <span class="status-dot"></span> No Operativo
+                </button>
+            </div>
+
+            <!-- TARJETA 2: BILLETERA (AHORA SOLO MUESTRA SALDO DISPONIBLE) -->
+            <div class="wallet-card">
+                <div class="wallet-header">
+                    <h3 class="wallet-title">Saldo Disponible</h3>
+                </div>
+
+                <div class="wallet-amount-container">
+                    <span class="wallet-currency">S/</span>
+                    <h2 id="ui-ganancias-principal" class="wallet-amount">0.00</h2>
+                </div>
+
+                <button class="btn-retiro-premium" onclick="abrirModalRetiro()">
+                    Retirar Fondos
+                </button>
+            </div>
+
+        </div>
+
+        <!-- ==================================================================
+             PANEL MODAL FLOTANTE: MISIÓN DE VIAJE
+             ================================================================== -->
+        <div id="alerta-viaje" class="alerta-viaje alerta-animada">
+            <h2 id="titulo-viaje">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 22s-8-4.5-8-11.8A8 8 0 0 1 12 2a8 8 0 0 1 8 8.2c0 7.3-8 11.8-8 11.8z"></path>
+                    <circle cx="12" cy="10" r="3"></circle>
+                </svg>
+                Solicitud de Viaje Entrante
+            </h2>
+
+            <input type="hidden" id="viaje-id-actual">
+            <input type="hidden" id="v-origen-lat">
+            <input type="hidden" id="v-origen-lng">
+            <input type="hidden" id="v-destino-lat">
+            <input type="hidden" id="v-destino-lng">
+
+            <div class="viaje-detalles">
+                <div class="viaje-item"><span>Identidad del Pasajero</span><strong id="v-pasajero">Buscando datos...</strong></div>
+                <div class="viaje-item"><span>Monto a Recaudar</span><strong id="v-tarifa" class="tarifa-gigante">S/ 0.00</strong></div>
+                <div class="viaje-item" style="grid-column: span 2;"><span>Punto A (Recojo)</span><strong id="v-origen">Calculando ruta...</strong></div>
+                <div class="viaje-item" style="grid-column: span 2;"><span>Punto B (Llegada)</span><strong id="v-destino">Calculando ruta...</strong></div>
+            </div>
+
+            <!-- NUEVO: CUADRO DE RESUMEN DE TIEMPO Y DISTANCIA -->
+            <div id="ruta-resumen" class="ruta-info-box">
+                <div id="ruta-distancia">Distancia total: Calculando...</div>
+                <div id="ruta-tiempo">Tiempo est. por calles: Calculando...</div>
+            </div>
+
+            <div class="botones-accion" id="bloque-decision">
+                <button class="btn-aceptar" onclick="aceptarViaje()">Aceptar y Conducir</button>
+                <button class="btn-rechazar" onclick="rechazarViaje()">Declinar Solicitud</button>
+            </div>
+
+            <button id="boton-origen" class="btn-completar btn-origen" onclick="llegadaOrigen()">Llegué al Punto A · Recoger Pasajero</button>
+            <button id="boton-completar" class="btn-completar" onclick="finalizarViaje()">Llegamos al Destino · Registrar Cobro</button>
+        </div>
+
+        <!-- ==================================================================
+             LIENZO DEL MAPA
+             ================================================================== -->
+        <div class="mapa-wrapper">
+            <div id="mapa-chofer"></div>
+        </div>
+
+    </div>
+</div>
+
+<!-- ==================================================================
+     MODAL DE RETIRO DE FONDOS (PARCIAL O TOTAL)
+     ================================================================== -->
+<div id="modal-retiro" class="modal-oculto">
+    <div class="modal-contenido-retiro">
+        
+        <h3 style="color: #10b981; margin-top: 0; margin-bottom: 10px; font-family: var(--font-primary);">Retiro de Ganancias</h3>
+        
+        <p style="color: var(--color-text-muted); font-size: 13px; margin-bottom: 25px; line-height: 1.4;">
+            Ingresa el monto que deseas transferir a tu cuenta bancaria. Saldo máximo: <strong id="maximo-retiro-txt" style="color: white;">S/ 0.00</strong>
+        </p>
+        
+        <!-- Input para que el chofer decida cuánto retirar -->
+        <div style="text-align: left;">
+            <label style="color: var(--text-muted); font-size: 12px; display: block; margin-bottom: 5px; font-weight: 600; text-transform: uppercase;">Monto a retirar (S/)</label>
+            <input type="number" id="input-monto-retiro" class="input-monto-retiro" min="1" step="0.50">
+        </div>
+
+        <div class="botones-accion" style="margin-top: 0;">
+            <button class="btn-aceptar" style="background-color: #10b981; color: white;" onclick="procesarRetiro()">Transferir</button>
+            <button class="btn-rechazar" onclick="cerrarModalRetiro()">Cancelar</button>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    const idChofer = parseInt(localStorage.getItem("id_usuario")) || 0;
+    let estadoOperativo = 0;
+    let miMarcador = null;
+    let viajeActivo = false;
+    let buscadorInterval = null;
+    let pinPuntoA = null;
+    let pinPuntoB = null;
+    let saldoDisponible = 0.00; 
+
+    const mapa = L.map('mapa-chofer').setView([-12.0463, -77.0427], 13);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(mapa);
+
+    const iconoCarro = L.icon({ iconUrl: '/static/img/autoo.png', iconSize: [40, 40], iconAnchor: [20, 20], popupAnchor: [0, -15] });
+    const iconoPinesRuta = L.icon({ iconUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png', iconSize: [25, 41], iconAnchor: [12, 41] });
+
+    /* ========================================================================
+       NUEVO: MOTOR DE RUTAS INTELIGENTE PARA EL CHOFER (OSRM)
+       ======================================================================== */
+    let coordenadasRutaActual = []; // Memoria para almacenar las curvas de la calle
+
+    const controlRutaChofer = L.Routing.control({
+        waypoints: [],
+        routeWhileDragging: false,
+        addWaypoints: false,
+        show: false, // Ocultar panel nativo
+        lineOptions: {
+            styles: [{ color: '#3b82f6', opacity: 0.9, weight: 6 }]
+        },
+        createMarker: function() { return null; } // Tú ya creas los pines manuales
+    }).addTo(mapa);
+
+    // Evento que se dispara cuando OSRM encuentra la ruta por la pista
+    controlRutaChofer.on('routesfound', function(e) {
+        const rutas = e.routes;
+        if (rutas && rutas.length > 0) {
+            // Guardamos las coordenadas exactas de la calle para que el auto las siga
+            coordenadasRutaActual = rutas[0].coordinates; 
+            
+            // Llenamos el cuadro de Tiempo y Distancia
+            const resumen = rutas[0].summary;
+            const distanciaKm = (resumen.totalDistance / 1000).toFixed(2);
+            const tiempoMin = Math.round(resumen.totalTime / 60);
+            
+            document.getElementById('ruta-distancia').innerHTML = `Distancia total: <b style="color:white;">${distanciaKm} km</b>`;
+            document.getElementById('ruta-tiempo').innerHTML = `Tiempo est. por calles: <b style="color:white;">${tiempoMin} min</b>`;
+            document.getElementById('ruta-resumen').style.display = 'flex';
+        }
+    });
+
+    async function inicializarPanel() {
+        if (idChofer === 0) return window.location.href = "/";
+        await cargarMapeoFinanciero();
+
+        try {
+            const respuestaFlota = await fetch('/api/vehiculos/todos');
+            const arrayFlota = await respuestaFlota.json();
+
+            arrayFlota.forEach(vehiculo => {
+                if (vehiculo.id_chofer === idChofer) {
+                    const latitudVehiculo = vehiculo.lat || -12.0463;
+                    const longitudVehiculo = vehiculo.lng || -77.0427;
+                    mapa.setView([latitudVehiculo, longitudVehiculo], 15);
+                    miMarcador = L.marker([latitudVehiculo, longitudVehiculo], { icon: iconoCarro }).addTo(mapa);
+                    document.getElementById('ui-placa').innerText = vehiculo.placa;
+                    estadoOperativo = (vehiculo.operativo === 1 || vehiculo.operativo === true) ? 1 : 0;
+                    renderizarBoton();
+                }
+            });
+        } catch (error) {}
+
+        buscarViajeAsignado();
+        buscadorInterval = setInterval(buscarViajeAsignado, 5000);
+    }
+
+    async function cargarMapeoFinanciero() {
+        try {
+            const peticionGanancias = await fetch(`/api/chofer/ganancias/${idChofer}`);
+            const datosFinancieros = await peticionGanancias.json();
+            
+            saldoDisponible = parseFloat(datosFinancieros.ganancias_hoy || 0);
+            document.getElementById('ui-ganancias-principal').innerText = saldoDisponible.toFixed(2);
+        } catch (error) {}
+    }
+
+    async function buscarViajeAsignado() {
+        try {
+            const peticionViaje = await fetch(`/api/viajes/actual/${idChofer}`);
+            const paqueteViaje = await peticionViaje.json();
+
+            if (paqueteViaje.id_viaje && !viajeActivo) {
+                document.getElementById('viaje-id-actual').value = paqueteViaje.id_viaje;
+                document.getElementById('v-origen-lat').value = paqueteViaje.origen_lat;
+                document.getElementById('v-origen-lng').value = paqueteViaje.origen_lng;
+                document.getElementById('v-destino-lat').value = paqueteViaje.destino_lat;
+                document.getElementById('v-destino-lng').value = paqueteViaje.destino_lng;
+
+                document.getElementById('v-pasajero').innerText = paqueteViaje.pasajero;
+                document.getElementById('v-origen').innerText = paqueteViaje.origen;
+                document.getElementById('v-destino').innerText = paqueteViaje.destino;
+                document.getElementById('v-tarifa').innerText = `S/ ${parseFloat(paqueteViaje.tarifa).toFixed(2)}`;
+
+                document.getElementById('alerta-viaje').style.display = 'block';
+                document.getElementById('tarjetas-superiores').style.display = 'none';
+                viajeActivo = true;
+            }
+        } catch (error) {}
+    }
+
+    function aceptarViaje() {
+        document.getElementById('alerta-viaje').classList.remove('alerta-animada');
+        document.getElementById('titulo-viaje').innerHTML = `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg> Navegando hacia el Punto A...`;
+        document.getElementById('bloque-decision').style.display = 'none';
+
+        const latA = parseFloat(document.getElementById('v-origen-lat').value);
+        const lngA = parseFloat(document.getElementById('v-origen-lng').value);
+        const latB = parseFloat(document.getElementById('v-destino-lat').value);
+        const lngB = parseFloat(document.getElementById('v-destino-lng').value);
+
+        if(latA && lngA) pinPuntoA = L.marker([latA, lngA], { icon: iconoPinesRuta }).addTo(mapa).bindPopup("Punto A (Pasajero)").openPopup();
+        if(latB && lngB) pinPuntoB = L.marker([latB, lngB], { icon: iconoPinesRuta }).addTo(mapa).bindPopup("Punto B (Destino)");
+
+        // Pedimos a Leaflet Routing que trace la calle entre el Auto y el Cliente
+        const latVehiculo = miMarcador.getLatLng().lat;
+        const lngVehiculo = miMarcador.getLatLng().lng;
+        
+        if (latA && lngA) {
+            controlRutaChofer.setWaypoints([
+                L.latLng(latVehiculo, lngVehiculo),
+                L.latLng(latA, lngA)
+            ]);
+
+            // Damos 1 segundo para que la ruta azul se dibuje antes de arrancar el auto
+            setTimeout(() => {
+                simularManejoPorCalles(function() {
+                    document.getElementById('titulo-viaje').innerHTML = `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"></path><circle cx="12" cy="10" r="3"></circle></svg> ¡Llegaste al origen!`;
+                    document.getElementById('boton-origen').style.display = 'block'; 
+                });
+            }, 1000);
+        }
+    }
+
+    function llegadaOrigen() {
+        if (pinPuntoA) mapa.removeLayer(pinPuntoA);
+        document.getElementById('titulo-viaje').innerHTML = `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg> En ruta hacia el destino...`;
+        document.getElementById('boton-origen').style.display = 'none';
+
+        const latA = parseFloat(document.getElementById('v-origen-lat').value);
+        const lngA = parseFloat(document.getElementById('v-origen-lng').value);
+        const latB = parseFloat(document.getElementById('v-destino-lat').value);
+        const lngB = parseFloat(document.getElementById('v-destino-lng').value);
+
+        if(pinPuntoB) pinPuntoB.openPopup();
+
+        // Limpiamos la ruta actual y trazamos la nueva desde el Punto A al B
+        coordenadasRutaActual = [];
+        if (latA && lngA && latB && lngB) {
+            controlRutaChofer.setWaypoints([
+                L.latLng(latA, lngA),
+                L.latLng(latB, lngB)
+            ]);
+
+            setTimeout(() => {
+                simularManejoPorCalles(function() {
+                    document.getElementById('titulo-viaje').innerHTML = `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg> ¡Llegaste al destino!`;
+                    document.getElementById('boton-completar').style.display = 'block'; 
+                });
+            }, 1000);
+        }
+    }
+
+    /* ========================================================================
+       NUEVO: FUNCIÓN DE MANEJO INTELIGENTE POR LAS PISTAS (Sigue la línea)
+       ======================================================================== */
+    function simularManejoPorCalles(callbackDeLlegada) {
+        if (!coordenadasRutaActual || coordenadasRutaActual.length === 0) {
+            // Failsafe por si el internet falla al trazar la ruta
+            if (typeof callbackDeLlegada === "function") callbackDeLlegada();
+            return;
+        }
+
+        let indiceActual = 0;
+        const totalPuntos = coordenadasRutaActual.length;
+        
+        const motorAnimacion = setInterval(() => {
+            if (indiceActual >= totalPuntos - 1) {
+                clearInterval(motorAnimacion);
+                if (typeof callbackDeLlegada === "function") callbackDeLlegada();
+            } else {
+                const punto = coordenadasRutaActual[indiceActual];
+                miMarcador.setLatLng([punto.lat, punto.lng]);
+                mapa.panTo([punto.lat, punto.lng]);
+                
+                // Avanzamos de 3 en 3 puntos para que el auto "corra" fluido y no tarde 10 minutos
+                indiceActual += 3; 
+                if (indiceActual >= totalPuntos) indiceActual = totalPuntos - 1;
+            }
+        }, 80); // Velocidad del auto (milisegundos entre cada fotograma)
+    }
+
+    async function finalizarViaje() {
+        const idViajeActual = document.getElementById('viaje-id-actual').value;
+        try {
+            await fetch('/api/viajes/completar', {
+                method: 'POST', headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ id_viaje: parseInt(idViajeActual), id_chofer: idChofer })
+            });
+            notificar("¡Transacción Exitosa! Los fondos han sido asegurados en la bóveda virtual.", "success");
+            setTimeout(() => { window.location.reload(); }, 2500);
+        } catch (error) {
+            notificar("Fallo de comunicación al procesar el comprobante.", "error");
+        }
+    }
+
+    async function rechazarViaje() {
+        const idViajeActual = document.getElementById('viaje-id-actual').value;
+        try {
+            await fetch('/api/viajes/rechazar', {
+                method: 'POST', headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ id_viaje: parseInt(idViajeActual), id_chofer: idChofer })
+            });
+            document.getElementById('alerta-viaje').style.display = 'none';
+            document.getElementById('tarjetas-superiores').style.display = 'grid';
+            viajeActivo = false;
+            
+            // Borrar ruta trazada si rechaza
+            controlRutaChofer.setWaypoints([]);
+            if (pinPuntoA) mapa.removeLayer(pinPuntoA);
+            if (pinPuntoB) mapa.removeLayer(pinPuntoB);
+        } catch (error) {
+            notificar("No fue posible declinar la solicitud.", "error");
+        }
+    }
+
+    async function cambiarEstado() {
+        if (viajeActivo) return notificar("Imposible modificar estado durante tránsito.", "warning");
+        estadoOperativo = estadoOperativo === 1 ? 0 : 1;
+        try {
+            const peticionCambio = await fetch('/api/vehiculo/estado', {
+                method: 'PUT', headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ id_chofer: idChofer, operativo: estadoOperativo })
+            });
+            if (peticionCambio.ok) renderizarBoton();
+        } catch (error) {
+            notificar("No se pudo actualizar la base de datos.", "error");
+        }
+    }
+
+    function renderizarBoton() {
+        const botonInterface = document.getElementById('btn-estado');
+        if (estadoOperativo === 1) {
+            botonInterface.className = 'btn-activo';
+            botonInterface.innerHTML = `<span class="status-dot"></span> Operativo / Disponible`;
+            if (miMarcador) miMarcador.setOpacity(1.0);
+        } else {
+            botonInterface.className = 'btn-inactivo';
+            botonInterface.innerHTML = `<span class="status-dot"></span> Fuera de Servicio`;
+            if (miMarcador) miMarcador.setOpacity(0.4);
+        }
+    }
+
+    /* ------------------------------------------------------------------------
+       LÓGICA DEL MODAL DE RETIRO DE FONDOS
+       ------------------------------------------------------------------------ */
+    function abrirModalRetiro() {
+        if (saldoDisponible <= 0) {
+            return notificar("No tienes saldo disponible para retirar.", "warning");
+        }
+        
+        document.getElementById('maximo-retiro-txt').innerText = `S/ ${saldoDisponible.toFixed(2)}`;
+        document.getElementById('input-monto-retiro').value = saldoDisponible.toFixed(2);
+        document.getElementById('modal-retiro').style.display = 'flex';
+    }
+
+    function cerrarModalRetiro() {
+        document.getElementById('modal-retiro').style.display = 'none';
+    }
+
+    async function procesarRetiro() {
+        const montoIngresado = parseFloat(document.getElementById('input-monto-retiro').value);
+
+        if (isNaN(montoIngresado) || montoIngresado <= 0) {
+            return notificar("Ingresa un monto válido mayor a S/ 0.00", "warning");
+        }
+        
+        if (montoIngresado > saldoDisponible) {
+            return notificar("No puedes retirar más dinero del que tienes disponible.", "error");
+        }
+
+        try {
+            const peticion = await fetch('/api/chofer/retirar', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ 
+                    id_chofer: idChofer,
+                    monto: montoIngresado 
+                })
+            });
+
+            if (peticion.ok) {
+                cerrarModalRetiro();
+                notificar(`¡Retiro de S/ ${montoIngresado.toFixed(2)} procesado con éxito!`, "success");
+                await cargarMapeoFinanciero(); 
+            } else {
+                notificar("Hubo un error al intentar procesar el retiro.", "error");
+            }
+        } catch (e) {
+            notificar("Error de red. Intenta nuevamente.", "error");
+        }
+    }
+
+    window.onload = inicializarPanel;
+
+</script>
+
+{% endblock %}

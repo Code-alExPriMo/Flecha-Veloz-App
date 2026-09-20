@@ -1,0 +1,350 @@
+{% extends "base.html" %}
+
+{% block content %}
+<style>
+    /* =========================================================
+       0. PREPARACIÓN DEL LIENZO Y NAVBAR TRANSPARENTE
+       ========================================================= */
+    html, body {
+        overflow-x: hidden;
+        margin: 0;
+        padding: 0;
+        min-height: 100%;
+        background-color: #050505;
+    }
+
+    /* Sobreescribimos la barra superior para que flote sobre la imagen */
+    .navbar {
+        background-color: transparent !important;
+        border-bottom: none !important;
+        position: absolute !important;
+        top: 0; left: 0; right: 0;
+        z-index: 9999;
+    }
+    .nav-item { color: rgba(255, 255, 255, 0.8) !important; }
+    .nav-item:hover { color: #ffffff !important; }
+    #ui-nombre { color: #ffffff !important; }
+    #ui-rol { color: rgba(255, 255, 255, 0.7) !important; }
+    #ui-iniciales { background-color: #ffffff !important; color: #000000 !important; }
+    .navbar-logo { filter: invert(1) brightness(100) !important; }
+
+    /* =========================================================
+       1. CONTENEDOR PRINCIPAL PANTALLA DIVIDIDA (ESTILO DASHBOARD)
+       ========================================================= */
+    .registro-hero {
+        position: relative;
+        width: 100vw;
+        min-height: 100vh;
+        margin-left: calc(-50vw + 50%);
+        margin-top: -40px;
+        padding-top: 105px;
+        padding-bottom: 70px;
+        background-image: url('/static/img/portada.png');
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed; /* El secreto del fondo estático */
+        box-sizing: border-box;
+        display: flex;
+        align-items: center;
+    }
+
+    /* El mismo degradado oscuro del dashboard */
+    .registro-overlay {
+        position: absolute;
+        top: 0; left: 0; right: 0; bottom: 0;
+        background: linear-gradient(
+            180deg,
+            rgba(0,0,0,0.72) 0%,
+            rgba(0,0,0,0.79) 45%,
+            rgba(0,0,0,0.92) 100%
+        );
+        z-index: 1;
+    }
+
+    .registro-container {
+        position: relative;
+        z-index: 2;
+        width: 100%;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 30px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 60px;
+    }
+
+    /* =========================================================
+       2. COLUMNA IZQUIERDA: TEXTOS Y ESTADÍSTICAS
+       ========================================================= */
+    .registro-info {
+        flex: 1;
+        color: white;
+    }
+
+    .stats-row {
+        display: flex;
+        gap: 40px;
+        margin-bottom: 40px;
+    }
+
+    .stat-item h3 {
+        font-family: 'Montserrat', sans-serif;
+        font-size: 36px;
+        font-weight: 700;
+        margin: 0 0 4px 0;
+    }
+
+    .stat-item p {
+        font-family: 'Inter', sans-serif;
+        font-size: 11px;
+        color: #9ca3af;
+        margin: 0;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        font-weight: 600;
+    }
+
+    .registro-title {
+        font-family: 'Montserrat', sans-serif;
+        font-size: 48px;
+        font-weight: 400; 
+        line-height: 1.1;
+        margin-bottom: 24px;
+        letter-spacing: -1px;
+    }
+    
+    .registro-title strong { font-weight: 700; }
+
+    .registro-desc {
+        font-family: 'Inter', sans-serif;
+        font-size: 15px;
+        color: rgba(255,255,255,0.7);
+        line-height: 1.7;
+        max-width: 500px;
+    }
+
+    /* =========================================================
+       3. COLUMNA DERECHA: FORMULARIO PREMIUM (GLASSMORPHISM)
+       ========================================================= */
+    .form-wrapper {
+        flex: 0 0 480px;
+    }
+
+    .form-box {
+        background: rgba(15,15,15,0.82);
+        backdrop-filter: blur(18px);
+        -webkit-backdrop-filter: blur(18px);
+        border: 1px solid rgba(255,255,255,0.11);
+        padding: 40px;
+        border-radius: 18px;
+        box-shadow: 0 20px 50px rgba(0,0,0,0.38);
+    }
+
+    .form-box h4 {
+        font-family: 'Montserrat', sans-serif;
+        color: white;
+        font-size: 22px;
+        margin-top: 0;
+        margin-bottom: 30px;
+        font-weight: 600;
+    }
+
+    /* Estructura de campos */
+    .form-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+        margin-bottom: 25px;
+    }
+
+    .full-width { grid-column: span 2; }
+
+    .input-group {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .input-group label {
+        font-family: 'Inter', sans-serif;
+        font-size: 11px;
+        font-weight: 600;
+        color: #8f8f8f;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-bottom: 8px;
+    }
+
+    .input-group input {
+        background-color: rgba(255, 255, 255, 0.04);
+        border: 1px solid rgba(255,255,255,0.1);
+        padding: 14px;
+        border-radius: 9px;
+        font-size: 14px;
+        color: white;
+        font-family: 'Inter', sans-serif;
+        outline: none;
+        transition: all 0.3s ease;
+    }
+
+    .input-group input::placeholder { color: rgba(255,255,255,0.2); }
+
+    .input-group input:focus {
+        border-color: rgba(255,255,255,0.3);
+        background-color: rgba(255, 255, 255, 0.08);
+        box-shadow: 0 0 15px rgba(255,255,255,0.05);
+    }
+
+    .btn-registrar {
+        background-color: #ffffff;
+        color: #000000;
+        border: none;
+        padding: 16px;
+        border-radius: 9px;
+        font-weight: 700;
+        font-size: 15px;
+        cursor: pointer;
+        width: 100%;
+        transition: background 0.2s ease, transform 0.2s ease;
+        font-family: 'Inter', sans-serif;
+    }
+
+    .btn-registrar:hover { 
+        background-color: #e5e7eb;
+        transform: translateY(-2px);
+    }
+
+    /* Responsividad */
+    @media (max-width: 992px) {
+        .registro-container { flex-direction: column; padding-top: 40px; }
+        .registro-info { text-align: center; }
+        .registro-desc { margin: 0 auto; }
+        .stats-row { justify-content: center; }
+        .form-wrapper { width: 100%; max-width: 500px; }
+    }
+    @media (max-width: 480px) {
+        .form-grid { grid-template-columns: 1fr; }
+        .full-width { grid-column: span 1; }
+        .stat-item h3 { font-size: 28px; }
+        .form-box { padding: 25px; }
+    }
+</style>
+
+<div class="registro-hero">
+    <div class="registro-overlay"></div>
+    
+    <div class="registro-container">
+        
+        <!-- MITAD IZQUIERDA: Información -->
+        <div class="registro-info">
+            <div class="stats-row">
+                <div class="stat-item">
+                    <h3>+500</h3>
+                    <p>Conductores</p>
+                </div>
+                <div class="stat-item">
+                    <h3>15%</h3>
+                    <p>Comisión Base</p>
+                </div>
+                <div class="stat-item">
+                    <h3>24/7</h3>
+                    <p>Soporte Activo</p>
+                </div>
+            </div>
+
+            <h1 class="registro-title">
+                Únete a la flota <br><strong>oficial de la ciudad.</strong>
+            </h1>
+            <p class="registro-desc">
+                Registra nuevos talentos en nuestra plataforma. Garantizamos tecnología de punta, rutas optimizadas y la mayor rentabilidad del mercado para nuestra red de socios conductores.
+            </p>
+        </div>
+
+        <!-- MITAD DERECHA: Formulario -->
+        <div class="form-wrapper">
+            <div class="form-box">
+                <h4>Alta de Nuevo Chofer</h4>
+                
+                <form id="formRegistroChofer">
+                    <div class="form-grid">
+                        
+                        <!-- DNI y Nombre en la misma fila -->
+                        <div class="input-group">
+                            <label for="dni">Documento (DNI)</label>
+                            <input type="text" id="dni" maxlength="8" placeholder="Ej. 76543210" required autocomplete="off">
+                        </div>
+                        <div class="input-group">
+                            <label for="nombre">Nombre Completo</label>
+                            <input type="text" id="nombre" placeholder="Nombres y Apellidos" required autocomplete="off">
+                        </div>
+
+                        <!-- Correo ocupa toda la fila -->
+                        <div class="input-group full-width">
+                            <label for="correo">Correo Electrónico</label>
+                            <input type="email" id="correo" placeholder="correo@ejemplo.com" required autocomplete="off">
+                        </div>
+
+                        <!-- Placa y Modelo en la misma fila -->
+                        <div class="input-group">
+                            <label for="placa">Placa del Vehículo</label>
+                            <input type="text" id="placa" placeholder="Ej. ABC-123" required style="text-transform: uppercase;" autocomplete="off">
+                        </div>
+                        <div class="input-group">
+                            <label for="modelo">Modelo y Marca</label>
+                            <input type="text" id="modelo" placeholder="Ej. Yaris 2023" required autocomplete="off">
+                        </div>
+
+                        <!-- Contraseña ocupa toda la fila -->
+                        <div class="input-group full-width">
+                            <label for="password">Contraseña Temporal</label>
+                            <input type="text" id="password" value="Flecha2026*" required>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn-registrar">Registrar Conductor</button>
+                </form>
+            </div>
+        </div>
+
+    </div>
+</div>
+<script>
+    document.getElementById('formRegistroChofer').addEventListener('submit', async function(e) {
+        e.preventDefault(); 
+        
+        const boton = document.querySelector('.btn-registrar');
+        boton.textContent = "Registrando...";
+        boton.disabled = true;
+
+        const datos = {
+            dni: document.getElementById('dni').value,
+            nombre: document.getElementById('nombre').value,
+            correo: document.getElementById('correo').value,
+            placa: document.getElementById('placa').value,
+            password: document.getElementById('password').value
+        };
+
+        try {
+            const respuesta = await fetch('/api/registrar_chofer', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(datos)
+            });
+
+            const resultado = await respuesta.json();
+
+            if (respuesta.ok) {
+                alert("¡Éxito! " + resultado.mensaje);
+                document.getElementById('formRegistroChofer').reset();
+            } else {
+                alert("Error: " + resultado.detail);
+            }
+        } catch (error) {
+            alert("Error de comunicación con el servidor.");
+        } finally {
+            boton.textContent = "Registrar Conductor";
+            boton.disabled = false;
+        }
+    });
+</script>
+{% endblock %}
