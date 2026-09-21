@@ -1,0 +1,53 @@
+ID_Usuario,ID_Rol,DNI,Nombre_Completo,Correo,PasswordHash,Estado,Fecha_Creacion,Email,Telefono
+1,1,00000000,Administrador Principal,gerencia@flechaveloz.com,$2b$12$XpjOl1Wdqidqrj9zaNWnduSo7pDpwjoQwam.2.xqrV4qDYfXXEMfa,1,2026-09-03 15:33:40.660,NULL,324534636
+4,2,23153180,Paulino Lamas Pera,severinocisneros@example.com,$2b$12$GK9Rb9Lz05QqHon5R.utsu.eDk9PYN8WZ/rYHD0BT9rq/RbEzwyc6,1,2026-09-05 14:20:15.830,NULL,NULL
+5,2,36943293,Herminio Casals Salamanca,ypou@example.com,$2b$12$GK9Rb9Lz05QqHon5R.utsu.eDk9PYN8WZ/rYHD0BT9rq/RbEzwyc6,1,2026-09-05 14:20:15.840,NULL,NULL
+6,2,50946576,Zoraida del Galan,xfajardo@example.net,$2b$12$GK9Rb9Lz05QqHon5R.utsu.eDk9PYN8WZ/rYHD0BT9rq/RbEzwyc6,1,2026-09-05 14:20:15.843,NULL,NULL
+7,2,81607201,María Ángeles Maldonado Berenguer,fernanda89@example.net,$2b$12$GK9Rb9Lz05QqHon5R.utsu.eDk9PYN8WZ/rYHD0BT9rq/RbEzwyc6,1,2026-09-05 14:20:15.850,NULL,NULL
+8,2,23066658,Encarnación Macias Núñez,sanchocarranza@example.org,$2b$12$GK9Rb9Lz05QqHon5R.utsu.eDk9PYN8WZ/rYHD0BT9rq/RbEzwyc6,1,2026-09-05 14:20:15.853,NULL,NULL
+9,3,15099318,Lucio Mata Alvarado,yanezhector@example.org,$2b$12$GK9Rb9Lz05QqHon5R.utsu.eDk9PYN8WZ/rYHD0BT9rq/RbEzwyc6,1,2026-09-05 14:20:15.857,NULL,NULL
+10,3,28954013,Charo Hervia Ballester,pioosorio@example.org,$2b$12$GK9Rb9Lz05QqHon5R.utsu.eDk9PYN8WZ/rYHD0BT9rq/RbEzwyc6,1,2026-09-05 14:20:15.860,NULL,NULL
+11,3,80944829,Fidel Gras,sanmartinbalduino@example.com,$2b$12$GK9Rb9Lz05QqHon5R.utsu.eDk9PYN8WZ/rYHD0BT9rq/RbEzwyc6,1,2026-09-05 14:20:15.867,NULL,NULL
+12,3,50555995,Carina Dávila Vall,linopou@example.net,$2b$12$GK9Rb9Lz05QqHon5R.utsu.eDk9PYN8WZ/rYHD0BT9rq/RbEzwyc6,1,2026-09-05 14:20:15.870,NULL,NULL
+13,3,17858743,Marcelo Quintana-Diez,lreal@example.net,$2b$12$GK9Rb9Lz05QqHon5R.utsu.eDk9PYN8WZ/rYHD0BT9rq/RbEzwyc6,1,2026-09-05 14:20:15.877,NULL,NULL
+14,3,73221337,Petrona Cuesta Barceló,marianosalcedo@example.org,$2b$12$GK9Rb9Lz05QqHon5R.utsu.eDk9PYN8WZ/rYHD0BT9rq/RbEzwyc6,1,2026-09-05 14:20:15.880,NULL,NULL
+15,3,97745473,Alfonso Ródenas Robles,jaureguicleto@example.com,$2b$12$GK9Rb9Lz05QqHon5R.utsu.eDk9PYN8WZ/rYHD0BT9rq/RbEzwyc6,1,2026-09-05 14:20:15.880,NULL,NULL
+16,3,16909028,Albano Valverde Doménech,joserey@example.com,$2b$12$GK9Rb9Lz05QqHon5R.utsu.eDk9PYN8WZ/rYHD0BT9rq/RbEzwyc6,1,2026-09-05 14:20:15.887,NULL,NULL
+17,3,57175548,Macarena Amor Amigó,samuestevez@example.org,$2b$12$GK9Rb9Lz05QqHon5R.utsu.eDk9PYN8WZ/rYHD0BT9rq/RbEzwyc6,1,2026-09-05 14:20:15.890,NULL,NULL
+18,3,23650683,Matilde Duran Badía,bmilla@example.net,$2b$12$GK9Rb9Lz05QqHon5R.utsu.eDk9PYN8WZ/rYHD0BT9rq/RbEzwyc6,1,2026-09-05 14:20:15.893,NULL,NULL
+19,3,85334203,Julie Lledó Ponce,mendozapedro@example.org,$2b$12$GK9Rb9Lz05QqHon5R.utsu.eDk9PYN8WZ/rYHD0BT9rq/RbEzwyc6,1,2026-09-05 14:20:15.897,NULL,NULL
+20,3,98529555,Fernanda Cánovas Arenas,anastasia90@example.org,$2b$12$GK9Rb9Lz05QqHon5R.utsu.eDk9PYN8WZ/rYHD0BT9rq/RbEzwyc6,1,2026-09-05 14:20:15.900,NULL,NULL
+21,3,50459048,Josefa Guillen Rubio,ignaciacarbonell@example.org,$2b$12$GK9Rb9Lz05QqHon5R.utsu.eDk9PYN8WZ/rYHD0BT9rq/RbEzwyc6,1,2026-09-05 14:20:15.903,NULL,NULL
+22,3,34218161,Hernando Pina Solís,camachodalila@example.com,$2b$12$GK9Rb9Lz05QqHon5R.utsu.eDk9PYN8WZ/rYHD0BT9rq/RbEzwyc6,1,2026-09-05 14:20:15.910,NULL,NULL
+23,3,23361353,Timoteo Paniagua Bayón,pchamorro@example.org,$2b$12$GK9Rb9Lz05QqHon5R.utsu.eDk9PYN8WZ/rYHD0BT9rq/RbEzwyc6,1,2026-09-05 14:20:15.910,NULL,NULL
+24,3,63978581,Nacio Borja-Fuentes,duranmarco@example.net,$2b$12$GK9Rb9Lz05QqHon5R.utsu.eDk9PYN8WZ/rYHD0BT9rq/RbEzwyc6,1,2026-09-05 14:20:15.913,NULL,NULL
+25,3,92547707,Rico Barrios-Jordán,ecasanovas@example.net,$2b$12$GK9Rb9Lz05QqHon5R.utsu.eDk9PYN8WZ/rYHD0BT9rq/RbEzwyc6,1,2026-09-05 14:20:15.913,NULL,NULL
+26,3,18921526,Raquel Jaén Salom,rebollojuan-pablo@example.org,$2b$12$GK9Rb9Lz05QqHon5R.utsu.eDk9PYN8WZ/rYHD0BT9rq/RbEzwyc6,1,2026-09-05 14:20:15.920,NULL,NULL
+27,3,72404154,Jenaro Prat,rourasandalio@example.net,$2b$12$GK9Rb9Lz05QqHon5R.utsu.eDk9PYN8WZ/rYHD0BT9rq/RbEzwyc6,1,2026-09-05 14:20:15.923,NULL,NULL
+28,3,29230954,Berto Valencia Gomez,panfilo76@example.org,$2b$12$GK9Rb9Lz05QqHon5R.utsu.eDk9PYN8WZ/rYHD0BT9rq/RbEzwyc6,1,2026-09-05 14:20:15.930,NULL,NULL
+29,3,30632171,Álvaro Orozco Heredia,jvalderrama@example.net,$2b$12$GK9Rb9Lz05QqHon5R.utsu.eDk9PYN8WZ/rYHD0BT9rq/RbEzwyc6,1,2026-09-05 14:20:15.933,NULL,NULL
+30,3,29211287,Adelaida Linares Reguera,vanesa34@example.net,$2b$12$GK9Rb9Lz05QqHon5R.utsu.eDk9PYN8WZ/rYHD0BT9rq/RbEzwyc6,1,2026-09-05 14:20:15.937,NULL,NULL
+31,3,72238452,Marisol Cabo Guillén,gualmiguel@example.net,$2b$12$GK9Rb9Lz05QqHon5R.utsu.eDk9PYN8WZ/rYHD0BT9rq/RbEzwyc6,1,2026-09-05 14:20:15.940,NULL,NULL
+32,3,48879403,Flavio Cepeda Ferreras,juan-carlos24@example.org,$2b$12$GK9Rb9Lz05QqHon5R.utsu.eDk9PYN8WZ/rYHD0BT9rq/RbEzwyc6,1,2026-09-05 14:20:15.940,NULL,NULL
+33,3,93556653,Nélida Villena Sánchez,usalinas@example.net,$2b$12$GK9Rb9Lz05QqHon5R.utsu.eDk9PYN8WZ/rYHD0BT9rq/RbEzwyc6,1,2026-09-05 14:20:15.953,NULL,NULL
+34,3,61494885,Baudelio Nevado Rocha,marc73@example.org,$2b$12$GK9Rb9Lz05QqHon5R.utsu.eDk9PYN8WZ/rYHD0BT9rq/RbEzwyc6,1,2026-09-05 14:20:15.960,NULL,NULL
+35,3,18911010,José Mari Suarez Mata,manuelitarodriguez@example.net,$2b$12$GK9Rb9Lz05QqHon5R.utsu.eDk9PYN8WZ/rYHD0BT9rq/RbEzwyc6,1,2026-09-05 14:20:15.963,NULL,NULL
+36,3,90623035,Águeda Jiménez Bautista,roman38@example.org,$2b$12$GK9Rb9Lz05QqHon5R.utsu.eDk9PYN8WZ/rYHD0BT9rq/RbEzwyc6,1,2026-09-05 14:20:15.967,NULL,NULL
+37,3,13481634,Silvestre Portillo,quiquetrujillo@example.net,$2b$12$GK9Rb9Lz05QqHon5R.utsu.eDk9PYN8WZ/rYHD0BT9rq/RbEzwyc6,1,2026-09-05 14:20:15.973,NULL,NULL
+38,3,34657536,Feliciano Alberola Alcázar,herreroteofilo@example.org,$2b$12$GK9Rb9Lz05QqHon5R.utsu.eDk9PYN8WZ/rYHD0BT9rq/RbEzwyc6,1,2026-09-05 14:20:15.977,NULL,NULL
+39,3,85796466,Primitiva de Heredia,jose-angel46@example.com,$2b$12$GK9Rb9Lz05QqHon5R.utsu.eDk9PYN8WZ/rYHD0BT9rq/RbEzwyc6,1,2026-09-05 14:20:15.980,NULL,NULL
+40,3,41486481,José Manuel Company Clemente,desiderio20@example.net,$2b$12$GK9Rb9Lz05QqHon5R.utsu.eDk9PYN8WZ/rYHD0BT9rq/RbEzwyc6,1,2026-09-05 14:20:15.983,NULL,NULL
+41,3,27162200,Fidel Pons-Salas,sara27@example.net,$2b$12$GK9Rb9Lz05QqHon5R.utsu.eDk9PYN8WZ/rYHD0BT9rq/RbEzwyc6,1,2026-09-05 14:20:15.990,NULL,NULL
+42,3,40388619,Abril Fonseca Céspedes,ester26@example.com,$2b$12$GK9Rb9Lz05QqHon5R.utsu.eDk9PYN8WZ/rYHD0BT9rq/RbEzwyc6,1,2026-09-05 14:20:15.993,NULL,988372641
+43,3,73730133,Pepita Gallego Bas,riquelmearturo@example.org,$2b$12$GK9Rb9Lz05QqHon5R.utsu.eDk9PYN8WZ/rYHD0BT9rq/RbEzwyc6,1,2026-09-05 14:20:15.993,NULL,NULL
+44,3,62090537,Leticia Guitart Antúnez,juanprat@example.net,$2b$12$GK9Rb9Lz05QqHon5R.utsu.eDk9PYN8WZ/rYHD0BT9rq/RbEzwyc6,1,2026-09-05 14:20:15.997,NULL,NULL
+45,3,68917250,Hernán Guadalupe Tejera Merino,bernardita41@example.org,$2b$12$GK9Rb9Lz05QqHon5R.utsu.eDk9PYN8WZ/rYHD0BT9rq/RbEzwyc6,1,2026-09-05 14:20:16.000,NULL,NULL
+46,3,17513859,Santos Martin,fblanca@example.com,$2b$12$GK9Rb9Lz05QqHon5R.utsu.eDk9PYN8WZ/rYHD0BT9rq/RbEzwyc6,1,2026-09-05 14:20:16.007,NULL,NULL
+47,3,30009683,Manuel Múgica Coloma,carmina89@example.net,$2b$12$GK9Rb9Lz05QqHon5R.utsu.eDk9PYN8WZ/rYHD0BT9rq/RbEzwyc6,1,2026-09-05 14:20:16.007,NULL,NULL
+48,3,65009499,Bibiana Maldonado Montalbán,heracliocasals@example.net,$2b$12$GK9Rb9Lz05QqHon5R.utsu.eDk9PYN8WZ/rYHD0BT9rq/RbEzwyc6,1,2026-09-05 14:20:16.010,NULL,NULL
+49,3,14784361,Prudencia Ayllón Pinilla,scastrillo@example.com,$2b$12$GK9Rb9Lz05QqHon5R.utsu.eDk9PYN8WZ/rYHD0BT9rq/RbEzwyc6,1,2026-09-05 14:20:16.013,NULL,NULL
+50,3,36323261,Josefa Rico Valero,paparicio@example.com,$2b$12$GK9Rb9Lz05QqHon5R.utsu.eDk9PYN8WZ/rYHD0BT9rq/RbEzwyc6,1,2026-09-05 14:20:16.017,NULL,NULL
+51,3,23923295,Alfredo de Morán,vigilviviana@example.net,$2b$12$GK9Rb9Lz05QqHon5R.utsu.eDk9PYN8WZ/rYHD0BT9rq/RbEzwyc6,1,2026-09-05 14:20:16.020,NULL,NULL
+52,3,60450328,Ignacio Velázquez Vergara,herbertobelmonte@example.com,$2b$12$GK9Rb9Lz05QqHon5R.utsu.eDk9PYN8WZ/rYHD0BT9rq/RbEzwyc6,1,2026-09-05 14:20:16.023,NULL,NULL
+53,3,61885346,Nidia Abigaíl Pallarès Tamarit,amormatilde@example.net,$2b$12$GK9Rb9Lz05QqHon5R.utsu.eDk9PYN8WZ/rYHD0BT9rq/RbEzwyc6,1,2026-09-05 14:20:16.030,NULL,NULL
+54,3,4332324,asdadffa,asdsdasd@examples.com,$2b$12$Quhd2SNa8DOcAmrY8YglI.P2EoJM69U/18oLi7CQZHojXP3B4i6Cy,1,2026-09-12 22:21:09.023,NULL,NULL
