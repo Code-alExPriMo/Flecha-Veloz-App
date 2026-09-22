@@ -1,0 +1,537 @@
+{% extends "base.html" %}
+{% block content %}
+
+<style>
+    /* =========================================================
+       0. CONFIGURACIÓN DE NAVBAR Y FONDOS
+       ========================================================= */
+    html {
+        scroll-behavior: smooth;
+    }
+    
+    body {
+        margin: 0;
+        padding: 0;
+        overflow-x: hidden;
+        background-color: #050505;
+        font-family: 'Inter', sans-serif;
+    }
+
+    /* FORZAMOS LA BARRA DE NAVEGACIÓN A SER TRANSPARENTE Y OSCURA */
+    .navbar {
+        background-color: transparent !important;
+        border-bottom: none !important;
+        position: absolute !important;
+        top: 0; left: 0; right: 0;
+        z-index: 9999;
+    }
+    .nav-item { color: rgba(255,255,255,0.8) !important; }
+    .nav-item:hover { color: #ffffff !important; }
+    #ui-nombre { color: #ffffff !important; }
+    #ui-rol { color: rgba(255,255,255,0.7) !important; }
+    #ui-iniciales { background-color: #ffffff !important; color: #000000 !important; }
+    .navbar-logo { filter: invert(1) brightness(100) !important; }
+
+    /* =========================================================
+       1. ESTRUCTURA PRINCIPAL DE LA PÁGINA LEGAL
+       ========================================================= */
+    .legales-page {
+        position: relative;
+        width: 100vw;
+        min-height: 100vh;
+        margin-left: calc(-50vw + 50%);
+        margin-top: -40px; 
+        padding-top: 140px; 
+        padding-bottom: 100px;
+        background-image: url('/static/img/portada.png');
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+        box-sizing: border-box;
+    }
+
+    .legales-overlay {
+        position: absolute;
+        top: 0; left: 0; right: 0; bottom: 0;
+        background: linear-gradient(
+            180deg,
+            rgba(0,0,0,0.88) 0%,
+            rgba(5,5,5,0.95) 40%,
+            rgba(10,10,10,0.98) 100%
+        );
+        z-index: 1;
+    }
+
+    .legales-container {
+        position: relative;
+        z-index: 2;
+        max-width: 900px; 
+        margin: 0 auto;
+        padding: 0 25px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    /* =========================================================
+       2. CABECERA Y NAVEGACIÓN INLINE
+       ========================================================= */
+    .legal-header {
+        text-align: center;
+        margin-bottom: 50px;
+        width: 100%;
+    }
+
+    .legal-header h1 {
+        font-family: 'Montserrat', sans-serif;
+        color: #ffffff;
+        font-size: 42px;
+        font-weight: 700;
+        margin: 0 0 15px 0;
+        letter-spacing: -1px;
+    }
+
+    .legal-header p {
+        color: #9ca3af;
+        font-size: 16px;
+        margin: 0;
+        line-height: 1.6;
+    }
+
+    .legal-nav-inline {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 30px;
+        margin-bottom: 40px;
+        width: 100%;
+    }
+
+    .legal-nav-item {
+        color: #888888;
+        text-decoration: none;
+        font-size: 14px;
+        font-weight: 600;
+        transition: color 0.3s ease;
+        position: relative;
+        padding-bottom: 5px;
+    }
+
+    .legal-nav-item:hover, .legal-nav-item.active {
+        color: #ffffff;
+    }
+
+    .legal-nav-item::after {
+        content: '';
+        position: absolute;
+        width: 0;
+        height: 2px;
+        bottom: 0;
+        left: 0;
+        background-color: #ffffff;
+        transition: width 0.3s ease;
+    }
+
+    .legal-nav-item.active::after {
+        width: 100%;
+    }
+
+    /* =========================================================
+       3. ANIMACIONES GLOBALES (SCROLL REVEAL Y HOVER)
+       ========================================================= */
+    .fade-up {
+        opacity: 0;
+        transform: translateY(40px);
+        transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    
+    .fade-up.visible {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    /* =========================================================
+       4. DOCUMENTO CENTRAL Y TARJETAS ANIMADAS
+       ========================================================= */
+    .legal-document {
+        width: 100%;
+        background: rgba(15,15,15,0.4);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid rgba(255,255,255,0.06);
+        border-radius: 24px;
+        padding: 70px 80px;
+        box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+        box-sizing: border-box;
+        transition: transform 0.4s ease, box-shadow 0.4s ease, border-color 0.4s ease;
+    }
+
+    /* Efecto "Magnético" al acercar el cursor */
+    .legal-document:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 30px 60px rgba(0,0,0,0.7);
+        border-color: rgba(255,255,255,0.12);
+    }
+
+    .legal-section {
+        scroll-margin-top: 120px; 
+    }
+
+    .legal-divider {
+        border: none;
+        border-top: 1px solid rgba(255,255,255,0.08);
+        margin: 60px 0;
+    }
+
+    .legal-section h2 {
+        font-family: 'Montserrat', sans-serif;
+        color: #ffffff;
+        font-size: 28px;
+        font-weight: 600;
+        margin: 0 0 35px 0;
+        letter-spacing: -0.5px;
+    }
+
+    .legal-text-block {
+        color: #c1c1c1; 
+        font-size: 16px;
+        line-height: 2.0; 
+        font-weight: 400;
+    }
+
+    .legal-text-block h4 {
+        color: #ffffff;
+        font-size: 18px;
+        margin: 40px 0 15px 0;
+        font-weight: 600;
+    }
+
+    .legal-text-block p {
+        margin: 0 0 25px 0; 
+    }
+
+    .legal-text-block ul {
+        padding-left: 20px;
+        margin-bottom: 30px;
+    }
+
+    .legal-text-block li {
+        margin-bottom: 12px;
+        padding-left: 10px;
+    }
+
+    /* =========================================================
+       5. FORMULARIO PREMIUM DE LIBRO DE RECLAMACIONES
+       ========================================================= */
+    .claim-form {
+        margin-top: 40px;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 25px;
+        background: rgba(0,0,0,0.3);
+        padding: 40px;
+        border-radius: 16px;
+        border: 1px solid rgba(255,255,255,0.05);
+        transition: border-color 0.3s ease, background 0.3s ease;
+    }
+
+    .claim-form:hover {
+        border-color: rgba(255,255,255,0.1);
+        background: rgba(0,0,0,0.4);
+    }
+
+    .form-group.full-width {
+        grid-column: span 2;
+    }
+
+    .claim-form label {
+        display: block;
+        color: #9ca3af;
+        font-size: 12px;
+        text-transform: uppercase;
+        letter-spacing: 0.8px;
+        font-weight: 600;
+        margin-bottom: 10px;
+    }
+
+    .claim-form input, .claim-form select, .claim-form textarea {
+        width: 100%;
+        background: rgba(255,255,255,0.04);
+        border: 1px solid rgba(255,255,255,0.1);
+        padding: 16px 18px;
+        border-radius: 10px;
+        color: #ffffff;
+        font-family: 'Inter', sans-serif;
+        font-size: 14px;
+        outline: none;
+        transition: all 0.3s ease;
+        box-sizing: border-box;
+    }
+
+    .claim-form select option {
+        background-color: #111;
+        color: #fff;
+    }
+
+    .claim-form input:focus, .claim-form select:focus, .claim-form textarea:focus {
+        border-color: rgba(255,255,255,0.4);
+        background: rgba(255,255,255,0.08);
+        box-shadow: 0 0 15px rgba(255,255,255,0.05);
+    }
+
+    .claim-form textarea {
+        resize: vertical;
+        min-height: 140px;
+    }
+
+    .btn-claim {
+        grid-column: span 2;
+        background: #ffffff;
+        color: #000000;
+        border: none;
+        padding: 18px;
+        border-radius: 10px;
+        font-family: 'Inter', sans-serif;
+        font-weight: 700;
+        font-size: 15px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-top: 10px;
+    }
+
+    .btn-claim:hover {
+        background: #e5e7eb;
+        transform: translateY(-3px);
+        box-shadow: 0 10px 20px rgba(255,255,255,0.1);
+    }
+
+    /* Ocultar barra lateral en móviles y ajustar padding */
+    @media (max-width: 800px) {
+        .legal-document {
+            padding: 40px 30px;
+        }
+        .claim-form {
+            grid-template-columns: 1fr;
+            padding: 25px;
+        }
+        .form-group.full-width {
+            grid-column: span 1;
+        }
+        .btn-claim {
+            grid-column: span 1;
+        }
+        .legal-nav-inline {
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
+    }
+</style>
+
+<div class="legales-page">
+    <div class="legales-overlay"></div>
+    
+    <div class="legales-container">
+        
+        <!-- CABECERA ANIMADA -->
+        <div class="legal-header fade-up">
+            <h1>Centro Legal y Transparencia</h1>
+            <p>En Flecha Veloz, la seguridad de tus datos y la claridad operativa son nuestra máxima prioridad.</p>
+        </div>
+
+        <!-- NAVEGACIÓN INLINE ANIMADA -->
+        <nav class="legal-nav-inline fade-up" style="transition-delay: 0.1s;">
+            <a href="#terminos" class="legal-nav-item active" id="nav-terminos">Términos y Condiciones</a>
+            <a href="#privacidad" class="legal-nav-item" id="nav-privacidad">Política de Privacidad</a>
+            <a href="#datos" class="legal-nav-item" id="nav-datos">Tratamiento de Datos</a>
+            <a href="#reclamaciones" class="legal-nav-item" id="nav-reclamaciones">Libro de Reclamaciones</a>
+        </nav>
+
+        <!-- DOCUMENTO ÚNICO CENTRAL CON ANIMACIÓN DE ENTRADA Y HOVER -->
+        <main class="legal-document fade-up" style="transition-delay: 0.2s;">
+            
+            <!-- SECCIÓN 1: Términos -->
+            <section id="terminos" class="legal-section section-spy">
+                <h2>Términos y Condiciones de Uso</h2>
+                <div class="legal-text-block">
+                    <p>Bienvenido a <strong>Flecha Veloz</strong>. Al utilizar nuestra plataforma web y los servicios de asignación de viajes, usted acepta estar sujeto a los siguientes términos de servicio aplicables dentro del territorio de la República del Perú.</p>
+                    
+                    <h4>1. Naturaleza de la Plataforma</h4>
+                    <p>Flecha Veloz actúa estrictamente como un intermediario tecnológico (Central Operativa) que conecta a usuarios (pasajeros) con conductores independientes. No proveemos servicios de transporte directos, ni somos propietarios de los vehículos registrados en nuestro sistema.</p>
+
+                    <h4>2. Responsabilidades del Conductor</h4>
+                    <ul>
+                        <li>Mantener la documentación del vehículo vigente (SOAT, Tarjeta de Propiedad, Revisión Técnica).</li>
+                        <li>Cumplir con las tarifas acordadas previamente en la plataforma sin alteraciones de ningún tipo.</li>
+                        <li>Actualizar su estado operativo en tiempo real utilizando el Panel de Chofer de la Central.</li>
+                    </ul>
+
+                    <h4>3. Políticas de Tarifas y Liquidaciones</h4>
+                    <p>Las tarifas son fijadas al momento de la asignación del viaje. El pasajero asume el compromiso de abonar el monto exacto indicado en pantalla. Las comisiones por el uso del sistema se deducen del libro mayor del conductor mediante el sistema automatizado de liquidaciones gerenciales.</p>
+                </div>
+            </section>
+
+            <hr class="legal-divider fade-up">
+
+            <!-- SECCIÓN 2: Privacidad -->
+            <section id="privacidad" class="legal-section section-spy fade-up">
+                <h2>Política de Privacidad</h2>
+                <div class="legal-text-block">
+                    <p>Su privacidad es fundamental para la operatividad de nuestra plataforma. Esta sección detalla cómo recopilamos, procesamos y salvaguardamos su información de manera estricta.</p>
+
+                    <h4>Recopilación de Información Sensible</h4>
+                    <p>Al registrarse o solicitar un servicio en Flecha Veloz, nuestro sistema recopila su Nombre Completo, Documento de Identidad (DNI) y Número de Teléfono. Adicionalmente, el sistema captura datos de geolocalización en tiempo real (Latitud y Longitud) de los conductores operativos para asegurar una asignación eficiente de rutas a través del mapa logístico.</p>
+
+                    <h4>Uso Exclusivo de la Información</h4>
+                    <ul>
+                        <li>Para conectar de manera instantánea a los conductores disponibles más cercanos con los pasajeros.</li>
+                        <li>Para procesar y emitir reportes gerenciales de rendimiento y KPIs a la administración central.</li>
+                        <li>Para contactarlo de manera urgente en caso de incidentes, emergencias o pérdida de objetos en los vehículos.</li>
+                    </ul>
+                    <p>Flecha Veloz garantiza que <strong>nunca</strong> venderá, cederá ni alquilará sus datos a empresas de marketing de terceros ni a bases de datos externas.</p>
+                </div>
+            </section>
+
+            <hr class="legal-divider fade-up">
+
+            <!-- SECCIÓN 3: Datos -->
+            <section id="datos" class="legal-section section-spy fade-up">
+                <h2>Tratamiento de Datos Personales</h2>
+                <div class="legal-text-block">
+                    <p>De absoluta conformidad con lo establecido en la <strong>Ley N° 29733, Ley de Protección de Datos Personales de Perú</strong>, y su respectivo Reglamento, hacemos de su conocimiento público y legal lo siguiente:</p>
+
+                    <p>Todos los datos personales e informáticos facilitados por los usuarios serán encriptados y almacenados de manera segura en el Banco de Datos de Usuarios y Flota bajo la titularidad de "Flecha Veloz S.A.C.". Al hacer uso de la plataforma, el usuario otorga su consentimiento expreso e inequívoco para que dichos datos sean procesados en nuestros servidores en la nube (tecnología Supabase/PostgreSQL) con la única finalidad de ejecutar, auditar y mejorar el servicio de transporte.</p>
+
+                    <p>Usted puede ejercer en cualquier momento sus derechos ARCO (Acceso, Rectificación, Cancelación y Oposición) enviando una solicitud formal al correo <strong>legal@flechaveloz.com</strong> o tramitando un documento físico en nuestra oficina central ubicada en el distrito de Villa El Salvador, Lima.</p>
+                </div>
+            </section>
+
+            <hr class="legal-divider fade-up">
+
+            <!-- SECCIÓN 4: Libro de Reclamaciones -->
+            <section id="reclamaciones" class="legal-section section-spy fade-up">
+                <h2>Libro de Reclamaciones Virtual</h2>
+                <div class="legal-text-block">
+                    <p>Conforme a lo establecido en el Código de Protección y Defensa del Consumidor de la República del Perú, nuestra institución cuenta con un Libro de Reclamaciones Virtual a su entera disposición para reportar cualquier incidencia en el servicio.</p>
+                    
+                    <form id="form-reclamo" class="claim-form">
+                        <div class="form-group">
+                            <label>DNI / Carnet de Extranjería</label>
+                            <input type="text" id="r-dni" placeholder="Nro de Documento" maxlength="15" required autocomplete="off">
+                        </div>
+                        <div class="form-group">
+                            <label>Nombre y Apellidos</label>
+                            <input type="text" id="r-nombre" placeholder="Ingrese su identidad completa" required autocomplete="off">
+                        </div>
+                        <div class="form-group full-width">
+                            <label>Correo Electrónico de Contacto</label>
+                            <input type="email" id="r-correo" placeholder="correo@ejemplo.com" required autocomplete="off">
+                        </div>
+                        <div class="form-group">
+                            <label>Tipo de Requerimiento</label>
+                            <select id="r-tipo">
+                                <option value="Queja">Queja (Malestar o descontento con la atención)</option>
+                                <option value="Reclamo">Reclamo (Infracción directa al servicio brindado)</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Fecha exacta de la incidencia</label>
+                            <input type="date" id="r-fecha" required>
+                        </div>
+                        <div class="form-group full-width">
+                            <label>Detalle completo de la Queja o Reclamo</label>
+                            <textarea id="r-detalle" placeholder="Describa los hechos ocurridos de forma detallada y clara. Incluya datos del vehículo o conductor si los tuviera..." required></textarea>
+                        </div>
+                        <button type="submit" class="btn-claim">Enviar Documento a Indecopi</button>
+                    </form>
+                </div>
+            </section>
+
+        </main>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        
+        /* 1. LÓGICA DEL MENÚ INLINE (Resalta el menú según donde hagas scroll) */
+        const sections = document.querySelectorAll('.section-spy');
+        const navItems = document.querySelectorAll('.legal-nav-item');
+
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (scrollY >= (sectionTop - 180)) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navItems.forEach(item => {
+                item.classList.remove('active');
+                if (item.getAttribute('href') === `#${current}`) {
+                    item.classList.add('active');
+                }
+            });
+        });
+
+        /* 2. LÓGICA DE ANIMACIÓN SCROLL REVEAL */
+        const elementosAnimables = document.querySelectorAll('.fade-up');
+        if (elementosAnimables.length > 0) {
+            const observadorDeScroll = new IntersectionObserver((entradas, observador) => {
+                entradas.forEach(entrada => {
+                    if (entrada.isIntersecting) {
+                        entrada.target.classList.add('visible');
+                        observador.unobserve(entrada.target);
+                    }
+                });
+            }, {
+                root: null,
+                rootMargin: '0px', 
+                threshold: 0.15 
+            });
+
+            elementosAnimables.forEach(elemento => {
+                observadorDeScroll.observe(elemento);
+            });
+        }
+
+        /* 3. LÓGICA DEL LIBRO DE RECLAMACIONES SIMULADO */
+        const formReclamo = document.getElementById('form-reclamo');
+        
+        if(formReclamo) {
+            formReclamo.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const btn = formReclamo.querySelector('.btn-claim');
+                btn.innerText = "Procesando codificación y envío...";
+                btn.disabled = true;
+
+                // Simulamos el envío a base de datos con un retraso
+                setTimeout(() => {
+                    const numReclamo = Math.floor(Math.random() * 90000) + 10000;
+                    const tipo = document.getElementById('r-tipo').value;
+
+                    Swal.fire({
+                        icon: 'success',
+                        title: `${tipo} Registrado con Éxito`,
+                        html: `El documento ha sido ingresado correctamente a la base de datos central.<br><br><b>Código Oficial de Seguimiento:</b> FR-${numReclamo}<br><br><span style="font-size:12px; color:#aaa;">Se ha enviado una copia legal a su correo electrónico.</span>`,
+                        background: '#151515',
+                        color: '#fff',
+                        confirmButtonColor: '#ffffff',
+                        customClass: { confirmButton: 'text-black font-bold' }
+                    });
+
+                    formReclamo.reset();
+                    btn.innerText = "Enviar Documento a Indecopi";
+                    btn.disabled = false;
+                }, 1800);
+            });
+        }
+    });
+</script>
+
+{% endblock %}

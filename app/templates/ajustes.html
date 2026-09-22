@@ -4,39 +4,93 @@
 
 <style>
     /* =========================================================
-       DISEÑO DEL LIENZO
+       0. CONFIGURACIÓN DE NAVBAR Y FONDO GLOBAL
+       ========================================================= */
+    html {
+        scroll-behavior: smooth;
+    }
+    
+    body {
+        margin: 0;
+        padding: 0;
+        overflow-x: hidden;
+        background-color: #050505;
+        font-family: 'Inter', sans-serif;
+    }
+
+    /* FORZAMOS LA BARRA DE NAVEGACIÓN A SER TRANSPARENTE Y OSCURA */
+    .navbar {
+        background-color: transparent !important;
+        border-bottom: none !important;
+        position: absolute !important;
+        top: 0; left: 0; right: 0;
+        z-index: 9999;
+    }
+    .nav-item { color: rgba(255,255,255,0.8) !important; }
+    .nav-item:hover { color: #ffffff !important; }
+    #ui-nombre { color: #ffffff !important; }
+    #ui-rol { color: rgba(255,255,255,0.7) !important; }
+    #ui-iniciales { background-color: #ffffff !important; color: #000000 !important; }
+    .navbar-logo { filter: invert(1) brightness(100) !important; }
+
+    /* =========================================================
+       1. DISEÑO DEL LIENZO PRINCIPAL (DARK THEME)
        ========================================================= */
     .ajustes-page {
+        position: relative;
         width: 100vw;
-        min-height: calc(100vh - 70px);
+        min-height: 100vh;
         margin-left: calc(-50vw + 50%);
-        padding: 40px 20px;
+        margin-top: -40px; 
+        padding-top: 130px; 
+        padding-bottom: 80px;
+        background-image: url('/static/img/portada.png');
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
         box-sizing: border-box;
-        background-color: var(--bg-primary);
         display: flex;
         justify-content: center;
     }
 
+    .ajustes-overlay {
+        position: absolute;
+        top: 0; left: 0; right: 0; bottom: 0;
+        background: linear-gradient(
+            180deg,
+            rgba(0,0,0,0.85) 0%,
+            rgba(5,5,5,0.92) 30%,
+            rgba(10,10,10,0.98) 100%
+        );
+        z-index: 1;
+    }
+
     .ajustes-container {
+        position: relative;
+        z-index: 2;
         display: flex;
         flex-direction: row;
         width: 100%;
         max-width: 1100px;
         gap: 30px;
         align-items: flex-start;
+        padding: 0 25px;
     }
 
     /* =========================================================
-       PANEL IZQUIERDO (SIDEBAR DE NAVEGACIÓN)
+       2. PANEL IZQUIERDO (SIDEBAR DE NAVEGACIÓN - CRISTAL)
        ========================================================= */
     .ajustes-sidebar {
         width: 280px;
-        background: var(--bg-panel);
-        border: 1px solid var(--border-color);
-        border-radius: 12px;
+        background: rgba(15,15,15,0.7);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border: 1px solid rgba(255,255,255,0.08);
+        border-radius: 16px;
         padding-bottom: 20px;
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        box-shadow: 0 15px 35px rgba(0,0,0,0.3);
         flex-shrink: 0;
+        overflow: hidden;
     }
 
     /* Sección de foto de perfil */
@@ -45,124 +99,326 @@
         flex-direction: column;
         align-items: center;
         padding: 30px 20px;
-        border-bottom: 1px solid var(--border-color);
+        border-bottom: 1px solid rgba(255,255,255,0.08);
         text-align: center;
     }
 
     .avatar-grande {
-        width: 110px;
-        height: 110px;
+        width: 90px;
+        height: 90px;
         border-radius: 50%;
-        background-color: var(--text-main);
+        background-color: rgba(255,255,255,0.1);
+        border: 1px solid rgba(255,255,255,0.15);
         color: white;
         display: flex;
         justify-content: center;
         align-items: center;
-        font-size: 38px;
-        font-family: var(--font-primary);
+        font-size: 32px;
+        font-family: 'Montserrat', sans-serif;
         font-weight: 700;
         margin-bottom: 15px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.2);
     }
 
-    .sidebar-perfil-info h3 { margin: 0; font-size: 16px; color: var(--text-main); }
-    .sidebar-perfil-info p { margin: 5px 0 0 0; font-size: 13px; color: var(--text-muted); }
+    .sidebar-perfil-info h3 { 
+        margin: 0; 
+        font-size: 16px; 
+        font-family: 'Montserrat', sans-serif;
+        color: #ffffff; 
+        font-weight: 600;
+    }
+    
+    .sidebar-perfil-info p { 
+        margin: 5px 0 0 0; 
+        font-size: 12px; 
+        color: #9ca3af; 
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
 
-    /* Menú de pestañas */
-    .sidebar-menu { display: flex; flex-direction: column; padding-top: 10px; }
+    /* Menú de pestañas (SIN ICONOS) */
+    .sidebar-menu { 
+        display: flex; 
+        flex-direction: column; 
+        padding-top: 10px; 
+    }
 
     .menu-item {
         padding: 14px 24px;
-        font-size: 14px;
+        font-size: 13px;
         font-weight: 500;
-        color: var(--text-muted);
+        color: #9ca3af;
         cursor: pointer;
         border-left: 3px solid transparent;
-        transition: all 0.2s;
+        transition: all 0.3s ease;
     }
 
-    .menu-item:hover { background-color: #f9fafb; color: var(--text-main); }
-    .menu-item.activo { background-color: #f3f4f6; color: var(--text-main); border-left-color: var(--text-main); font-weight: 600; }
+    .menu-item:hover { 
+        background-color: rgba(255,255,255,0.03); 
+        color: #ffffff; 
+    }
+    
+    .menu-item.activo { 
+        background-color: rgba(255,255,255,0.06); 
+        color: #ffffff; 
+        border-left-color: #ffffff; 
+        font-weight: 600; 
+    }
 
     /* Pestaña secreta de admin */
-    #menu-admin { display: none; border-top: 1px solid var(--border-color); margin-top: 10px; }
+    #menu-admin { 
+        display: none; 
+        border-top: 1px solid rgba(255,255,255,0.08); 
+        margin-top: 10px; 
+        padding-top: 15px;
+    }
 
     /* =========================================================
-       PANEL DERECHO (CONTENIDO DE LAS PESTAÑAS)
+       3. PANEL DERECHO (CONTENIDO DE LAS PESTAÑAS - CRISTAL)
        ========================================================= */
     .ajustes-content {
         flex: 1;
-        background: var(--bg-panel);
-        border: 1px solid var(--border-color);
-        border-radius: 12px;
-        padding: 40px;
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        background: rgba(15,15,15,0.7);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border: 1px solid rgba(255,255,255,0.08);
+        border-radius: 16px;
+        padding: 45px;
+        box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+        color: #ffffff;
     }
 
     .tab-seccion { display: none; animation: fadeIn 0.4s ease; }
     .tab-seccion.activa { display: block; }
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-    .titulo-seccion { text-align: center; margin-top: 0; margin-bottom: 5px; font-size: 24px; }
-    .subtitulo-seccion { text-align: center; color: var(--text-muted); font-size: 14px; margin-bottom: 40px; }
-    hr { border: 0; height: 1px; background: var(--border-color); margin: 30px 0; }
+    /* TÍTULOS CENTRADOS EN EL PANEL DERECHO */
+    .titulo-seccion { 
+        font-family: 'Montserrat', sans-serif;
+        margin-top: 0; 
+        margin-bottom: 8px; 
+        font-size: 26px; 
+        font-weight: 700;
+        letter-spacing: -0.5px;
+        text-align: center; /* Centrado como solicitaste */
+    }
+    
+    .subtitulo-seccion { 
+        color: #9ca3af; 
+        font-size: 14px; 
+        margin-bottom: 35px; 
+        text-align: center; /* Centrado como solicitaste */
+    }
+    
+    hr { 
+        border: 0; 
+        height: 1px; 
+        background: rgba(255,255,255,0.08); 
+        margin: 30px 0; 
+    }
 
-    /* Formulario */
+    /* Formularios Premium Oscuros */
     .form-grupo { margin-bottom: 22px; }
-    .form-grupo label { display: block; font-weight: 600; font-size: 13px; margin-bottom: 8px; color: var(--text-main); }
+    
+    .form-grupo label { 
+        display: block; 
+        font-weight: 600; 
+        font-size: 11px; 
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-bottom: 8px; 
+        color: #9ca3af; 
+    }
     
     .form-input {
-        width: 100%; padding: 12px 16px; border: 1px solid var(--border-color); border-radius: 8px;
-        font-family: var(--font-secondary); font-size: 14px; color: var(--text-main); box-sizing: border-box; transition: border-color 0.2s; background: #ffffff;
+        width: 100%; 
+        padding: 14px 16px; 
+        background: rgba(255,255,255,0.04);
+        border: 1px solid rgba(255,255,255,0.1); 
+        border-radius: 10px;
+        font-family: 'Inter', sans-serif; 
+        font-size: 14px; 
+        color: #ffffff; 
+        box-sizing: border-box; 
+        transition: all 0.3s ease; 
     }
-    .form-input:focus { outline: none; border-color: #3b82f6; box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1); }
-    .form-input[readonly] { background-color: #f3f4f6; color: var(--text-muted); cursor: not-allowed; }
+    
+    .form-input::placeholder {
+        color: rgba(255,255,255,0.2);
+    }
+    
+    .form-input:focus { 
+        outline: none; 
+        border-color: rgba(255,255,255,0.4); 
+        background: rgba(255,255,255,0.08);
+        box-shadow: 0 0 15px rgba(255,255,255,0.05); 
+    }
+    
+    .form-input[readonly] { 
+        background-color: rgba(255,255,255,0.02); 
+        color: #6b7280; 
+        cursor: not-allowed; 
+        border-color: rgba(255,255,255,0.05);
+    }
 
     .btn-guardar {
-        background-color: var(--text-main); color: white; border: none; padding: 14px 28px; border-radius: 8px;
-        font-weight: 600; font-size: 14px; cursor: pointer; font-family: var(--font-secondary); transition: background 0.2s; margin-top: 10px;
+        background-color: #ffffff; 
+        color: #000000; 
+        border: none; 
+        padding: 15px 30px; 
+        border-radius: 10px;
+        font-weight: 700; 
+        font-size: 14px; 
+        cursor: pointer; 
+        font-family: 'Inter', sans-serif; 
+        transition: all 0.3s ease; 
+        margin-top: 15px;
+        width: 100%; /* El botón ocupa todo el ancho para acompañar el diseño centrado */
     }
-    .btn-guardar:hover { background-color: #374151; }
+    
+    .btn-guardar:hover { 
+        background-color: #e5e7eb; 
+        transform: translateY(-2px);
+    }
 
     /* =========================================================
-       ZONA DE PELIGRO (CERRAR CUENTA)
+       4. ZONA DE PELIGRO (CERRAR CUENTA)
        ========================================================= */
-    .alerta-peligro { background-color: #fef2f2; border-left: 4px solid #ef4444; padding: 16px 20px; border-radius: 0 8px 8px 0; margin-bottom: 25px; }
-    .alerta-peligro p { margin: 0 0 10px 0; font-size: 14px; color: #991b1b; line-height: 1.5; }
+    .alerta-peligro { 
+        background-color: rgba(239, 68, 68, 0.1); 
+        border-left: 4px solid #ef4444; 
+        padding: 20px; 
+        border-radius: 0 10px 10px 0; 
+        margin-bottom: 25px; 
+    }
+    
+    .alerta-peligro p { 
+        margin: 0 0 10px 0; 
+        font-size: 13px; 
+        color: #fca5a5; 
+        line-height: 1.6; 
+    }
+    
     .alerta-peligro p:last-child { margin-bottom: 0; }
-    .texto-advertencia { color: #dc2626; font-weight: 700; }
+    .texto-advertencia { color: #ef4444; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
 
     .btn-peligro {
-        background-color: #ef4444; color: white; border: none; padding: 14px 28px; border-radius: 8px;
-        font-weight: 600; font-size: 14px; cursor: pointer; font-family: var(--font-secondary); transition: background 0.2s;
+        background-color: #ef4444; 
+        color: white; 
+        border: none; 
+        padding: 15px 30px; 
+        border-radius: 10px;
+        font-weight: 700; 
+        font-size: 14px; 
+        cursor: pointer; 
+        font-family: 'Inter', sans-serif; 
+        transition: all 0.3s ease;
+        width: 100%;
     }
-    .btn-peligro:hover { background-color: #dc2626; }
+    
+    .btn-peligro:hover { 
+        background-color: #dc2626; 
+        transform: translateY(-2px);
+        box-shadow: 0 10px 20px rgba(239, 68, 68, 0.2);
+    }
 
     /* =========================================================
-       TABLA ADMIN (NUEVA ZONA)
+       5. TABLA ADMIN (ESTILO OSCURO)
        ========================================================= */
-    .tabla-admin { width: 100%; border-collapse: collapse; margin-top: 10px; }
-    .tabla-admin th { background: #f9fafb; padding: 12px; text-align: left; font-size: 12px; color: var(--text-muted); text-transform: uppercase; border-bottom: 1px solid var(--border-color); }
-    .tabla-admin td { padding: 15px 12px; border-bottom: 1px solid var(--border-color); font-size: 14px; vertical-align: middle; }
+    .tabla-admin { 
+        width: 100%; 
+        border-collapse: collapse; 
+        margin-top: 10px; 
+    }
+    
+    .tabla-admin th { 
+        background: rgba(255,255,255,0.03); 
+        padding: 14px; 
+        text-align: left; 
+        font-size: 11px; 
+        color: #9ca3af; 
+        text-transform: uppercase; 
+        letter-spacing: 0.5px;
+        border-bottom: 1px solid rgba(255,255,255,0.1); 
+    }
+    
+    .tabla-admin td { 
+        padding: 16px 14px; 
+        border-bottom: 1px solid rgba(255,255,255,0.05); 
+        font-size: 13px; 
+        vertical-align: middle; 
+    }
+    
     .tabla-admin tr:last-child td { border-bottom: none; }
+    .tabla-admin tr:hover td { background: rgba(255,255,255,0.02); }
     
-    .badge-activo { background: #d1fae5; color: #065f46; padding: 4px 10px; border-radius: 6px; font-size: 11px; font-weight: 700; border: 1px solid #10b981; }
-    .badge-suspendido { background: #fee2e2; color: #991b1b; padding: 4px 10px; border-radius: 6px; font-size: 11px; font-weight: 700; border: 1px solid #ef4444; }
+    .badge-activo { 
+        background: rgba(16, 185, 129, 0.15); 
+        color: #34d399; 
+        padding: 5px 12px; 
+        border-radius: 6px; 
+        font-size: 10px; 
+        font-weight: 700; 
+        border: 1px solid rgba(16, 185, 129, 0.3); 
+        text-transform: uppercase;
+    }
+    
+    .badge-suspendido { 
+        background: rgba(239, 68, 68, 0.15); 
+        color: #f87171; 
+        padding: 5px 12px; 
+        border-radius: 6px; 
+        font-size: 10px; 
+        font-weight: 700; 
+        border: 1px solid rgba(239, 68, 68, 0.3); 
+        text-transform: uppercase;
+    }
 
-    .btn-verde { background: #10b981; color: white; border: none; padding: 8px 12px; border-radius: 6px; font-size: 12px; font-weight: 600; cursor: pointer; }
-    .btn-verde:hover { background: #059669; }
+    .btn-verde { 
+        background: rgba(16, 185, 129, 0.1); 
+        color: #34d399; 
+        border: 1px solid #10b981; 
+        padding: 8px 14px; 
+        border-radius: 8px; 
+        font-size: 11px; 
+        font-weight: 600; 
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
     
-    .btn-rojo-outline { background: transparent; color: #ef4444; border: 1px solid #ef4444; padding: 8px 12px; border-radius: 6px; font-size: 12px; font-weight: 600; cursor: pointer; }
-    .btn-rojo-outline:hover { background: #ef4444; color: white; }
+    .btn-verde:hover { 
+        background: #10b981; 
+        color: white; 
+    }
+    
+    .btn-rojo-outline { 
+        background: transparent; 
+        color: #ef4444; 
+        border: 1px solid #ef4444; 
+        padding: 8px 14px; 
+        border-radius: 8px; 
+        font-size: 11px; 
+        font-weight: 600; 
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+    
+    .btn-rojo-outline:hover { 
+        background: #ef4444; 
+        color: white; 
+    }
 
     /* Responsive */
     @media (max-width: 850px) {
         .ajustes-container { flex-direction: column; }
         .ajustes-sidebar { width: 100%; }
-        .ajustes-content { padding: 25px; }
+        .ajustes-content { padding: 30px 20px; }
     }
 </style>
 
 <div class="ajustes-page">
+    <div class="ajustes-overlay"></div>
+
     <div class="ajustes-container">
 
         <!-- PANEL IZQUIERDO -->
@@ -175,17 +431,17 @@
             
             <div class="sidebar-menu">
                 <div class="menu-item activo" onclick="cambiarPestana('perfil', this)">
-                    👤 Perfil público
+                    Perfil público
                 </div>
                 <div class="menu-item" onclick="cambiarPestana('seguridad', this)">
-                    🔒 Seguridad de la cuenta
+                    Seguridad de la cuenta
                 </div>
                 <!-- Esta pestaña solo la verán los Gerentes/Admins -->
                 <div class="menu-item" id="menu-admin" onclick="cambiarPestana('admin', this)">
-                    ⚙️ Gestión de Personal
+                    Gestión de Personal
                 </div>
-                <div class="menu-item" onclick="cambiarPestana('cerrar', this)" style="color: #dc2626;">
-                    ❌ Cerrar cuenta
+                <div class="menu-item" onclick="cambiarPestana('cerrar', this)" style="color: #ef4444;">
+                    Cerrar cuenta
                 </div>
             </div>
         </div>
@@ -196,11 +452,11 @@
             <!-- PESTAÑA: PERFIL -->
             <div id="tab-perfil" class="tab-seccion activa">
                 <h2 class="titulo-seccion">Perfil público</h2>
-                <p class="subtitulo-seccion">Añade información sobre ti</p>
+                <p class="subtitulo-seccion">Actualiza tu información personal de contacto</p>
                 <hr>
                 <div class="form-grupo">
                     <label>Nombre Completo</label>
-                    <input type="text" id="inp-nombre" class="form-input">
+                    <input type="text" id="inp-nombre" class="form-input" autocomplete="off">
                 </div>
                 <div class="form-grupo">
                     <label>Documento de Identidad (No modificable)</label>
@@ -208,11 +464,11 @@
                 </div>
                 <div class="form-grupo">
                     <label>Correo Electrónico</label>
-                    <input type="email" id="inp-correo" class="form-input">
+                    <input type="email" id="inp-correo" class="form-input" autocomplete="off">
                 </div>
                 <div class="form-grupo">
                     <label>Teléfono Celular</label>
-                    <input type="text" id="inp-telefono" class="form-input" placeholder="Ej. 987654321">
+                    <input type="text" id="inp-telefono" class="form-input" placeholder="Ej. 987654321" autocomplete="off">
                 </div>
                 <button class="btn-guardar" onclick="guardarPerfil()">Guardar Cambios</button>
             </div>
@@ -222,9 +478,11 @@
                 <h2 class="titulo-seccion">Seguridad</h2>
                 <p class="subtitulo-seccion">Actualiza tu contraseña de acceso</p>
                 <hr>
-                <p style="text-align: center; color: var(--text-muted); font-size: 14px;">
-                    Módulo de cambio de contraseña en mantenimiento.
-                </p>
+                <div style="background: rgba(255,255,255,0.03); border: 1px dashed rgba(255,255,255,0.1); padding: 30px; text-align: center; border-radius: 12px;">
+                    <p style="color: #9ca3af; font-size: 13px; margin: 0;">
+                        Módulo de cambio de contraseña en mantenimiento por el equipo de TI.
+                    </p>
+                </div>
             </div>
 
             <!-- PESTAÑA: ADMIN (GESTIÓN DE PERSONAL) -->
@@ -244,7 +502,11 @@
                             </tr>
                         </thead>
                         <tbody id="tabla-choferes-admin">
-                            <tr><td colspan="4" style="text-align: center; color: #6b7280; padding: 20px;">Sincronizando datos...</td></tr>
+                            <tr>
+                                <td colspan="4" style="text-align: center; color: #6b7280; padding: 30px;">
+                                    Sincronizando datos con el servidor...
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
@@ -310,7 +572,7 @@
         document.getElementById('tab-' + idTab).classList.add('activa');
     }
 
-    // 2. Cargar tabla de Personal (Solo para Admin) - CORREGIDO
+    // 2. Cargar tabla de Personal (Solo para Admin)
     async function cargarPersonalAdmin() {
         try {
             const peticion = await fetch('/api/admin/choferes');
@@ -318,7 +580,6 @@
             
             let html = '';
             data.forEach(chofer => {
-                // AQUÍ ESTÁ LA MAGIA: Verificamos si es 1 o si es 'true' (booleano)
                 const estaActivo = (chofer.estado === 1 || chofer.estado === true);
                 
                 const badge = estaActivo 
@@ -332,12 +593,12 @@
                 html += `
                     <tr>
                         <td>
-                            <strong style="color:var(--text-main);">${chofer.nombre}</strong><br>
-                            <span style="font-size:12px; color:var(--text-muted);">DNI: ${chofer.dni}</span>
+                            <strong style="color: #ffffff; font-family: 'Inter', sans-serif;">${chofer.nombre}</strong><br>
+                            <span style="font-size:11px; color: #9ca3af; text-transform: uppercase;">DNI: ${chofer.dni}</span>
                         </td>
                         <td>
-                            <span style="font-size:13px;">${chofer.telefono}</span><br>
-                            <span style="font-size:12px; font-weight:600; color:var(--text-muted);">${chofer.placa}</span>
+                            <span style="font-size:13px; color: #d1d5db;">${chofer.telefono}</span><br>
+                            <span style="font-size:11px; font-weight:600; color: #9ca3af;">${chofer.placa}</span>
                         </td>
                         <td>${badge}</td>
                         <td>${boton}</td>
@@ -346,9 +607,10 @@
             });
             document.getElementById('tabla-choferes-admin').innerHTML = html;
         } catch (error) {
-            document.getElementById('tabla-choferes-admin').innerHTML = '<tr><td colspan="4">Error al cargar datos.</td></tr>';
+            document.getElementById('tabla-choferes-admin').innerHTML = '<tr><td colspan="4" style="text-align: center; color: #ef4444; padding: 20px;">Error al cargar datos del personal.</td></tr>';
         }
     }
+    
     // 3. Reactivar o Suspender a un chofer
     async function modificarEstadoChofer(id_usuario, nuevo_estado) {
         const accion = nuevo_estado === 1 ? "REACTIVAR" : "SUSPENDER";
@@ -362,13 +624,17 @@
             });
 
             if (peticion.ok) {
-                notificar(`Cuenta de conductor ${accion.toLowerCase()}da.`, "success");
+                if (typeof notificar === "function") {
+                    notificar(`Cuenta de conductor ${accion.toLowerCase()}da.`, "success");
+                } else {
+                    alert(`Cuenta de conductor ${accion.toLowerCase()}da.`);
+                }
                 cargarPersonalAdmin(); // Refrescar la tabla al instante
             } else {
-                notificar("Error al actualizar el estado.", "error");
+                if (typeof notificar === "function") notificar("Error al actualizar el estado.", "error");
             }
         } catch (e) {
-            notificar("Error de red.", "error");
+            if (typeof notificar === "function") notificar("Error de red.", "error");
         }
     }
 
@@ -381,7 +647,10 @@
             telefono: document.getElementById('inp-telefono').value
         };
 
-        if(!datosBody.nombre || !datosBody.correo) return notificar("Nombre y correo son obligatorios.", "warning");
+        if(!datosBody.nombre || !datosBody.correo) {
+            if (typeof notificar === "function") return notificar("Nombre y correo son obligatorios.", "warning");
+            return alert("Nombre y correo son obligatorios.");
+        }
 
         try {
             const peticion = await fetch('/api/usuarios/perfil', {
@@ -393,19 +662,19 @@
             if(peticion.ok) {
                 localStorage.setItem('usuarioNombre', datosBody.nombre);
                 localStorage.setItem('usuarioCorreo', datosBody.correo);
-                notificar("¡Perfil actualizado!", "success");
+                if (typeof notificar === "function") notificar("¡Perfil actualizado con éxito!", "success");
                 setTimeout(() => window.location.reload(), 2000);
             } else {
-                notificar("Error al guardar los cambios.", "error");
+                if (typeof notificar === "function") notificar("Error al guardar los cambios.", "error");
             }
         } catch (e) {
-            notificar("Error de conexión.", "error");
+            if (typeof notificar === "function") notificar("Error de conexión.", "error");
         }
     }
 
     // 5. Baja Lógica Propia (Cerrar Cuenta)
     async function ejecutarBajaLogica() {
-        if (confirm("¿Estás absolutamente seguro de querer eliminar tu cuenta?")) {
+        if (confirm("¿Estás absolutamente seguro de querer eliminar tu cuenta permanentemente?")) {
             try {
                 const peticion = await fetch('/api/usuarios/cerrar_cuenta', {
                     method: 'PUT',
@@ -414,13 +683,13 @@
                 });
 
                 if(peticion.ok) {
-                    notificar("Cuenta suspendida. Cerrando sesión...", "success");
+                    if (typeof notificar === "function") notificar("Cuenta suspendida. Cerrando sesión...", "success");
                     setTimeout(() => { localStorage.clear(); window.location.href = "/"; }, 2500);
                 } else {
-                    notificar("Error del servidor.", "error");
+                    if (typeof notificar === "function") notificar("Error del servidor.", "error");
                 }
             } catch (e) {
-                notificar("Fallo de red.", "error");
+                if (typeof notificar === "function") notificar("Fallo de red.", "error");
             }
         }
     }

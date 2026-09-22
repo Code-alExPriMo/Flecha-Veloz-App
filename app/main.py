@@ -17,7 +17,7 @@ app.mount("/static", StaticFiles(directory="app/static"), name="static")
 templates = Jinja2Templates(directory="app/templates")
 
 # ==============================================================================
-# MODELOS DE DATOS (PYDANTIC)
+# 1. MODELOS DE DATOS (PYDANTIC) - ESTRUCTURAS DE RECEPCIÓN
 # ==============================================================================
 class LoginRequest(BaseModel):
     dni: str
@@ -29,6 +29,10 @@ class RegistroChoferRequest(BaseModel):
     correo: str
     placa: str
     password: str
+
+class RegistroClienteRequest(BaseModel):
+    nombre: str
+    telefono: str
 
 class EstadoVehiculoRequest(BaseModel):
     id_chofer: int
@@ -43,14 +47,13 @@ class PerfilUpdateRequest(BaseModel):
 class CerrarCuentaRequest(BaseModel):
     id_usuario: int
 
-# NUEVO: Modelo para que el Admin cambie el estado de un chofer
 class CambiarEstadoRequest(BaseModel):
     id_usuario: int
     estado: int
 
 
 # ==============================================================================
-# RUTAS DE INTERFAZ GRÁFICA (PÁGINAS HTML)
+# 2. RUTAS DE INTERFAZ GRÁFICA (PÁGINAS HTML)
 # ==============================================================================
 @app.get("/")
 def cargar_interfaz_principal(request: Request):
@@ -66,6 +69,11 @@ def cargar_dashboard(request: Request):
 async def pagina_registro_chofer(request: Request):
     """Renderiza el formulario de alta de nuevos choferes."""
     return templates.TemplateResponse(request=request, name="registro_chofer.html")
+
+@app.get("/registro_cliente", response_class=HTMLResponse)
+async def pagina_registro_cliente(request: Request):
+    """Renderiza el formulario de registro de pasajeros frecuentes."""
+    return templates.TemplateResponse(request=request, name="registro_cliente.html")
 
 @app.get("/panel_chofer", response_class=HTMLResponse)
 async def pagina_panel_chofer(request: Request):
@@ -87,9 +95,13 @@ async def pagina_ajustes(request: Request):
     """Renderiza la pantalla de configuración de perfil y seguridad."""
     return templates.TemplateResponse(request=request, name="ajustes.html")
 
+@app.get("/legales", response_class=HTMLResponse)
+async def pagina_legales(request: Request):
+    """Renderiza el Centro de Confianza y Transparencia (Políticas y Reclamaciones)."""
+    return templates.TemplateResponse(request=request, name="legales.html")
 
 # ==============================================================================
-# ENDPOINTS DE API (LÓGICA DE NEGOCIO Y BASE DE DATOS)
+# 3. ENDPOINTS DE API (LÓGICA DE NEGOCIO Y BASE DE DATOS)
 # ==============================================================================
 @app.post("/api/login")
 def iniciar_sesion(credenciales: LoginRequest):
@@ -124,7 +136,6 @@ def iniciar_sesion(credenciales: LoginRequest):
             "nombre": nombre_completo,
             "correo": correo
         }
-
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
     finally:
@@ -168,9 +179,59 @@ def api_registrar_chofer(datos: RegistroChoferRequest):
     finally:
         conexion.close()
 
+@app.post("/api/registrar_cliente")
+def api_registrar_cliente(datos: RegistroClienteRequest):
+    """Endpoint para registrar un nuevo pasajero frecuente."""
+    conexion = obtener_conexion()
+    if not conexion:
+        raise HTTPException(status_code=500, detail="Error de conexión a la BD.")
+
+    try:
+        cursor = conexion.cursor()
+        
+        cursor.execute("SELECT ID_Cliente FROM Clientes WHERE Telefono = ?", (datos.telefono,))
+        if cursor.fetchone():
+            raise HTTPException(status_code=400, detail="Este teléfono ya está registrado.")
+
+        cursor.execute("""
+            INSERT INTO Clientes (Nombre_Cliente, Telefono)
+            VALUES (?, ?)
+        """, (datos.nombre, datos.telefono))
+
+        conexion.commit()
+        return {"mensaje": "Cliente registrado con éxito"}
+
+    except Exception as e:
+        conexion.rollback()
+        raise HTTPException(status_code=500, detail=str(e))
+    finally:
+        conexion.close()
+
+@app.get("/api/clientes")
+def listar_clientes_central():
+    """Obtiene la lista de clientes registrados en BD para el autocompletado en la Central Operativa."""
+    conexion = obtener_conexion()
+    if not conexion:
+        return []
+    
+    try:
+        cursor = conexion.cursor()
+        # Traemos todos los clientes ordenados alfabéticamente
+        cursor.execute("SELECT Nombre_Cliente, Telefono FROM Clientes ORDER BY Nombre_Cliente ASC")
+        clientes = cursor.fetchall()
+        
+        # Lo convertimos en un diccionario para inyectarlo en el Datalist del Frontend
+        return [{"nombre": c[0], "telefono": c[1]} for c in clientes]
+    except Exception as e:
+        print(f"Error obteniendo clientes: {e}")
+        return []
+    finally:
+        if conexion:
+            conexion.close()
+
 @app.get("/api/usuarios/perfil/{id_usuario}")
 def obtener_perfil(id_usuario: int):
-    """Obtiene los datos actuales del usuario para llenar el formulario."""
+    """Obtiene los datos actuales del usuario para llenar el formulario de ajustes."""
     conexion = obtener_conexion()
     try:
         cursor = conexion.cursor()
@@ -209,13 +270,11 @@ def actualizar_perfil(datos: PerfilUpdateRequest):
 
 @app.put("/api/usuarios/cerrar_cuenta")
 def cerrar_cuenta(datos: CerrarCuentaRequest):
-    """Baja Lógica: Cambia el Estado a 0 (Inactivo)."""
+    """Baja Lógica: Cambia el Estado a 0 (Inactivo) y apaga el vehículo."""
     conexion = obtener_conexion()
     try:
         cursor = conexion.cursor()
         cursor.execute("UPDATE Usuarios SET Estado = 0 WHERE ID_Usuario = ?", (datos.id_usuario,))
-        
-        # Si es chofer, apagamos su taxi para que desaparezca del mapa
         cursor.execute("UPDATE Vehiculos SET Operativo = 0 WHERE ID_Chofer = ?", (datos.id_usuario,))
         conexion.commit()
         
@@ -226,8 +285,9 @@ def cerrar_cuenta(datos: CerrarCuentaRequest):
     finally:
         conexion.close()
 
+
 # ==============================================================================
-# NUEVOS ENDPOINTS DE GESTIÓN DE PERSONAL (GERENCIA)
+# 4. ENDPOINTS DE GESTIÓN DE PERSONAL (GERENCIA)
 # ==============================================================================
 @app.get("/api/admin/choferes")
 def listar_choferes_admin():
@@ -267,7 +327,6 @@ def cambiar_estado_usuario(datos: CambiarEstadoRequest):
         cursor = conexion.cursor()
         cursor.execute("UPDATE Usuarios SET Estado = ? WHERE ID_Usuario = ?", (datos.estado, datos.id_usuario))
         
-        # Si lo suspendemos, también apagamos su vehículo por seguridad en el mapa
         if datos.estado == 0:
             cursor.execute("UPDATE Vehiculos SET Operativo = 0 WHERE ID_Chofer = ?", (datos.id_usuario,))
             

@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Panel - Flecha Veloz</title>
     
     <!-- Importando fuentes elegantes -->
@@ -144,17 +144,17 @@
     }
 
     /* =========================================================
-       NUEVO: MOTOR DE ALERTAS FLOTANTES (TOAST NOTIFICATIONS)
+       MOTOR DE ALERTAS FLOTANTES (TOAST NOTIFICATIONS)
        ========================================================= */
     .toast-container {
         position: fixed;
         top: 25px;
         right: 25px;
-        z-index: 10000; /* Asegura que esté por encima de Leaflet y modales */
+        z-index: 10000;
         display: flex;
         flex-direction: column;
         gap: 12px;
-        pointer-events: none; /* Evita que bloquee clics en el mapa */
+        pointer-events: none;
     }
 
     .toast-msg {
@@ -172,17 +172,14 @@
         align-items: center;
         gap: 14px;
         box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
-        /* Animación doble: Entra deslizando, sale flotando y desaparece */
         animation: toastSlideIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), toastFadeOut 0.4s ease 3.5s forwards;
     }
 
-    /* Variantes de color en el borde izquierdo para indicar el estado */
     .toast-success { border-left: 4px solid #10b981; }
     .toast-error   { border-left: 4px solid #ef4444; }
     .toast-info    { border-left: 4px solid #3b82f6; }
     .toast-warning { border-left: 4px solid #f59e0b; }
 
-    /* Animaciones Keyframes para las Alertas */
     @keyframes toastSlideIn {
         from { transform: translateX(120%); opacity: 0; }
         to { transform: translateX(0); opacity: 1; }
@@ -206,6 +203,7 @@
                 <a href="/registro_chofer" class="nav-item" id="menu-registro">Registrar Chofer</a>
                 <a href="/panel_chofer" class="nav-item" id="menu-panel">Panel Chofer</a>
                 <a href="/central" class="nav-item" id="menu-central">Central Operativa</a>
+                <a href="/registro_cliente" class="nav-item" id="menu-registro-cliente">Registrar Cliente</a>
                 <a href="/reportes" class="nav-item" id="menu-reportes">Reportes</a>
             </nav>
         </div>
@@ -260,7 +258,7 @@
             const rutaActual = window.location.pathname;
 
             // 🚨 EL GUARDIÁN DE RUTAS (SECURITY CHECK)
-            const rutasAdmin = ['/central', '/reportes', '/registro_chofer'];
+            const rutasAdmin = ['/central', '/reportes', '/registro_chofer', '/registro_cliente'];
             const rutasChofer = ['/panel_chofer'];
 
             if (idRol === "3" && rutasAdmin.includes(rutaActual)) {
@@ -274,6 +272,7 @@
                 window.location.replace('/dashboard');
                 return;
             }
+
             if (nombre) {
                 // Llenar los datos visuales
                 document.getElementById('ui-nombre').textContent = nombre;
@@ -293,27 +292,53 @@
                     saludo.textContent = "Hola de nuevo, " + palabras[0];
                 }
 
-                // B. FILTRO VISUAL POR ROLES (RBAC) - Todo unificado
+                // ========================================================
+                // 🛡️ B. FILTRO VISUAL EXTREMO POR ROLES
+                // ========================================================
+                
+                // Paso 1: Ocultar los enlaces de la barra de navegación superior
                 const menuRegistro = document.getElementById('menu-registro');
                 const menuPanel = document.getElementById('menu-panel');
                 const menuReportes = document.getElementById('menu-reportes');
                 const menuCentral = document.getElementById('menu-central');
-                const botonesHero = document.getElementById('botones-gerencia-hero'); 
+                const menuRegistroCliente = document.getElementById('menu-registro-cliente');
 
                 if (idRol === "3") { 
                     // Reglas para el CHOFER (Rol 3)
                     if (menuRegistro) menuRegistro.style.display = "none";
                     if (menuReportes) menuReportes.style.display = "none";
-                    if (botonesHero) botonesHero.style.display = "none"; 
                     if (menuCentral) menuCentral.style.display = "none"; 
+                    if (menuRegistroCliente) menuRegistroCliente.style.display = "none";
                     if (menuPanel) menuPanel.style.display = "block"; 
                 } else {
-                    // Reglas para GERENCIA (Rol 1) y ADMINISTRACIÓN (Rol 2)
+                    // Reglas para GERENCIA y ADMINISTRACIÓN
                     if (menuRegistro) menuRegistro.style.display = "block";
                     if (menuReportes) menuReportes.style.display = "block";
-                    if (botonesHero) botonesHero.style.display = "flex"; 
                     if (menuCentral) menuCentral.style.display = "block"; 
+                    if (menuRegistroCliente) menuRegistroCliente.style.display = "block";
                     if (menuPanel) menuPanel.style.display = "none"; 
+                }
+
+                // Paso 2: Escáner profundo. Busca botones intrusos en CUALQUIER vista y los destruye
+                if (idRol === "3") {
+                    const todosLosElementos = document.querySelectorAll('a, button');
+                    todosLosElementos.forEach(el => {
+                        const href = (el.getAttribute('href') || '').toLowerCase();
+                        const texto = (el.innerText || '').toLowerCase();
+                        
+                        // Si el botón o enlace dice alguna de estas palabras o apunta a estas rutas, se oculta
+                        if (
+                            href.includes('/registro_chofer') || 
+                            href.includes('/reportes') || 
+                            href.includes('/registro_cliente') || 
+                            href.includes('/central') ||
+                            texto.includes('registrar chofer') ||
+                            texto.includes('ver reportes') ||
+                            texto.includes('registrar cliente')
+                        ) {
+                            el.style.display = 'none';
+                        }
+                    });
                 }
 
             } else {
@@ -332,16 +357,9 @@
         }
 
         /* =========================================================
-           NUEVO: MOTOR JAVASCRIPT DE NOTIFICACIONES (TOASTS)
+           MOTOR JAVASCRIPT DE NOTIFICACIONES (TOASTS)
            ========================================================= */
-        /**
-         * Función global para lanzar notificaciones elegantes en cualquier parte del sistema
-         * @param {string} mensaje - El texto a mostrar en la alerta
-         * @param {string} tipo - Opciones: 'success', 'error', 'info', 'warning'
-         */
         function notificar(mensaje, tipo = 'info') {
-            
-            // 1. Crear el contenedor maestro de notificaciones si no existe en el DOM
             let container = document.getElementById('toast-container');
             if (!container) {
                 container = document.createElement('div');
@@ -350,11 +368,9 @@
                 document.body.appendChild(container);
             }
 
-            // 2. Crear la tarjeta flotante de notificación
             const toast = document.createElement('div');
             toast.className = `toast-msg toast-${tipo}`;
 
-            // 3. Seleccionar el ícono SVG dinámico según el tipo de mensaje
             let icono = '';
             if (tipo === 'success') {
                 icono = '<svg width="22" height="22" fill="none" stroke="#10b981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>';
@@ -366,13 +382,9 @@
                 icono = '<svg width="22" height="22" fill="none" stroke="#3b82f6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>';
             }
 
-            // 4. Inyectar el HTML dentro de la tarjeta
             toast.innerHTML = `${icono} <span>${mensaje}</span>`;
-            
-            // Agregar la tarjeta al contenedor visual
             container.appendChild(toast);
 
-            // 5. Autodestruir y limpiar el DOM tras 4 segundos (coincide con la animación CSS)
             setTimeout(() => {
                 if (toast.parentNode) {
                     toast.parentNode.removeChild(toast);

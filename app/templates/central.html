@@ -7,7 +7,6 @@
      ========================================================= -->
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-<!-- PEGAR ESTO DEBAJO DE TUS LIBRERÍAS LEAFLET ACTUALES -->
 <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.css" />
 <script src="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.js"></script>
 <style>
@@ -79,30 +78,17 @@
        ========================================================= */
 
     .central-page {
-
         position: relative;
-
         width: 100vw;
-
         min-height: 100vh;
-
         margin-left: calc(-50vw + 50%);
-
         margin-top: -40px;
-
         padding-top: 105px;
-
         padding-bottom: 70px;
-
         box-sizing: border-box;
-
-        background-image:
-            url('/static/img/portada.png');
-
+        background-image: url('/static/img/portada.png');
         background-size: cover;
-
         background-position: center;
-
         background-attachment: fixed;
     }
 
@@ -112,22 +98,14 @@
        ========================================================= */
 
     .central-overlay {
-
         position: absolute;
-
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-
-        background:
-            linear-gradient(
-                180deg,
-                rgba(0,0,0,0.70) 0%,
-                rgba(0,0,0,0.78) 50%,
-                rgba(0,0,0,0.88) 100%
-            );
-
+        top: 0; left: 0; right: 0; bottom: 0;
+        background: linear-gradient(
+            180deg,
+            rgba(0,0,0,0.70) 0%,
+            rgba(0,0,0,0.78) 50%,
+            rgba(0,0,0,0.88) 100%
+        );
         z-index: 1;
     }
 
@@ -137,29 +115,17 @@
        ========================================================= */
 
     .central-container {
-
         position: relative;
-
         z-index: 2;
-
         display: grid;
-
         grid-template-columns: 350px 1fr;
-
         gap: 20px;
-
         width: 100%;
-
         max-width: 1350px;
-
         height: calc(100vh - 145px);
-
         min-height: 620px;
-
         margin: 0 auto;
-
         padding: 0 25px;
-
         box-sizing: border-box;
     }
 
@@ -169,26 +135,15 @@
        ========================================================= */
 
     .sidebar {
-
-        background:
-            rgba(18,18,18,0.82);
-
+        background: rgba(18,18,18,0.82);
         backdrop-filter: blur(18px);
-
         -webkit-backdrop-filter: blur(18px);
-
         border-radius: 18px;
-
         border: 1px solid rgba(255,255,255,0.12);
-
         display: flex;
-
         flex-direction: column;
-
         overflow: hidden;
-
-        box-shadow:
-            0 20px 50px rgba(0,0,0,0.42);
+        box-shadow: 0 20px 50px rgba(0,0,0,0.42);
     }
 
 
@@ -197,47 +152,30 @@
        ========================================================= */
 
     .sidebar-header {
-
         padding: 22px 22px 20px;
-
-        background:
-            linear-gradient(
-                145deg,
-                rgba(255,255,255,0.10),
-                rgba(255,255,255,0.04)
-            );
-
+        background: linear-gradient(
+            145deg,
+            rgba(255,255,255,0.10),
+            rgba(255,255,255,0.04)
+        );
         color: white;
-
-        border-bottom:
-            1px solid rgba(255,255,255,0.09);
+        border-bottom: 1px solid rgba(255,255,255,0.09);
     }
 
     .sidebar-header h2 {
-
         margin: 0;
-
         font-family: 'Montserrat', sans-serif;
-
         font-size: 20px;
-
         font-weight: 600;
-
         letter-spacing: -0.3px;
     }
 
     .sidebar-header p {
-
         margin: 6px 0 0;
-
         font-family: 'Inter', sans-serif;
-
         font-size: 11px;
-
         color: #9ca3af;
-
         text-transform: uppercase;
-
         letter-spacing: 0.7px;
     }
 
@@ -278,30 +216,21 @@
        ========================================================= */
 
     .lista-choferes {
-
         flex: 1;
-
         overflow-y: auto;
-
         padding: 9px;
     }
 
-    /* Scrollbar moderna */
-
     .lista-choferes::-webkit-scrollbar {
-
         width: 5px;
     }
 
     .lista-choferes::-webkit-scrollbar-track {
-
         background: transparent;
     }
 
     .lista-choferes::-webkit-scrollbar-thumb {
-
         background: rgba(255,255,255,0.16);
-
         border-radius: 10px;
     }
 
@@ -311,81 +240,46 @@
        ========================================================= */
 
     .chofer-card {
-
         padding: 14px 13px;
-
         margin-bottom: 6px;
-
         border: 1px solid transparent;
-
         border-radius: 12px;
-
         display: flex;
-
         justify-content: space-between;
-
         align-items: center;
-
         gap: 10px;
-        
         cursor: pointer;
-
-        transition:
-            background 0.25s ease,
-            border-color 0.25s ease,
-            transform 0.25s ease;
+        transition: background 0.25s ease, border-color 0.25s ease, transform 0.25s ease;
     }
 
     .chofer-card:hover {
-
         background: rgba(255,255,255,0.055);
-
-        border-color:
-            rgba(255,255,255,0.09);
-
+        border-color: rgba(255,255,255,0.09);
         transform: translateX(4px);
     }
 
-
     .chofer-info {
-
         min-width: 0;
     }
 
-
     .chofer-info p {
-
         margin: 0;
-
         font-family: 'Inter', sans-serif;
-
         font-size: 13px;
-
         color: #ffffff;
-
         font-weight: 600;
-
         letter-spacing: 0.2px;
     }
 
     .chofer-info span {
-
         display: block;
-
         margin-top: 3px;
-
         font-family: 'Inter', sans-serif;
-
         font-size: 11px;
-
         color: #888888;
-
         white-space: nowrap;
-
         overflow: hidden;
-
         text-overflow: ellipsis;
-
         max-width: 190px;
     }
 
@@ -396,58 +290,35 @@
 
     .badge-verde,
     .badge-rojo {
-
         display: inline-flex;
-
         align-items: center;
-
         gap: 6px;
-
         padding: 5px 8px;
-
         border-radius: 999px;
-
         font-family: 'Inter', sans-serif;
-
         font-size: 9px;
-
         font-weight: 700;
-
         letter-spacing: 0.5px;
-
         white-space: nowrap;
-
         background: rgba(255,255,255,0.06);
-
         color: #cfcfcf;
-
         border: 1px solid rgba(255,255,255,0.10);
     }
 
-    /* punto indicador */
-
     .badge-verde::before,
     .badge-rojo::before {
-
         content: "";
-
         width: 6px;
-
         height: 6px;
-
         border-radius: 50%;
     }
 
     .badge-verde::before {
-
         background: #ffffff;
-
-        box-shadow:
-            0 0 7px rgba(255,255,255,0.65);
+        box-shadow: 0 0 7px rgba(255,255,255,0.65);
     }
 
     .badge-rojo::before {
-
         background: #666666;
     }
 
@@ -457,44 +328,26 @@
        ========================================================= */
 
     .mapa-wrapper {
-
         padding: 7px;
-
         border-radius: 18px;
-
-        background:
-            linear-gradient(
-                145deg,
-                rgba(255,255,255,0.18),
-                rgba(255,255,255,0.05)
-            );
-
-        border:
-            1px solid rgba(255,255,255,0.14);
-
-        box-shadow:
-            0 25px 60px rgba(0,0,0,0.48);
-
+        background: linear-gradient(
+            145deg,
+            rgba(255,255,255,0.18),
+            rgba(255,255,255,0.05)
+        );
+        border: 1px solid rgba(255,255,255,0.14);
+        box-shadow: 0 25px 60px rgba(0,0,0,0.48);
         backdrop-filter: blur(10px);
-
         -webkit-backdrop-filter: blur(10px);
-
         min-width: 0;
     }
 
-
     #mapa-central {
-
         width: 100%;
-
         height: 100%;
-
         border-radius: 13px;
-
         overflow: hidden;
-
         border: none;
-
         z-index: 1;
     }
 
@@ -504,43 +357,26 @@
        ========================================================= */
 
     .leaflet-control-zoom {
-
         border: none !important;
-
-        box-shadow:
-            0 8px 18px rgba(0,0,0,0.30) !important;
+        box-shadow: 0 8px 18px rgba(0,0,0,0.30) !important;
     }
-
 
     .leaflet-control-zoom a {
-
-        background:
-            rgba(20,20,20,0.90) !important;
-
+        background: rgba(20,20,20,0.90) !important;
         color: #ffffff !important;
-
         border: none !important;
     }
 
-
     .leaflet-control-zoom a:hover {
-
-        background:
-            rgba(45,45,45,0.95) !important;
+        background: rgba(45,45,45,0.95) !important;
     }
 
-
     .leaflet-control-attribution {
-
-        background:
-            rgba(0,0,0,0.58) !important;
-
+        background: rgba(0,0,0,0.58) !important;
         color: #bdbdbd !important;
     }
 
-
     .leaflet-control-attribution a {
-
         color: #ffffff !important;
     }
 
@@ -550,34 +386,21 @@
        ========================================================= */
 
     .popup-asignar {
-
         width: 100%;
-
         margin-top: 10px;
-
         padding: 8px;
-
         background: #ffffff;
-
         color: #000000;
-
         border: none;
-
         border-radius: 8px;
-
         cursor: pointer;
-
         font-family: 'Inter', sans-serif;
-
         font-size: 11px;
-
         font-weight: 700;
-
         transition: all 0.25s ease;
     }
 
     .popup-asignar:hover {
-
         background: #e5e7eb;
     }
 
@@ -587,110 +410,51 @@
        ========================================================= */
 
     .modal-oculto {
-
         display: none;
-
         position: fixed;
-
-        top: 0;
-        left: 0;
-
-        width: 100%;
-        height: 100%;
-
-        background:
-            rgba(0,0,0,0.72);
-
+        top: 0; left: 0;
+        width: 100%; height: 100%;
+        background: rgba(0,0,0,0.72);
         backdrop-filter: blur(7px);
-
         -webkit-backdrop-filter: blur(7px);
-
         z-index: 2000;
-
         justify-content: center;
-
         align-items: center;
-
         padding: 20px;
-
         box-sizing: border-box;
     }
-
 
     .modal-contenido {
-
         width: 100%;
-
         max-width: 420px;
-
         max-height: 90vh;
-        
         overflow-y: auto;
-
-        background:
-            linear-gradient(
-                145deg,
-                rgba(28,28,28,0.97),
-                rgba(10,10,10,0.97)
-            );
-
+        background: linear-gradient(
+            145deg,
+            rgba(28,28,28,0.97),
+            rgba(10,10,10,0.97)
+        );
         color: white;
-
         padding: 25px;
-
         border-radius: 18px;
-
-        border:
-            1px solid rgba(255,255,255,0.13);
-
-        box-shadow:
-            0 30px 80px rgba(0,0,0,0.60);
-
+        border: 1px solid rgba(255,255,255,0.13);
+        box-shadow: 0 30px 80px rgba(0,0,0,0.60);
         box-sizing: border-box;
-
-        animation:
-            modal-aparecer 0.25s ease;
+        animation: modal-aparecer 0.25s ease;
     }
     
-    .modal-contenido::-webkit-scrollbar { 
-        width: 6px; 
-    }
-    
-    .modal-contenido::-webkit-scrollbar-thumb { 
-        background: rgba(255,255,255,0.2); 
-        border-radius: 10px; 
-    }
-
+    .modal-contenido::-webkit-scrollbar { width: 6px; }
+    .modal-contenido::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 10px; }
 
     @keyframes modal-aparecer {
-
-        from {
-            opacity: 0;
-            transform:
-                translateY(12px)
-                scale(0.98);
-        }
-
-        to {
-            opacity: 1;
-            transform:
-                translateY(0)
-                scale(1);
-        }
+        from { opacity: 0; transform: translateY(12px) scale(0.98); }
+        to { opacity: 1; transform: translateY(0) scale(1); }
     }
 
-
     .modal-contenido h3 {
-
-        margin:
-            0 0 22px;
-
-        font-family:
-            'Montserrat',
-            sans-serif;
-
+        margin: 0 0 22px;
+        font-family: 'Montserrat', sans-serif;
         font-size: 19px;
-
         font-weight: 600;
     }
 
@@ -700,90 +464,46 @@
        ========================================================= */
 
     .form-group {
-
         margin-bottom: 15px;
     }
 
-
     .form-group label {
-
         display: block;
-
         margin-bottom: 7px;
-
         color: #a3a3a3;
-
         font-family: 'Inter', sans-serif;
-
         font-size: 10px;
-
         font-weight: 600;
-
         text-transform: uppercase;
-
         letter-spacing: 0.7px;
     }
 
-
     .input-premium {
-
         width: 100%;
-
         padding: 11px 12px;
-
         box-sizing: border-box;
-
-        background:
-            rgba(255,255,255,0.055);
-
-        border:
-            1px solid rgba(255,255,255,0.10);
-
+        background: rgba(255,255,255,0.055);
+        border: 1px solid rgba(255,255,255,0.10);
         color: #ffffff;
-
         border-radius: 9px;
-
         outline: none;
-
-        font-family:
-            'Inter',
-            sans-serif;
-
+        font-family: 'Inter', sans-serif;
         font-size: 13px;
-
-        transition:
-            all 0.25s ease;
+        transition: all 0.25s ease;
     }
-
 
     .input-premium::placeholder {
-
-        color:
-            rgba(255,255,255,0.28);
+        color: rgba(255,255,255,0.28);
     }
-
 
     .input-premium:focus {
-
-        border-color:
-            rgba(255,255,255,0.35);
-
-        background:
-            rgba(255,255,255,0.08);
-
-        box-shadow:
-            0 0 0 3px
-            rgba(255,255,255,0.035);
+        border-color: rgba(255,255,255,0.35);
+        background: rgba(255,255,255,0.08);
+        box-shadow: 0 0 0 3px rgba(255,255,255,0.035);
     }
 
-
-    /* input readonly */
-
     .input-premium[readonly] {
-
-        background:
-            rgba(255,255,255,0.035) !important;
-
+        background: rgba(255,255,255,0.035) !important;
         color: #a3a3a3;
     }
 
@@ -793,45 +513,23 @@
        ========================================================= */
 
     .btn-mapa {
-
         width: 100%;
-
         padding: 10px;
-
         margin-bottom: 8px;
-
-        background:
-            rgba(255,255,255,0.08);
-
+        background: rgba(255,255,255,0.08);
         color: #ffffff;
-
-        border:
-            1px solid rgba(255,255,255,0.12);
-
+        border: 1px solid rgba(255,255,255,0.12);
         border-radius: 9px;
-
         cursor: pointer;
-
-        font-family:
-            'Inter',
-            sans-serif;
-
+        font-family: 'Inter', sans-serif;
         font-size: 11px;
-
         font-weight: 600;
-
-        transition:
-            all 0.25s ease;
+        transition: all 0.25s ease;
     }
 
-
     .btn-mapa:hover {
-
-        background:
-            rgba(255,255,255,0.13);
-
-        border-color:
-            rgba(255,255,255,0.20);
+        background: rgba(255,255,255,0.13);
+        border-color: rgba(255,255,255,0.20);
     }
 
 
@@ -840,90 +538,46 @@
        ========================================================= */
 
     .modal-botones {
-
         display: grid;
-
-        grid-template-columns:
-            1.5fr 0.8fr;
-
+        grid-template-columns: 1.5fr 0.8fr;
         gap: 9px;
-
         margin-top: 20px;
     }
 
-
     .btn-negro {
-
         background: #ffffff;
-
         color: #000000;
-
         border: none;
-
         padding: 11px;
-
         border-radius: 9px;
-
         cursor: pointer;
-
-        font-family:
-            'Inter',
-            sans-serif;
-
+        font-family: 'Inter', sans-serif;
         font-size: 12px;
-
         font-weight: 700;
-
-        transition:
-            all 0.25s ease;
+        transition: all 0.25s ease;
     }
-
 
     .btn-negro:hover {
-
         background: #e5e7eb;
-
-        transform:
-            translateY(-1px);
+        transform: translateY(-1px);
     }
-
 
     .btn-gris {
-
-        background:
-            rgba(255,255,255,0.07);
-
+        background: rgba(255,255,255,0.07);
         color: #d1d5db;
-
-        border:
-            1px solid rgba(255,255,255,0.10);
-
+        border: 1px solid rgba(255,255,255,0.10);
         padding: 11px;
-
         border-radius: 9px;
-
         cursor: pointer;
-
-        font-family:
-            'Inter',
-            sans-serif;
-
+        font-family: 'Inter', sans-serif;
         font-size: 12px;
-
         font-weight: 600;
-
-        transition:
-            all 0.25s ease;
+        transition: all 0.25s ease;
     }
 
-
     .btn-gris:hover {
-
-        background:
-            rgba(255,255,255,0.12);
-
-        color:
-            #ffffff;
+        background: rgba(255,255,255,0.12);
+        color: #ffffff;
     }
 
 
@@ -932,74 +586,49 @@
        ========================================================= */
 
     @media (max-width: 1000px) {
-
         .central-container {
-
             grid-template-columns: 280px 1fr;
         }
     }
 
-
     @media (max-width: 800px) {
-
         .central-page {
-
             padding-top: 100px;
-
             min-height: auto;
         }
 
         .central-container {
-
             display: flex;
-
             flex-direction: column;
-
             height: auto;
-
             min-height: auto;
         }
 
         .sidebar {
-
             height: 350px;
         }
 
         .mapa-wrapper {
-
             height: 500px;
         }
     }
 
-
     @media (max-width: 500px) {
-
         .central-container {
-
-            padding:
-                0 15px;
+            padding: 0 15px;
         }
-
         .sidebar {
-
             height: 320px;
         }
-
         .mapa-wrapper {
-
             height: 400px;
         }
-
         .modal-contenido {
-
             padding: 21px;
         }
-
         .modal-botones {
-
             grid-template-columns: 1fr;
         }
-
     }
 
 </style>
@@ -1013,29 +642,18 @@
 
     <div class="central-overlay"></div>
 
-
     <div class="central-container">
-
 
         <!-- =====================================================
              PANEL IZQUIERDO (SIDEBAR DE FLOTA)
              ===================================================== -->
 
         <div class="sidebar">
-
             <div class="sidebar-header">
-
-                <h2>
-                    Flota en Tiempo Real
-                </h2>
-
-                <p>
-                    Monitoreo de disponibilidad
-                </p>
-
+                <h2>Flota en Tiempo Real</h2>
+                <p>Monitoreo de disponibilidad</p>
             </div>
 
-            <!-- Nuevo Buscador Implementado -->
             <div class="buscador-container">
                 <input 
                     type="text" 
@@ -1046,26 +664,12 @@
                 >
             </div>
 
-            <!-- Contenedor Dinámico de Tarjetas -->
-            <div
-                class="lista-choferes"
-                id="panel-lista"
-            >
-                <p
-                    style="
-                        padding: 20px;
-                        text-align: center;
-                        color: #777;
-                        font-size: 12px;
-                    "
-                >
+            <div class="lista-choferes" id="panel-lista">
+                <p style="padding: 20px; text-align: center; color: #777; font-size: 12px;">
                     Cargando y filtrando flota...
                 </p>
-
             </div>
-
         </div>
-
 
 
         <!-- =====================================================
@@ -1073,98 +677,49 @@
              ===================================================== -->
 
         <div class="mapa-wrapper">
-
-            <div
-                id="mapa-central"
-            ></div>
-
+            <div id="mapa-central"></div>
         </div>
-
     </div>
 
 
-
     <!-- =========================================================
-         MODAL ASIGNACIÓN DE VIAJES (AHORA CON ORIGEN Y DESTINO)
+         MODAL ASIGNACIÓN DE VIAJES
          ========================================================= -->
 
-    <div
-        id="modal-viaje"
-        class="modal-oculto"
-    >
-
+    <div id="modal-viaje" class="modal-oculto">
         <div class="modal-contenido">
-
-            <h3>
-                Asignar viaje
-            </h3>
+            <h3>Asignar viaje</h3>
 
             <!-- DATOS OCULTOS DE CONTROL (PARA ORIGEN Y DESTINO) -->
-
-            <input
-                type="hidden"
-                id="v-chofer"
-            >
-
-            <input
-                type="hidden"
-                id="v-origen-lat"
-                value="0"
-            >
-
-            <input
-                type="hidden"
-                id="v-origen-lng"
-                value="0"
-            >
-
-            <input
-                type="hidden"
-                id="v-destino-lat"
-                value="0"
-            >
-
-            <input
-                type="hidden"
-                id="v-destino-lng"
-                value="0"
-            >
+            <input type="hidden" id="v-chofer">
+            <input type="hidden" id="v-origen-lat" value="0">
+            <input type="hidden" id="v-origen-lng" value="0">
+            <input type="hidden" id="v-destino-lat" value="0">
+            <input type="hidden" id="v-destino-lng" value="0">
 
 
-            <!-- FORMULARIO: PASAJERO -->
-
+            <!-- FORMULARIO: PASAJERO (CON AUTOCOMPLETADO INTELIGENTE) -->
             <div class="form-group">
-
-                <label>
-                    Pasajero
-                </label>
-
+                <label>Pasajero (Busque por nombre o teléfono)</label>
                 <input
                     type="text"
                     id="v-pasajero"
                     class="input-premium"
-                    placeholder="Ej. Juan Pérez"
+                    list="lista-clientes"
+                    placeholder="Ej. Escriba o seleccione un cliente..."
+                    autocomplete="off"
                 >
-
+                <!-- Datalist oculto que se alimenta de la base de datos -->
+                <datalist id="lista-clientes"></datalist>
             </div>
 
 
             <!-- FORMULARIO: PUNTO A (ORIGEN) -->
-
             <div class="form-group">
-
-                <label>
-                    Punto A (Origen de Recojo)
-                </label>
-
-                <button
-                    type="button"
-                    class="btn-mapa"
-                    onclick="activarRadar('origen')"
-                >
+                <label>Punto A (Origen de Recojo)</label>
+                <button type="button" class="btn-mapa" onclick="activarRadar('origen')">
                     Fijar origen en mapa
                 </button>
-
                 <input
                     type="text"
                     id="v-origen"
@@ -1172,26 +727,15 @@
                     placeholder="Esperando ubicación..."
                     readonly
                 >
-
             </div>
 
 
             <!-- FORMULARIO: PUNTO B (DESTINO) -->
-
             <div class="form-group">
-
-                <label>
-                    Punto B (Destino Final)
-                </label>
-
-                <button
-                    type="button"
-                    class="btn-mapa"
-                    onclick="activarRadar('destino')"
-                >
+                <label>Punto B (Destino Final)</label>
+                <button type="button" class="btn-mapa" onclick="activarRadar('destino')">
                     Fijar destino en mapa
                 </button>
-
                 <input
                     type="text"
                     id="v-destino"
@@ -1199,18 +743,12 @@
                     placeholder="Esperando ubicación..."
                     readonly
                 >
-
             </div>
 
 
             <!-- FORMULARIO: TARIFA -->
-
             <div class="form-group">
-
-                <label>
-                    Tarifa acordada (S/.)
-                </label>
-
+                <label>Tarifa acordada (S/.)</label>
                 <input
                     type="number"
                     id="v-tarifa"
@@ -1219,35 +757,16 @@
                     min="1"
                     step="0.50"
                 >
-
             </div>
 
 
             <!-- BOTONES DE CONFIRMACIÓN -->
-
             <div class="modal-botones">
-
-                <button
-                    onclick="guardarViaje()"
-                    class="btn-negro"
-                >
-                    Confirmar viaje
-                </button>
-
-
-                <button
-                    onclick="cerrarModal()"
-                    class="btn-gris"
-                >
-                    Cancelar
-                </button>
-
+                <button onclick="guardarViaje()" class="btn-negro">Confirmar viaje</button>
+                <button onclick="cerrarModal()" class="btn-gris">Cancelar</button>
             </div>
-
         </div>
-
     </div>
-
 </div>
 
 
@@ -1256,65 +775,30 @@
      ========================================================= -->
 
 <script>
-
     /* =========================================================
        INICIALIZACIÓN DEL MAPA
        ========================================================= */
+    const mapa = L.map('mapa-central').setView([-12.2130, -76.9360], 13);
 
-    const mapa =
-        L.map('mapa-central')
-        .setView(
-            [-12.2130, -76.9360],
-            13
-        );
-
-
-    L.tileLayer(
-        'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
-    ).addTo(mapa);
-
-
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(mapa);
 
     /* =========================================================
        CONFIGURACIÓN DE LOS ICONOS DEL VEHÍCULO Y PINES
        ========================================================= */
+    const iconoCarro = L.icon({
+        iconUrl: '/static/img/autoo.png',
+        iconSize: [35, 35],
+        iconAnchor: [17, 17],
+        popupAnchor: [0, -15]
+    });
 
-    const iconoCarro =
-        L.icon({
+    const iconoPin = L.icon({
+        iconUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png',
+        iconSize: [25, 41],
+        iconAnchor: [12, 41],
+        popupAnchor: [1, -34]
+    });
 
-            iconUrl:
-                '/static/img/autoo.png',
-
-            iconSize:
-                [35, 35],
-
-            iconAnchor:
-                [17, 17],
-
-            popupAnchor:
-                [0, -15]
-
-        });
-
-
-    const iconoPin =
-        L.icon({
-
-            iconUrl:
-                'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png',
-
-            iconSize:
-                [25, 41],
-
-            iconAnchor:
-                [12, 41],
-
-            popupAnchor:
-                [1, -34]
-
-        });
-
-    // PEGAR DEBAJO DE "const iconoPin = L.icon({ ... });"
     let wpOrigen = null;
     let wpDestino = null;
 
@@ -1322,9 +806,9 @@
         waypoints: [],
         routeWhileDragging: false,
         addWaypoints: false,
-        show: false, // Oculta el panel de texto con instrucciones
+        show: false,
         lineOptions: {
-            styles: [{ color: '#3b82f6', opacity: 0.9, weight: 6 }] // Línea azul gruesa
+            styles: [{ color: '#3b82f6', opacity: 0.9, weight: 6 }] 
         },
         createMarker: function(i, wp, nWps) {
             const etiqueta = i === 0 ? "<b>Punto A:</b> Origen de Recojo" : "<b>Punto B:</b> Destino Final";
@@ -1332,36 +816,50 @@
         }
     }).addTo(mapa);
 
+
     /* =========================================================
        VARIABLES GLOBALES DE ESTADO
        ========================================================= */
-
     let marcadoresActivos = [];
-
-    // Variables del Radar Dual
     let modoRadar = false;
-    let tipoRadarActivo = ''; // 'origen' o 'destino'
-
+    let tipoRadarActivo = ''; 
     let pinOrigen = null;
     let pinDestino = null;
-
-    // Memoria principal para el buscador en tiempo real
     let memoriaFlota = [];
     let historialEstados = {}; 
     let primeraCarga = true; 
 
 
-
     /* =========================================================
-       CARGAR Y FILTRAR CENTRAL (NÚCLEO PRINCIPAL)
+       CARGAR LISTA DE CLIENTES (AUTOCOMPLETADO)
        ========================================================= */
+    async function cargarClientes() {
+        try {
+            const res = await fetch('/api/clientes');
+            const clientes = await res.json();
+            
+            const datalist = document.getElementById('lista-clientes');
+            datalist.innerHTML = ''; 
+            
+            clientes.forEach(cliente => {
+                const opcion = document.createElement('option');
+                // value: Es lo que se quedará escrito en la caja (Solo el nombre)
+                opcion.value = cliente.nombre;
+                // textContent: Es la sugerencia visual que aparece abajo (El teléfono)
+                opcion.textContent = "Tel: " + cliente.telefono;
+                
+                datalist.appendChild(opcion);
+            });
+        } catch (error) {
+            console.error("Error al cargar el autocompletado de clientes:", error);
+        }
+    }
 
     /* =========================================================
        CARGAR Y FILTRAR CENTRAL (CON ANTI-CACHÉ)
        ========================================================= */
     async function cargarCentral() {
         try {
-            // Anti-caché agresivo para obligar al navegador a descargar datos frescos
             const urlDinamica = '/api/vehiculos/todos?timestamp=' + new Date().getTime();
             const res = await fetch(urlDinamica, {
                 headers: {
@@ -1376,7 +874,6 @@
             const flotaData = await res.json();
             memoriaFlota = flotaData.filter(vehiculo => vehiculo.nombre && !vehiculo.nombre.toLowerCase().includes("administrador"));
 
-            // Limpiamos los pines del mapa para redibujarlos
             marcadoresActivos.forEach(m => mapa.removeLayer(m));
             marcadoresActivos = [];
 
@@ -1385,20 +882,16 @@
                 const esOperativo = (vehiculo.operativo === true || vehiculo.operativo === 1);
                 const estadoNumerico = esOperativo ? 1 : 0;
                 
-                // LÓGICA DE NOTIFICACIONES DINÁMICAS (Compara el pasado con el presente)
                 if (!primeraCarga && historialEstados[id] !== undefined) {
                     if (historialEstados[id] === 0 && estadoNumerico === 1) {
-                        // Pasó de Ocupado a Disponible (Terminó su viaje)
-                        notificar(`✅ ${vehiculo.nombre} (${vehiculo.placa}) finalizó su ruta y está DISPONIBLE.`, "success");
+                        if (typeof notificar === "function") notificar(`✅ ${vehiculo.nombre} (${vehiculo.placa}) finalizó su ruta y está DISPONIBLE.`, "success");
                     } else if (historialEstados[id] === 1 && estadoNumerico === 0) {
-                        // Pasó de Disponible a Ocupado (Inició un viaje)
-                        notificar(`🚖 ${vehiculo.nombre} (${vehiculo.placa}) ha iniciado un viaje (OCUPADO).`, "info");
+                        if (typeof notificar === "function") notificar(`🚖 ${vehiculo.nombre} (${vehiculo.placa}) ha iniciado un viaje (OCUPADO).`, "info");
                     }
                 }
-                // Actualizamos la memoria para la siguiente vuelta
+                
                 historialEstados[id] = estadoNumerico;
 
-                // Dibujar el auto en el mapa
                 const lat = vehiculo.lat || -12.0463;
                 const lng = vehiculo.lng || -77.0427;
                 const marcador = L.marker([lat, lng], { icon: iconoCarro }).addTo(mapa);
@@ -1421,7 +914,6 @@
                 `);
             });
 
-            // Después de la primera vuelta, encendemos las alertas
             primeraCarga = false; 
             filtrarListaFlota();
             
@@ -1431,192 +923,84 @@
     }
 
 
-
     /* =========================================================
        RENDERIZAR LISTA LATERAL (INYECCIÓN DE HTML)
        ========================================================= */
-
     function renderizarLista(listaVehiculos) {
-
-        const panelLista =
-            document.getElementById(
-                'panel-lista'
-            );
-
-
+        const panelLista = document.getElementById('panel-lista');
         panelLista.innerHTML = '';
 
-
         if (listaVehiculos.length === 0) {
-            
             panelLista.innerHTML = `
                 <div style="padding: 20px; color: #9ca3af; text-align: center; font-size: 13px;">
                     No se encontraron unidades con esos criterios.
                 </div>
             `;
             return;
-
         }
 
+        listaVehiculos.forEach(vehiculo => {
+            const esOperativo = (vehiculo.operativo === true || vehiculo.operativo === 1);
+            const lat = vehiculo.lat || -12.0463;
+            const lng = vehiculo.lng || -77.0427;
+            const badgeClass = esOperativo ? 'badge-verde' : 'badge-rojo';
+            const badgeTxt = esOperativo ? 'DISPONIBLE' : 'NO OPERATIVO';
 
-        listaVehiculos.forEach(
-            vehiculo => {
-
-                const esOperativo =
-                    (
-                        vehiculo.operativo === true ||
-                        vehiculo.operativo === 1
-                    );
-
-                const lat =
-                    vehiculo.lat ||
-                    -12.0463;
-
-                const lng =
-                    vehiculo.lng ||
-                    -77.0427;
-
-                const badgeClass =
-                    esOperativo
-                        ? 'badge-verde'
-                        : 'badge-rojo';
-
-
-                const badgeTxt =
-                    esOperativo
-                        ? 'DISPONIBLE'
-                        : 'NO OPERATIVO';
-
-
-                /* 
-                 * NUEVA TARJETA:
-                 * Se agrega la función onclick="volarHaciaVehiculo()"
-                 */
-                panelLista.innerHTML +=
-
-                    `
-                    <div 
-                        class="chofer-card"
-                        onclick="volarHaciaVehiculo(${lat}, ${lng})"
-                    >
-
-                        <div class="chofer-info">
-
-                            <p>
-                                ${vehiculo.placa}
-                            </p>
-
-                            <span>
-                                ${vehiculo.nombre}
-                            </span>
-
-                        </div>
-
-                        <div
-                            class="${badgeClass}"
-                        >
-                            ${badgeTxt}
-                        </div>
-
+            panelLista.innerHTML += `
+                <div class="chofer-card" onclick="volarHaciaVehiculo(${lat}, ${lng})">
+                    <div class="chofer-info">
+                        <p>${vehiculo.placa}</p>
+                        <span>${vehiculo.nombre}</span>
                     </div>
-                    `;
-
-            }
-        );
-
+                    <div class="${badgeClass}">${badgeTxt}</div>
+                </div>
+            `;
+        });
     }
-
 
 
     /* =========================================================
        BUSCADOR EN TIEMPO REAL
        ========================================================= */
-
     function filtrarListaFlota() {
-
-        const textoBusqueda =
-            document
-                .getElementById('input-buscador')
-                .value
-                .toLowerCase();
-        
-        
-        const flotaFiltrada =
-            memoriaFlota.filter(
-                vehiculo => 
-                    vehiculo.placa.toLowerCase().includes(textoBusqueda) || 
-                    vehiculo.nombre.toLowerCase().includes(textoBusqueda)
-            );
-
-
+        const textoBusqueda = document.getElementById('input-buscador').value.toLowerCase();
+        const flotaFiltrada = memoriaFlota.filter(
+            vehiculo => 
+                vehiculo.placa.toLowerCase().includes(textoBusqueda) || 
+                vehiculo.nombre.toLowerCase().includes(textoBusqueda)
+        );
         renderizarLista(flotaFiltrada);
-
     }
-
 
 
     /* =========================================================
        FLY TO (EFECTO CÁMARA AÉREA AL HACER CLIC)
        ========================================================= */
-
     function volarHaciaVehiculo(lat, lng) {
-
-        mapa.flyTo(
-            [lat, lng], 
-            16, 
-            {
-                animate: true,
-                duration: 1.5
-            }
-        );
-
+        mapa.flyTo([lat, lng], 16, { animate: true, duration: 1.5 });
     }
-
 
 
     /* =========================================================
        RADAR MÚLTIPLE (ORIGEN O DESTINO)
        ========================================================= */
-
     function activarRadar(tipo) {
-
-        document
-            .getElementById(
-                'modal-viaje'
-            )
-            .style.display =
-                'none';
-
-
+        document.getElementById('modal-viaje').style.display = 'none';
         modoRadar = true;
-
         tipoRadarActivo = tipo;
-
-
-        document
-            .getElementById(
-                'mapa-central'
-            )
-            .style.cursor =
-                'crosshair';
-
+        document.getElementById('mapa-central').style.cursor = 'crosshair';
         
-        const mensaje = 
-            tipo === 'origen'
-                ? "PUNTO A: Haz clic en el mapa para indicar dónde recoger al pasajero."
-                : "PUNTO B: Haz clic en el mapa para indicar dónde dejar al pasajero.";
-
-        notificar(mensaje, "info");
-
+        const mensaje = tipo === 'origen'
+            ? "PUNTO A: Haz clic en el mapa para indicar dónde recoger al pasajero."
+            : "PUNTO B: Haz clic en el mapa para indicar dónde dejar al pasajero.";
+            
+        if (typeof notificar === "function") notificar(mensaje, "info");
     }
-
 
 
     /* =========================================================
        EVENTO CLIC EN EL MAPA (REVERSE GEOCODING)
        ========================================================= */
-
-    /* REEMPLAZAR TU mapa.on('click', ...) POR ESTE: */
     mapa.on('click', function(e) {
         if (modoRadar) {
             const lat = e.latlng.lat;
@@ -1626,7 +1010,6 @@
             document.getElementById(`v-${tipoRadarActivo}-lng`).value = lng;
             document.getElementById(`v-${tipoRadarActivo}`).value = "Sincronizando ubicación...";
 
-            // Buscar nombre de la calle
             fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`)
                 .then(response => response.json())
                 .then(data => {
@@ -1638,14 +1021,12 @@
                     document.getElementById(`v-${tipoRadarActivo}`).value = `Coordenadas: ${lat.toFixed(4)}, ${lng.toFixed(4)}`;
                 });
 
-            // Actualizar Waypoints para la ruta inteligente
             if (tipoRadarActivo === 'origen') {
                 wpOrigen = L.latLng(lat, lng);
             } else {
                 wpDestino = L.latLng(lat, lng);
             }
 
-            // Si ambos puntos existen, el motor dibuja la línea por la pista
             const puntosValidos = [wpOrigen, wpDestino].filter(w => w !== null);
             controlRuta.setWaypoints(puntosValidos);
 
@@ -1656,258 +1037,87 @@
     });
 
 
-
     /* =========================================================
        ABRIR Y CERRAR MODALES DE ASIGNACIÓN
        ========================================================= */
-
     function abrirModalViaje(idChofer) {
-
-        document
-            .getElementById(
-                'v-chofer'
-            )
-            .value =
-                idChofer;
-
-
-        document
-            .getElementById(
-                'modal-viaje'
-            )
-            .style.display =
-                'flex';
-
+        document.getElementById('v-chofer').value = idChofer;
+        document.getElementById('modal-viaje').style.display = 'flex';
     }
 
-
-
     function cerrarModal() {
+        document.getElementById('modal-viaje').style.display = 'none';
 
-        document
-            .getElementById(
-                'modal-viaje'
-            )
-            .style.display =
-                'none';
-
-
-        // Limpiar inputs visibles
         document.getElementById('v-pasajero').value = '';
         document.getElementById('v-origen').value = '';
         document.getElementById('v-destino').value = '';
         document.getElementById('v-tarifa').value = '';
         
-        // Limpiar coordenadas ocultas
         document.getElementById('v-origen-lat').value = '0';
         document.getElementById('v-origen-lng').value = '0';
         document.getElementById('v-destino-lat').value = '0';
         document.getElementById('v-destino-lng').value = '0';
 
-
-        // Borrar ambos pines si existen
-        if (pinOrigen)
-            mapa.removeLayer(
-                pinOrigen
-            );
-
-        if (pinDestino)
-            mapa.removeLayer(
-                pinDestino
-            );
-
+        if (pinOrigen) mapa.removeLayer(pinOrigen);
+        if (pinDestino) mapa.removeLayer(pinDestino);
     }
-
 
 
     /* =========================================================
        GUARDAR VIAJE (CON ORIGEN Y DESTINO)
        ========================================================= */
-
     async function guardarViaje() {
-
         const datos = {
-
-            id_chofer:
-                parseInt(
-                    document
-                        .getElementById(
-                            'v-chofer'
-                        )
-                        .value
-                ),
-
-            nombre_pasajero:
-                document
-                    .getElementById(
-                        'v-pasajero'
-                    )
-                    .value,
-
-            origen:
-                document
-                    .getElementById(
-                        'v-origen'
-                    )
-                    .value,
-
-            destino:
-                document
-                    .getElementById(
-                        'v-destino'
-                    )
-                    .value,
-
-            tarifa:
-                parseFloat(
-                    document
-                        .getElementById(
-                            'v-tarifa'
-                        )
-                        .value
-                ),
-
-            origen_lat:
-                parseFloat(
-                    document
-                        .getElementById(
-                            'v-origen-lat'
-                        )
-                        .value
-                ),
-
-            origen_lng:
-                parseFloat(
-                    document
-                        .getElementById(
-                            'v-origen-lng'
-                        )
-                        .value
-                ),
-
-            destino_lat:
-                parseFloat(
-                    document
-                        .getElementById(
-                            'v-destino-lat'
-                        )
-                        .value
-                ),
-
-            destino_lng:
-                parseFloat(
-                    document
-                        .getElementById(
-                            'v-destino-lng'
-                        )
-                        .value
-                )
-
+            id_chofer: parseInt(document.getElementById('v-chofer').value),
+            nombre_pasajero: document.getElementById('v-pasajero').value,
+            origen: document.getElementById('v-origen').value,
+            destino: document.getElementById('v-destino').value,
+            tarifa: parseFloat(document.getElementById('v-tarifa').value),
+            origen_lat: parseFloat(document.getElementById('v-origen-lat').value),
+            origen_lng: parseFloat(document.getElementById('v-origen-lng').value),
+            destino_lat: parseFloat(document.getElementById('v-destino-lat').value),
+            destino_lng: parseFloat(document.getElementById('v-destino-lng').value)
         };
 
-
-        if (
-            !datos.nombre_pasajero ||
-            !datos.origen ||
-            !datos.destino ||
-            isNaN(datos.tarifa) ||
-            datos.origen_lat === 0 || 
-            datos.destino_lat === 0
-        ) {
-
-            notificar(
-                "Por favor, completa todos los campos y fija AMBOS puntos en el mapa.",
-                "warning"
-            );
+        if (!datos.nombre_pasajero || !datos.origen || !datos.destino || isNaN(datos.tarifa) || datos.origen_lat === 0 || datos.destino_lat === 0) {
+            if (typeof notificar === "function") notificar("Por favor, completa todos los campos y fija AMBOS puntos en el mapa.", "warning");
             return;
-
         }
 
-
-        if (
-            datos.tarifa <= 0
-        ) {
-
-            notificar(
-                "La tarifa debe ser un monto mayor a 0 soles.",
-                "warning"
-            );
+        if (datos.tarifa <= 0) {
+            if (typeof notificar === "function") notificar("La tarifa debe ser un monto mayor a 0 soles.", "warning");
             return;
-
         }
-
 
         try {
-
-            const res =
-                await fetch(
-                    '/api/viajes/asignar',
-                    {
-
-                        method:
-                            'POST',
-
-                        headers:
-                            {
-                                'Content-Type':
-                                    'application/json'
-                            },
-
-                        body:
-                            JSON.stringify(
-                                datos
-                            )
-
-                    }
-                );
-
+            const res = await fetch('/api/viajes/asignar', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(datos)
+            });
 
             if (res.ok) {
-
                 cerrarModal();
-
                 cargarCentral();
-
-                notificar(
-                    "¡Viaje de dos puntos asignado! El conductor ha sido notificado.",
-                    "success"
-                );
-
+                if (typeof notificar === "function") notificar("¡Viaje de dos puntos asignado! El conductor ha sido notificado.", "success");
             } else {
-
-                notificar(
-                    "Error al procesar el viaje en el servidor de asignación.",
-                    "error"
-                );
-
+                if (typeof notificar === "function") notificar("Error al procesar el viaje en el servidor de asignación.", "error");
             }
-
-
         } catch (e) {
-
-            notificar(
-                "Fallo de conexión. Revisa tu internet.",
-                "error"
-            );
-
+            if (typeof notificar === "function") notificar("Fallo de conexión. Revisa tu internet.", "error");
         }
-
     }
-
 
 
     /* =========================================================
        INICIO Y BUCLE DE ACTUALIZACIÓN
        ========================================================= */
+    window.onload = () => {
+        cargarCentral();
+        cargarClientes(); // <- Aquí arranca el autocompletado inteligente
+    };
 
-    window.onload =
-        cargarCentral;
-
-
-    setInterval(
-        cargarCentral,
-        5000
-    );
+    setInterval(cargarCentral, 5000);
 
 </script>
 

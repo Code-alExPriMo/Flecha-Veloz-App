@@ -44,24 +44,26 @@ def obtener_vehiculo(id_chofer: int):
     conexion = obtener_conexion()
     try:
         cursor = conexion.cursor()
-        cursor.execute("SELECT Placa, Operativo FROM Vehiculos WHERE ID_Chofer = ?", (id_chofer,))
+        cursor.execute("SELECT Placa, Operativo FROM Vehiculos WHERE ID_Chofer = %s", (id_chofer,))
         vehiculo = cursor.fetchone()
         if not vehiculo:
             raise HTTPException(status_code=404, detail="Vehículo no encontrado")
         return {"placa": vehiculo[0], "operativo": vehiculo[1]}
     finally:
-        conexion.close()
+        if conexion:
+            conexion.close()
 
 @router_chofer.put("/api/vehiculo/estado")
 def actualizar_estado(datos: EstadoVehiculoRequest):
     conexion = obtener_conexion()
     try:
         cursor = conexion.cursor()
-        cursor.execute("UPDATE Vehiculos SET Operativo = ? WHERE ID_Chofer = ?", (datos.operativo, datos.id_chofer))
+        cursor.execute("UPDATE Vehiculos SET Operativo = %s WHERE ID_Chofer = %s", (datos.operativo, datos.id_chofer))
         conexion.commit()
         return {"mensaje": "Estado actualizado"}
     finally:
-        conexion.close()
+        if conexion:
+            conexion.close()
 
 @router_chofer.get("/api/vehiculos/todos")
 def obtener_toda_la_flota():
@@ -90,7 +92,8 @@ def obtener_toda_la_flota():
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
     finally:
-        conexion.close()
+        if conexion:
+            conexion.close()
 
 
 # ==============================================================================
@@ -101,21 +104,23 @@ def asignar_viaje(datos: ViajeRequest):
     conexion = obtener_conexion()
     try:
         cursor = conexion.cursor()
+        # En PostgreSQL los parámetros se pasan con %s en lugar de ?
         cursor.execute("""
             INSERT INTO Viajes (ID_Chofer, Nombre_Pasajero, Origen, Destino, Tarifa, 
                                 Origen_Lat, Origen_Lng, Destino_Lat, Destino_Lng, Estado)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 'En Curso')
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, 'En Curso')
         """, (datos.id_chofer, datos.nombre_pasajero, datos.origen, datos.destino, datos.tarifa, 
               datos.origen_lat, datos.origen_lng, datos.destino_lat, datos.destino_lng))
         
-        cursor.execute("UPDATE Vehiculos SET Operativo = 0 WHERE ID_Chofer = ?", (datos.id_chofer,))
+        cursor.execute("UPDATE Vehiculos SET Operativo = 0 WHERE ID_Chofer = %s", (datos.id_chofer,))
         conexion.commit()
         return {"mensaje": "Viaje asignado correctamente."}
     except Exception as e:
         conexion.rollback()
         raise HTTPException(status_code=400, detail="Error al procesar el viaje")
     finally:
-        conexion.close()
+        if conexion:
+            conexion.close()
 
 @router_chofer.get("/api/viajes/actual/{id_chofer}")
 def obtener_viaje_actual(id_chofer: int):
@@ -126,7 +131,7 @@ def obtener_viaje_actual(id_chofer: int):
             SELECT ID_Viaje, Nombre_Pasajero, Origen, Destino, Tarifa, 
                    Origen_Lat, Origen_Lng, Destino_Lat, Destino_Lng 
             FROM Viajes 
-            WHERE ID_Chofer = ? AND Estado = 'En Curso'
+            WHERE ID_Chofer = %s AND Estado = 'En Curso'
         """, (id_chofer,))
         viaje = cursor.fetchone()
         
@@ -144,7 +149,8 @@ def obtener_viaje_actual(id_chofer: int):
             }
         return {"mensaje": "Sin viajes"}
     finally:
-        conexion.close()
+        if conexion:
+            conexion.close()
 
 @router_chofer.post("/api/viajes/completar")
 def completar_viaje(datos: CompletarViajeRequest):
@@ -152,20 +158,20 @@ def completar_viaje(datos: CompletarViajeRequest):
     try:
         cursor = conexion.cursor()
         
-        cursor.execute("SELECT Destino_Lat, Destino_Lng FROM Viajes WHERE ID_Viaje = ?", (datos.id_viaje,))
+        cursor.execute("SELECT Destino_Lat, Destino_Lng FROM Viajes WHERE ID_Viaje = %s", (datos.id_viaje,))
         destino = cursor.fetchone()
         if not destino:
             raise HTTPException(status_code=404, detail="Viaje no encontrado")
             
         lat, lng = destino[0], destino[1]
         
-        # Marcamos el viaje como completado (AQUÍ ES DONDE EL DINERO SE HACE REALIDAD)
-        cursor.execute("UPDATE Viajes SET Estado = 'Completado' WHERE ID_Viaje = ?", (datos.id_viaje,))
+        # Marcamos el viaje como completado
+        cursor.execute("UPDATE Viajes SET Estado = 'Completado' WHERE ID_Viaje = %s", (datos.id_viaje,))
         
         cursor.execute("""
             UPDATE Vehiculos 
-            SET Operativo = 1, Latitud = ?, Longitud = ? 
-            WHERE ID_Chofer = ?
+            SET Operativo = 1, Latitud = %s, Longitud = %s 
+            WHERE ID_Chofer = %s
         """, (lat, lng, datos.id_chofer))
         
         conexion.commit()
@@ -174,22 +180,24 @@ def completar_viaje(datos: CompletarViajeRequest):
         conexion.rollback()
         raise HTTPException(status_code=400, detail="Error al completar")
     finally:
-        conexion.close()
+        if conexion:
+            conexion.close()
 
 @router_chofer.post("/api/viajes/rechazar")
 def rechazar_viaje(datos: RechazarViajeRequest):
     conexion = obtener_conexion()
     try:
         cursor = conexion.cursor()
-        cursor.execute("UPDATE Viajes SET Estado = 'Cancelado' WHERE ID_Viaje = ?", (datos.id_viaje,))
-        cursor.execute("UPDATE Vehiculos SET Operativo = 1 WHERE ID_Chofer = ?", (datos.id_chofer,))
+        cursor.execute("UPDATE Viajes SET Estado = 'Cancelado' WHERE ID_Viaje = %s", (datos.id_viaje,))
+        cursor.execute("UPDATE Vehiculos SET Operativo = 1 WHERE ID_Chofer = %s", (datos.id_chofer,))
         conexion.commit()
         return {"mensaje": "Viaje rechazado"}
     except Exception as e:
         conexion.rollback()
         raise HTTPException(status_code=400, detail="Error al rechazar")
     finally:
-        conexion.close()
+        if conexion:
+            conexion.close()
 
 
 # ==============================================================================
@@ -202,13 +210,13 @@ def obtener_ganancias_chofer(id_chofer: int):
     try:
         cursor = conexion.cursor()
         
-        # 1. Total ganado
-        cursor.execute("SELECT ISNULL(SUM(Tarifa), 0) FROM Viajes WHERE ID_Chofer = ? AND Estado = 'Completado'", (id_chofer,))
+        # 1. Total ganado (PostgreSQL usa COALESCE en lugar de ISNULL)
+        cursor.execute("SELECT COALESCE(SUM(Tarifa), 0) FROM Viajes WHERE ID_Chofer = %s AND Estado = 'Completado'", (id_chofer,))
         resultado_ganado = cursor.fetchone()
         total_ganado = float(resultado_ganado[0]) if resultado_ganado and resultado_ganado[0] is not None else 0.0
         
         # 2. Total retirado
-        cursor.execute("SELECT ISNULL(SUM(Monto), 0) FROM Retiros WHERE ID_Chofer = ?", (id_chofer,))
+        cursor.execute("SELECT COALESCE(SUM(Monto), 0) FROM Retiros WHERE ID_Chofer = %s", (id_chofer,))
         resultado_retirado = cursor.fetchone()
         total_retirado = float(resultado_retirado[0]) if resultado_retirado and resultado_retirado[0] is not None else 0.0
         
@@ -223,8 +231,8 @@ def obtener_ganancias_chofer(id_chofer: int):
         print(f"Error en financiero: {e}")
         return {"ganancias_hoy": 0.0, "ganancias_totales": 0.0}
     finally:
-        conexion.close()
-
+        if conexion:
+            conexion.close()
 
 @router_chofer.post("/api/chofer/retirar")
 def retirar_fondos(datos: RetiroRequest):
@@ -233,11 +241,11 @@ def retirar_fondos(datos: RetiroRequest):
     try:
         cursor = conexion.cursor()
         
-        cursor.execute("SELECT ISNULL(SUM(Tarifa), 0) FROM Viajes WHERE ID_Chofer = ? AND Estado = 'Completado'", (datos.id_chofer,))
+        cursor.execute("SELECT COALESCE(SUM(Tarifa), 0) FROM Viajes WHERE ID_Chofer = %s AND Estado = 'Completado'", (datos.id_chofer,))
         resultado_ganado = cursor.fetchone()
         total_ganado = float(resultado_ganado[0]) if resultado_ganado else 0.0
         
-        cursor.execute("SELECT ISNULL(SUM(Monto), 0) FROM Retiros WHERE ID_Chofer = ?", (datos.id_chofer,))
+        cursor.execute("SELECT COALESCE(SUM(Monto), 0) FROM Retiros WHERE ID_Chofer = %s", (datos.id_chofer,))
         resultado_retirado = cursor.fetchone()
         total_retirado = float(resultado_retirado[0]) if resultado_retirado else 0.0
         
@@ -246,7 +254,7 @@ def retirar_fondos(datos: RetiroRequest):
         if datos.monto <= 0 or datos.monto > saldo_actual:
             raise HTTPException(status_code=400, detail="Monto inválido o saldo insuficiente")
 
-        cursor.execute("INSERT INTO Retiros (ID_Chofer, Monto) VALUES (?, ?)", (datos.id_chofer, datos.monto))
+        cursor.execute("INSERT INTO Retiros (ID_Chofer, Monto) VALUES (%s, %s)", (datos.id_chofer, datos.monto))
         conexion.commit()
         
         return {"mensaje": f"Retiro de S/ {datos.monto} procesado"}
@@ -257,21 +265,22 @@ def retirar_fondos(datos: RetiroRequest):
         conexion.rollback()
         raise HTTPException(status_code=500, detail=str(e))
     finally:
-        conexion.close()
+        if conexion:
+            conexion.close()
 
 
 # ==============================================================================
-# ENDPOINTS DE REPORTES Y KPIs
+# ENDPOINTS DE REPORTES Y KPIs (COMPATIBILIZADOS CON POSTGRESQL / SUPABASE)
 # ==============================================================================
 @router_chofer.get("/api/reportes/resumen")
 def obtener_resumen_reportes(rango: str = "hoy"):
-    filtro_fecha = "CAST(Fecha_Registro AS DATE) = CAST(GETDATE() AS DATE)"
+    filtro_fecha = "DATE(Fecha_Registro) = CURRENT_DATE"
     if rango == "ayer":
-        filtro_fecha = "CAST(Fecha_Registro AS DATE) = CAST(DATEADD(day, -1, GETDATE()) AS DATE)"
+        filtro_fecha = "DATE(Fecha_Registro) = CURRENT_DATE - INTERVAL '1 day'"
     elif rango == "semana":
-        filtro_fecha = "CAST(Fecha_Registro AS DATE) >= CAST(DATEADD(day, -7, GETDATE()) AS DATE)"
+        filtro_fecha = "DATE(Fecha_Registro) >= CURRENT_DATE - INTERVAL '7 days'"
     elif rango == "mes":
-        filtro_fecha = "MONTH(Fecha_Registro) = MONTH(GETDATE()) AND YEAR(Fecha_Registro) = YEAR(GETDATE())"
+        filtro_fecha = "EXTRACT(MONTH FROM Fecha_Registro) = EXTRACT(MONTH FROM CURRENT_DATE) AND EXTRACT(YEAR FROM Fecha_Registro) = EXTRACT(YEAR FROM CURRENT_DATE)"
     elif rango == "total":
         filtro_fecha = "1=1"
 
@@ -279,7 +288,7 @@ def obtener_resumen_reportes(rango: str = "hoy"):
     try:
         cursor = conexion.cursor()
         
-        cursor.execute(f"SELECT ISNULL(SUM(Tarifa), 0) FROM Viajes WHERE Estado = 'Completado' AND {filtro_fecha}")
+        cursor.execute(f"SELECT COALESCE(SUM(Tarifa), 0) FROM Viajes WHERE Estado = 'Completado' AND {filtro_fecha}")
         ganancias = cursor.fetchone()[0]
         
         cursor.execute(f"SELECT COUNT(*) FROM Viajes WHERE Estado = 'Completado' AND {filtro_fecha}")
@@ -294,17 +303,18 @@ def obtener_resumen_reportes(rango: str = "hoy"):
             "viajes_cancelados": cancelados
         }
     finally:
-        conexion.close()
+        if conexion:
+            conexion.close()
 
 @router_chofer.get("/api/reportes/ranking")
 def obtener_ranking_choferes(rango: str = "hoy"):
-    filtro_fecha = "CAST(v.Fecha_Registro AS DATE) = CAST(GETDATE() AS DATE)"
+    filtro_fecha = "DATE(v.Fecha_Registro) = CURRENT_DATE"
     if rango == "ayer": 
-        filtro_fecha = "CAST(v.Fecha_Registro AS DATE) = CAST(DATEADD(day, -1, GETDATE()) AS DATE)"
+        filtro_fecha = "DATE(v.Fecha_Registro) = CURRENT_DATE - INTERVAL '1 day'"
     elif rango == "semana": 
-        filtro_fecha = "CAST(v.Fecha_Registro AS DATE) >= CAST(DATEADD(day, -7, GETDATE()) AS DATE)"
+        filtro_fecha = "DATE(v.Fecha_Registro) >= CURRENT_DATE - INTERVAL '7 days'"
     elif rango == "mes": 
-        filtro_fecha = "MONTH(v.Fecha_Registro) = MONTH(GETDATE()) AND YEAR(v.Fecha_Registro) = YEAR(GETDATE())"
+        filtro_fecha = "EXTRACT(MONTH FROM v.Fecha_Registro) = EXTRACT(MONTH FROM CURRENT_DATE) AND EXTRACT(YEAR FROM v.Fecha_Registro) = EXTRACT(YEAR FROM CURRENT_DATE)"
     elif rango == "total": 
         filtro_fecha = "1=1"
 
@@ -313,8 +323,8 @@ def obtener_ranking_choferes(rango: str = "hoy"):
         cursor = conexion.cursor()
         cursor.execute(f"""
             SELECT u.ID_Usuario, u.Nombre_Completo, u.DNI, u.Correo,
-                   ISNULL(COUNT(v.ID_Viaje), 0) as Total_Viajes,
-                   ISNULL(SUM(v.Tarifa), 0) as Recaudado,
+                   COALESCE(COUNT(v.ID_Viaje), 0) as Total_Viajes,
+                   COALESCE(SUM(v.Tarifa), 0) as Recaudado,
                    veh.Placa, veh.Operativo
             FROM Usuarios u
             LEFT JOIN Vehiculos veh ON u.ID_Usuario = veh.ID_Chofer
@@ -332,4 +342,54 @@ def obtener_ranking_choferes(rango: str = "hoy"):
             "placa": r[6] if r[6] else "Sin Vehículo", "operativo": r[7] if r[7] is not None else 0
         } for r in ranking]
     finally:
-        conexion.close()
+        if conexion:
+            conexion.close()
+
+# ENDPOINT: Historial detallado de viajes por chofer (Corregido para Supabase)
+@router_chofer.get("/api/reportes/historial_chofer/{id_chofer}")
+def obtener_historial_viajes_chofer(id_chofer: int, rango: str = "hoy"):
+    """Extrae la lista detallada de viajes realizados por un chofer en un rango de tiempo."""
+    
+    filtro_fecha = "DATE(Fecha_Registro) = CURRENT_DATE"
+    if rango == "ayer": 
+        filtro_fecha = "DATE(Fecha_Registro) = CURRENT_DATE - INTERVAL '1 day'"
+    elif rango == "semana": 
+        filtro_fecha = "DATE(Fecha_Registro) >= CURRENT_DATE - INTERVAL '7 days'"
+    elif rango == "mes": 
+        filtro_fecha = "EXTRACT(MONTH FROM Fecha_Registro) = EXTRACT(MONTH FROM CURRENT_DATE) AND EXTRACT(YEAR FROM Fecha_Registro) = EXTRACT(YEAR FROM CURRENT_DATE)"
+    elif rango == "total": 
+        filtro_fecha = "1=1" 
+
+    conexion = obtener_conexion()
+    try:
+        cursor = conexion.cursor()
+        
+        # Extraemos: ID, Pasajero, Origen, Destino, Tarifa, Estado y Hora
+        # En PostgreSQL se usa TO_CHAR en lugar del CONVERT de SQL Server
+        cursor.execute(f"""
+            SELECT ID_Viaje, Nombre_Pasajero, Origen, Destino, Tarifa, Estado, 
+                   TO_CHAR(Fecha_Registro, 'HH24:MI:SS') as Hora 
+            FROM Viajes 
+            WHERE ID_Chofer = %s AND {filtro_fecha}
+            ORDER BY Fecha_Registro DESC
+        """, (id_chofer,))
+        
+        viajes = cursor.fetchall()
+        
+        return [
+            {
+                "id_viaje": v[0],
+                "pasajero": v[1],
+                "origen": v[2],
+                "destino": v[3],
+                "tarifa": float(v[4]) if v[4] else 0.0,
+                "estado": v[5],
+                "hora": v[6]
+            } for v in viajes
+        ]
+    except Exception as e:
+        print(f"Error en historial de viajes: {e}")
+        return []
+    finally:
+        if conexion:
+            conexion.close()

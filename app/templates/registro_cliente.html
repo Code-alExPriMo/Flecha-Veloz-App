@@ -1,0 +1,385 @@
+{% extends "base.html" %}
+
+{% block content %}
+<style>
+    /* =========================================================
+       0. PREPARACIÓN DEL LIENZO Y NAVBAR TRANSPARENTE
+       ========================================================= */
+    html, body {
+        overflow-x: hidden;
+        margin: 0;
+        padding: 0;
+        min-height: 100%;
+        background-color: #050505;
+    }
+
+    /* Sobreescribimos la barra superior para que flote sobre la imagen */
+    .navbar {
+        background-color: transparent !important;
+        border-bottom: none !important;
+        position: absolute !important;
+        top: 0; left: 0; right: 0;
+        z-index: 9999;
+    }
+    .nav-item { color: rgba(255, 255, 255, 0.8) !important; }
+    .nav-item:hover { color: #ffffff !important; }
+    #ui-nombre { color: #ffffff !important; }
+    #ui-rol { color: rgba(255, 255, 255, 0.7) !important; }
+    #ui-iniciales { background-color: #ffffff !important; color: #000000 !important; }
+    .navbar-logo { filter: invert(1) brightness(100) !important; }
+
+    /* =========================================================
+       1. CONTENEDOR PRINCIPAL PANTALLA DIVIDIDA (ESTILO DASHBOARD)
+       ========================================================= */
+    .registro-hero {
+        position: relative;
+        width: 100vw;
+        min-height: 100vh;
+        margin-left: calc(-50vw + 50%);
+        margin-top: -40px;
+        padding-top: 105px;
+        padding-bottom: 70px;
+        background-image: url('/static/img/portada.png');
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+        box-sizing: border-box;
+        display: flex;
+        align-items: center;
+    }
+
+    .registro-overlay {
+        position: absolute;
+        top: 0; left: 0; right: 0; bottom: 0;
+        background: linear-gradient(
+            180deg,
+            rgba(0,0,0,0.72) 0%,
+            rgba(0,0,0,0.79) 45%,
+            rgba(0,0,0,0.92) 100%
+        );
+        z-index: 1;
+    }
+
+    .registro-container {
+        position: relative;
+        z-index: 2;
+        width: 100%;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 30px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 60px;
+    }
+
+    /* =========================================================
+       2. COLUMNA IZQUIERDA: TEXTOS Y ESTADÍSTICAS
+       ========================================================= */
+    .registro-info {
+        flex: 1;
+        color: white;
+    }
+
+    .stats-row {
+        display: flex;
+        gap: 40px;
+        margin-bottom: 40px;
+    }
+
+    .stat-item h3 {
+        font-family: 'Montserrat', sans-serif;
+        font-size: 36px;
+        font-weight: 700;
+        margin: 0 0 4px 0;
+    }
+
+    .stat-item p {
+        font-family: 'Inter', sans-serif;
+        font-size: 11px;
+        color: #9ca3af;
+        margin: 0;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        font-weight: 600;
+    }
+
+    .registro-title {
+        font-family: 'Montserrat', sans-serif;
+        font-size: 48px;
+        font-weight: 400; 
+        line-height: 1.1;
+        margin-bottom: 24px;
+        letter-spacing: -1px;
+    }
+    
+    .registro-title strong { font-weight: 700; }
+
+    .registro-desc {
+        font-family: 'Inter', sans-serif;
+        font-size: 15px;
+        color: rgba(255,255,255,0.7);
+        line-height: 1.7;
+        max-width: 500px;
+    }
+
+    /* =========================================================
+       3. COLUMNA DERECHA: FORMULARIO PREMIUM
+       ========================================================= */
+    .form-wrapper {
+        flex: 0 0 480px;
+    }
+
+    .form-box {
+        background: rgba(15,15,15,0.82);
+        backdrop-filter: blur(18px);
+        -webkit-backdrop-filter: blur(18px);
+        border: 1px solid rgba(255,255,255,0.11);
+        padding: 40px;
+        border-radius: 18px;
+        box-shadow: 0 20px 50px rgba(0,0,0,0.38);
+    }
+
+    .form-box h4 {
+        font-family: 'Montserrat', sans-serif;
+        color: white;
+        font-size: 22px;
+        margin-top: 0;
+        margin-bottom: 30px;
+        font-weight: 600;
+    }
+
+    .form-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+        margin-bottom: 25px;
+    }
+
+    .full-width { grid-column: span 2; }
+
+    .input-group {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .input-group label {
+        font-family: 'Inter', sans-serif;
+        font-size: 11px;
+        font-weight: 600;
+        color: #8f8f8f;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-bottom: 8px;
+    }
+
+    .input-group input {
+        background-color: rgba(255, 255, 255, 0.04);
+        border: 1px solid rgba(255,255,255,0.1);
+        padding: 14px;
+        border-radius: 9px;
+        font-size: 14px;
+        color: white;
+        font-family: 'Inter', sans-serif;
+        outline: none;
+        transition: all 0.3s ease;
+    }
+
+    .input-group input::placeholder { color: rgba(255,255,255,0.2); }
+
+    .input-group input:focus {
+        border-color: rgba(255,255,255,0.3);
+        background-color: rgba(255, 255, 255, 0.08);
+        box-shadow: 0 0 15px rgba(255,255,255,0.05);
+    }
+
+    .btn-registrar {
+        background-color: #ffffff;
+        color: #000000;
+        border: none;
+        padding: 16px;
+        border-radius: 9px;
+        font-weight: 700;
+        font-size: 15px;
+        cursor: pointer;
+        width: 100%;
+        transition: background 0.2s ease, transform 0.2s ease;
+        font-family: 'Inter', sans-serif;
+    }
+
+    .btn-registrar:hover { 
+        background-color: #e5e7eb;
+        transform: translateY(-2px);
+    }
+
+    @media (max-width: 992px) {
+        .registro-container { flex-direction: column; padding-top: 40px; }
+        .registro-info { text-align: center; }
+        .registro-desc { margin: 0 auto; }
+        .stats-row { justify-content: center; }
+        .form-wrapper { width: 100%; max-width: 500px; }
+    }
+    @media (max-width: 480px) {
+        .form-grid { grid-template-columns: 1fr; }
+        .full-width { grid-column: span 1; }
+        .stat-item h3 { font-size: 28px; }
+        .form-box { padding: 25px; }
+    }
+</style>
+
+<div class="registro-hero">
+    <div class="registro-overlay"></div>
+    
+    <div class="registro-container">
+        
+        <!-- MITAD IZQUIERDA: Información -->
+        <div class="registro-info">
+            <div class="stats-row">
+                <div class="stat-item">
+                    <h3>+1000</h3>
+                    <p>Pasajeros</p>
+                </div>
+                <div class="stat-item">
+                    <h3>24/7</h3>
+                    <p>Disponibilidad</p>
+                </div>
+                <div class="stat-item">
+                    <h3>100%</h3>
+                    <p>Seguridad</p>
+                </div>
+            </div>
+
+            <h1 class="registro-title">
+                Viaja seguro, <br><strong>viaja a tu medida.</strong>
+            </h1>
+            <p class="registro-desc">
+                Registra a los clientes frecuentes en nuestra plataforma. Garantizamos viajes seguros, monitoreo en tiempo real y el servicio más rápido de la ciudad para nuestra red de pasajeros.
+            </p>
+        </div>
+
+        <!-- MITAD DERECHA: Formulario -->
+        <div class="form-wrapper">
+            <div class="form-box">
+                <h4>Alta de Nuevo Cliente</h4>
+                
+                <form id="formRegistroCliente">
+                    <div class="form-grid">
+                        
+                        <!-- Nombres y Apellidos separados pero en la misma fila -->
+                        <div class="input-group">
+                            <label for="nombres">Nombres</label>
+                            <!-- oninput bloquea números y caracteres extraños en tiempo real -->
+                            <input type="text" id="nombres" placeholder="Ej. Juan Carlos" required autocomplete="off" pattern="[A-Za-zÀ-ÿ\s]+" oninput="this.value = this.value.replace(/[^a-zA-ZÀ-ÿ\s]/g, '')">
+                        </div>
+
+                        <div class="input-group">
+                            <label for="apellidos">Apellidos</label>
+                            <input type="text" id="apellidos" placeholder="Ej. Pérez" required autocomplete="off" pattern="[A-Za-zÀ-ÿ\s]+" oninput="this.value = this.value.replace(/[^a-zA-ZÀ-ÿ\s]/g, '')">
+                        </div>
+
+                        <!-- Teléfono ocupa toda la fila con límites estrictos de 9 dígitos -->
+                        <div class="input-group full-width">
+                            <label for="telefono">Número de Celular</label>
+                            <input type="tel" id="telefono" pattern="[0-9]{9}" maxlength="9" minlength="9" placeholder="Ej. 987654321" required autocomplete="off" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+                        </div>
+                        
+                    </div>
+
+                    <button type="submit" class="btn-registrar">Registrar Pasajero</button>
+                </form>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    // Función para capitalizar la primera letra de cada palabra
+    function formatearNombre(texto) {
+        return texto.toLowerCase().split(' ').map(palabra => palabra.charAt(0).toUpperCase() + palabra.slice(1)).join(' ');
+    }
+
+    document.getElementById('formRegistroCliente').addEventListener('submit', async function(e) {
+        e.preventDefault(); 
+        
+        const boton = document.querySelector('.btn-registrar');
+        boton.textContent = "Procesando...";
+        boton.disabled = true;
+
+        // Capturamos y unimos los nombres y apellidos limpios
+        const nombres = document.getElementById('nombres').value.trim();
+        const apellidos = document.getElementById('apellidos').value.trim();
+        const nombreCompletoBruto = nombres + ' ' + apellidos;
+        
+        // Aplicamos el formato (Ej: "juan perez" -> "Juan Perez")
+        const nombreCompletoFinal = formatearNombre(nombreCompletoBruto);
+        const celular = document.getElementById('telefono').value.trim();
+
+        // Candado Lógico: Validación estricta de 9 dígitos
+        if (celular.length !== 9) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Número inválido',
+                text: 'El celular debe tener exactamente 9 dígitos.',
+                background: '#151515',
+                color: '#fff',
+                confirmButtonColor: '#ffffff',
+                customClass: { confirmButton: 'text-black font-bold' }
+            });
+            boton.textContent = "Registrar Pasajero";
+            boton.disabled = false;
+            return; // Detiene el envío a la base de datos
+        }
+
+        const datos = {
+            nombre: nombreCompletoFinal,
+            telefono: celular
+        };
+
+        try {
+            const respuesta = await fetch('/api/registrar_cliente', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(datos)
+            });
+
+            const resultado = await respuesta.json();
+
+            if (respuesta.ok) {
+                Swal.fire({
+                    icon: 'success',
+                    title: '¡Registrado!',
+                    text: resultado.mensaje,
+                    background: '#151515',
+                    color: '#fff',
+                    confirmButtonColor: '#ffffff',
+                    customClass: { confirmButton: 'text-black font-bold' }
+                });
+                document.getElementById('formRegistroCliente').reset();
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: resultado.detail || 'No se pudo registrar el cliente.',
+                    background: '#151515',
+                    color: '#fff',
+                    confirmButtonColor: '#ef4444'
+                });
+            }
+        } catch (error) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error de Red',
+                text: 'Error de comunicación con el servidor.',
+                background: '#151515',
+                color: '#fff',
+                confirmButtonColor: '#ef4444'
+            });
+        } finally {
+            boton.textContent = "Registrar Pasajero";
+            boton.disabled = false;
+        }
+    });
+</script>
+{% endblock %}

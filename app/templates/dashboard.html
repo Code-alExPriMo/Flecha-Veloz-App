@@ -1,10 +1,6 @@
 {% extends "base.html" %}
-
 {% block content %}
 <style>
-    /* ==========================================================================
-       0. SISTEMA DE VARIABLES (DISEÑO ESCALABLE)
-       ========================================================================== */
     :root {
         --color-background-base: #050505;
         --color-footer-bg: #0a0a0a;
@@ -36,10 +32,6 @@
         --z-index-content: 2;
         --z-index-navbar: 9999;
     }
-
-    /* ==========================================================================
-       1. REINICIO Y PREPARACIÓN DEL LIENZO
-       ========================================================================== */
     html, 
     body {
         overflow-x: hidden !important;
@@ -56,9 +48,6 @@
         scroll-behavior: smooth;
     }
 
-    /* ==========================================================================
-       2. BARRA DE NAVEGACIÓN TRANSPARENTE
-       ========================================================================== */
     .navbar {
         background-color: transparent !important;
         border-bottom-width: 0 !important;
@@ -95,10 +84,6 @@
     .navbar-logo { 
         filter: invert(1) brightness(100) !important; 
     }
-
-    /* ==========================================================================
-       3. ENVOLTORIO MAESTRO Y FONDO GLOBAL
-       ========================================================================== */
     .unified-page {
         position: relative;
         width: 100vw;
@@ -137,10 +122,6 @@
         align-items: center;
         width: 100%;
     }
-
-    /* ==========================================================================
-       4. SECCIÓN HÉROE (PORTADA INICIAL)
-       ========================================================================== */
     .hero-section {
         height: 100vh;
         width: 100%;
@@ -233,10 +214,6 @@
         background-color: rgba(255, 255, 255, 0.2); 
         transform: translateY(-2px);
     }
-
-    /* ==========================================================================
-       5. SECCIÓN INFORMACIÓN Y MAPA
-       ========================================================================== */
     .info-section {
         display: flex;
         flex-direction: row;
@@ -318,9 +295,6 @@
         justify-content: flex-end;
     }
 
-    /* ==========================================================================
-       6. MAPA LEAFLET (ESTILO ORIGINAL A COLOR CON MARCO DE CRISTAL)
-       ========================================================================== */
     #mapa {
         width: 100%;
         height: 420px;
@@ -337,10 +311,6 @@
     .leaflet-control-attribution { 
         display: none !important; 
     }
-
-    /* ==========================================================================
-       7. PROPUESTA DE VALOR (TARJETAS GLASSMORPHISM)
-       ========================================================================== */
     .contenedor-roles { 
         display: flex; 
         flex-direction: row;
@@ -460,10 +430,6 @@
         align-items: center;
         font-size: 12px;
     }
-
-    /* ==========================================================================
-       8. CARRUSEL CONTINUO
-       ========================================================================== */
     .carousel-section {
         padding-top: var(--spacing-section-y);
         padding-right: 0;
@@ -588,9 +554,6 @@
         100% { transform: translateX(-1500px); } 
     }
 
-    /* ==========================================================================
-       9. PRE-FOOTER CALL TO ACTION (ELIMINA EL VACÍO NEGRO)
-       ========================================================================== */
     .pre-footer-section {
         width: 100vw;
         margin-left: calc(-50vw + 50%);
@@ -643,10 +606,6 @@
         margin-bottom: 30px;
         margin-left: 0;
     }
-
-    /* ==========================================================================
-       10. FOOTER (PISA A RAS DEL FINAL)
-       ========================================================================== */
     .footer-section {
         background-color: var(--color-footer-bg); 
         border-top-width: 1px;
@@ -752,10 +711,6 @@
         font-size: 12px;
         color: #6b7280;
     }
-
-    /* ==========================================================================
-       11. CLASES DE ANIMACIÓN AL HACER SCROLL (INTERSECTION OBSERVER)
-       ========================================================================== */
     .fade-up {
         opacity: 0;
         transform: translateY(40px);
@@ -766,10 +721,6 @@
         opacity: 1;
         transform: translateY(0);
     }
-
-    /* ==========================================================================
-       12. RESPONSIVE GLOBAL Y MEDIA QUERIES
-       ========================================================================== */
     @media (max-width: 960px) {
         .info-section { 
             flex-direction: column; 
@@ -825,14 +776,8 @@
     }
 </style>
 
-<!-- ==========================================================================
-     INCLUSIÓN DE LIBRERÍAS EXTERNAS (LEAFLET CSS)
-     ========================================================================== -->
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 
-<!-- ==========================================================================
-     ESTRUCTURA HTML PRINCIPAL
-     ========================================================================== -->
 <div class="unified-page">
     
     <!-- Filtro de oscurecimiento sobre el fondo -->
@@ -840,26 +785,18 @@
 
     <!-- Contenedor principal que se eleva sobre el fondo -->
     <div class="unified-content">
-
-        <!-- ==================================================================
-             SECCIÓN 1: HÉROE (PORTADA PRINCIPAL)
-             ================================================================== -->
         <div class="hero-section">
             <div class="hero-content">
                 <h1 class="hero-title fade-up">Movilidad inteligente, a tu medida.</h1>
                 <p class="hero-subtitle fade-up" style="transition-delay: 0.1s;">
                     Conecta pasajeros y conductores con total transparencia. Supervisa tu flota con el mejor sistema de gestión estratégica del mercado actual.
                 </p>
-                <div class="hero-buttons fade-up" style="transition-delay: 0.2s;">
+                <div class="hero-buttons fade-up" style="transition-delay: 0.2s;" id="botones-gerencia-hero">
                     <a href="/registro_chofer" class="btn-hero-primary">Registrar Chofer</a>
                     <a href="/reportes" class="btn-hero-secondary">Ver Reportes</a>
                 </div>
             </div>
         </div>
-
-        <!-- ==================================================================
-             SECCIÓN 2: INFORMACIÓN Y MAPA
-             ================================================================== -->
         <div class="info-section">
             <!-- Columna de texto -->
             <div class="info-content fade-up">
@@ -873,19 +810,19 @@
                 <p class="info-text">
                     Desde viajes cortos hasta gestión de flotas a gran escala, abordamos cada trayecto con un equilibrio entre innovación y control, creando una red de transporte que enriquece la movilidad urbana adaptándose a las necesidades de tu ciudad.
                 </p>
-                <a href="#" class="info-link">Conocer detalles técnicos &#8599;</a>
+                
+                <!-- REDIRECCIÓN: El ancla #seccion-roles deslizará la pantalla hacia abajo -->
+                <a href="#seccion-roles" class="info-link">Conocer detalles técnicos &#8599;</a>
             </div>
 
-            <!-- Columna del Mapa Interactivo (Original OpenStreetMap Color) -->
+            <!-- Columna del Mapa Interactivo -->
             <div class="info-image-container fade-up" style="transition-delay: 0.2s;">
                 <div id="mapa"></div>
             </div>
         </div>
 
-        <!-- ==================================================================
-             SECCIÓN 3: PROPUESTA DE VALOR Y ROLES
-             ================================================================== -->
-        <div class="contenedor-roles">
+        <!-- ID AGREGADO PARA EL ANCLA DEL BOTÓN -->
+        <div class="contenedor-roles" id="seccion-roles">
             
             <!-- Tarjeta 1: Pasajero -->
             <div class="tarjeta-rol fade-up">
@@ -914,10 +851,6 @@
             </div>
 
         </div>
-
-        <!-- ==================================================================
-             SECCIÓN 4: CARRUSEL CONTINUO
-             ================================================================== -->
         <div class="carousel-section">
             <div class="carousel-header fade-up">
                 <h2 class="carousel-title">Cada viaje <strong>importa</strong></h2>
@@ -970,22 +903,18 @@
                 </div>
             </div>
         </div>
-
-        <!-- ==================================================================
-             SECCIÓN 5: PRE-FOOTER (CONEXIÓN Y LLAMADO A LA ACCIÓN)
-             ================================================================== -->
         <div class="pre-footer-section">
             <div class="pre-footer-card fade-up">
                 <h2 class="pre-footer-title">¿Listo para unirte a la revolución del transporte?</h2>
                 <p class="pre-footer-subtitle">
-                    Inicia sesión en tu central operativa o registra nuevos conductores para expandir los límites de tu ciudad hoy mismo.
+                    Te esperamos.
                 </p>
                 <a href="/registro_chofer" class="btn-hero-primary">Empezar a operar</a>
             </div>
         </div>
 
         <!-- ==================================================================
-             SECCIÓN 6: FOOTER (PIE DE PÁGINA)
+             SECCIÓN 6: FOOTER (PIE DE PÁGINA) REDES SOCIALES ENLAZADAS
              ================================================================== -->
         <footer class="footer-section">
             <div class="footer-container">
@@ -1002,10 +931,10 @@
                 <div>
                     <h4 class="footer-heading">Organización</h4>
                     <ul class="footer-list">
-                        <li><a href="#">Términos y Condiciones</a></li>
-                        <li><a href="#">Política de Privacidad</a></li>
-                        <li><a href="#">Tratamiento de Datos</a></li>
-                        <li><a href="#">Libro de Reclamaciones</a></li>
+                        <li><a href="/legales#terminos">Términos y Condiciones</a></li>
+                        <li><a href="/legales#privacidad">Política de Privacidad</a></li>
+                        <li><a href="/legales#datos">Tratamiento de Datos</a></li>
+                        <li><a href="/legales#reclamaciones">Libro de Reclamaciones</a></li>
                     </ul>
                 </div>
 
@@ -1015,19 +944,20 @@
                     <ul class="footer-list">
                         <li><span>Oficina Central: Villa el Salvador, Lima, Perú</span></li>
                         <li><a href="mailto:soporte@flechaveloz.com">soporte@flechaveloz.com</a></li>
-                        <li><span>+51 987 654 321</span></li>
+                        <li><a href="tel:+51987654321">+51 987 654 321</a></li>
                         <li><span>Atención al Cliente: Lun - Dom (24/7)</span></li>
                     </ul>
                 </div>
 
-                <!-- Columna 4: Enlaces a Redes Sociales -->
+                <!-- Columna 4: Enlaces Reales a Redes Sociales -->
                 <div>
                     <h4 class="footer-heading">Redes Sociales</h4>
                     <ul class="footer-list">
-                        <li><a href="#">LinkedIn Oficial &#8599;</a></li>
-                        <li><a href="#">Instagram &#8599;</a></li>
-                        <li><a href="#">Facebook &#8599;</a></li>
-                        <li><a href="#">WhatsApp Bussines &#8599;</a></li>
+                        <li><a href="https://www.linkedin.com" target="_blank" rel="noopener noreferrer">LinkedIn Oficial &#8599;</a></li>
+                        <li><a href="https://www.instagram.com" target="_blank" rel="noopener noreferrer">Instagram &#8599;</a></li>
+                        <li><a href="https://www.facebook.com" target="_blank" rel="noopener noreferrer">Facebook &#8599;</a></li>
+                        <!-- Enlace a WhatsApp Business (Se puede personalizar con el número real en la API de wa.me) -->
+                        <li><a href="https://wa.me/51987654321?text=Hola,%20necesito%20información%20sobre%20Flecha%20Veloz" target="_blank" rel="noopener noreferrer">WhatsApp Business &#8599;</a></li>
                     </ul>
                 </div>
 
@@ -1043,18 +973,10 @@
     </div> <!-- Cierre del contenedor unified-content -->
 </div> <!-- Cierre del envoltorio unified-page -->
 
-<!-- ==========================================================================
-     SCRIPTS DE FUNCIONALIDAD E INTERACTIVIDAD
-     ========================================================================== -->
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
 <script>
-    /**
-     * INICIALIZACIÓN DEL MAPA LEAFLET
-     * ------------------------------------------------------------------------
-     * Configuramos el mapa para utilizar OpenStreetMap (Color Original).
-     * Se centra por defecto en la zona de operaciones principal (Lima, Perú).
-     */
+    
     document.addEventListener("DOMContentLoaded", function() {
         // Validación para evitar errores si el contenedor del mapa no carga
         const mapContainer = document.getElementById('mapa');
@@ -1089,13 +1011,6 @@
                 .bindPopup("<b>Zona Sur: Activa</b><br>Alta demanda de vehículos.");
         }
         
-        /**
-         * MOTOR DE ANIMACIONES AL HACER SCROLL
-         * ------------------------------------------------------------------------
-         * Utiliza IntersectionObserver API para detectar cuándo un elemento con
-         * la clase '.fade-up' entra en el área visible de la pantalla (Viewport).
-         * Esto le agrega la clase '.visible' que dispara la transición CSS.
-         */
         const elementosAnimables = document.querySelectorAll('.fade-up');
         
         if (elementosAnimables.length > 0) {
