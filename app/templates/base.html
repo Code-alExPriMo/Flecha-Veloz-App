@@ -253,7 +253,7 @@
     </main>
 
     <!-- =========================================================
-         MOTOR GLOBAL DE ADAPTACIÓN MÓVIL (APLICA A TODO EL SISTEMA)
+         MOTOR GLOBAL DE ADAPTACIÓN MÓVIL (100% TRANSPARENTE)
          ========================================================= -->
     <style>
         @media (max-width: 850px) {
@@ -264,36 +264,41 @@
                 position: relative;
             }
 
-            /* 1. Barra de navegación compacta en 2 niveles para celulares */
+            /* 1. Barra de navegación 100% transparente que deja pasar el fondo */
             .navbar {
+                position: absolute !important;
+                top: 0 !important;
+                left: 0 !important;
+                right: 0 !important;
                 height: auto !important;
-                min-height: 60px !important;
-                padding: 10px 16px !important;
+                padding: 14px 18px !important;
                 flex-wrap: wrap !important;
-                gap: 8px !important;
-                background: rgba(10, 10, 10, 0.92) !important;
-                backdrop-filter: blur(16px) !important;
-                -webkit-backdrop-filter: blur(16px) !important;
-                border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+                gap: 6px !important;
+                background: transparent !important;
+                background-color: transparent !important;
+                backdrop-filter: none !important;
+                -webkit-backdrop-filter: none !important;
+                border-bottom: none !important;
+                box-shadow: none !important;
             }
 
             .nav-left {
                 width: 100% !important;
                 flex-direction: column !important;
                 align-items: flex-start !important;
-                gap: 10px !important;
+                gap: 8px !important;
             }
 
             .navbar-logo {
-                height: 34px !important;
+                height: 36px !important;
                 filter: invert(1) brightness(100) !important;
             }
 
-            /* Ubicamos el avatar de perfil arriba a la derecha sin empujar el ancho */
+            /* Avatar arriba a la derecha sin romper el ancho */
             .profile-container {
                 position: absolute !important;
-                top: 10px !important;
-                right: 16px !important;
+                top: 14px !important;
+                right: 18px !important;
             }
 
             .profile-text-box {
@@ -307,14 +312,15 @@
                 height: 34px !important;
             }
 
-            /* Menú deslizable horizontalmente tipo App Móvil */
+            /* Enlaces de texto limpios y transparentes sobre la imagen de fondo */
             .nav-links {
                 width: 100% !important;
                 display: flex !important;
-                gap: 8px !important;
+                gap: 18px !important;
                 overflow-x: auto !important;
-                padding: 6px 0 2px 0 !important;
-                border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
+                padding: 4px 0 !important;
+                border-top: none !important;
+                background: transparent !important;
                 scrollbar-width: none !important;
                 -ms-overflow-style: none !important;
             }
@@ -325,15 +331,20 @@
 
             .nav-item {
                 white-space: nowrap !important;
-                font-size: 12px !important;
-                padding: 6px 12px !important;
-                background: rgba(255, 255, 255, 0.06) !important;
-                border: 1px solid rgba(255, 255, 255, 0.08) !important;
-                border-radius: 999px !important;
+                font-size: 13px !important;
+                font-weight: 500 !important;
+                padding: 4px 0 !important;
+                background: transparent !important;
+                border: none !important;
+                border-radius: 0 !important;
+                color: rgba(255, 255, 255, 0.85) !important;
+            }
+
+            .nav-item:hover, .nav-item.active {
                 color: #ffffff !important;
             }
 
-            /* 2. Neutralizar el desborde lateral en todas las páginas */
+            /* 2. El fondo de las vistas sube hasta el borde superior (detrás del navbar) */
             .content-area {
                 padding: 0 !important;
                 margin: 0 !important;
@@ -351,7 +362,7 @@
                 margin-left: 0 !important;
                 margin-right: 0 !important;
                 margin-top: 0 !important;
-                padding-top: 118px !important;
+                padding-top: 110px !important;
                 padding-bottom: 45px !important;
                 background-attachment: scroll !important;
                 overflow-x: hidden !important;
@@ -370,7 +381,7 @@
                 box-sizing: border-box !important;
             }
 
-            /* 3. Modales y Alertas perfettamente cuadrados en pantalla móvil */
+            /* 3. Modales y Alertas encuadrados en móvil */
             .modal-oculto {
                 padding: 12px !important;
             }
@@ -543,7 +554,7 @@
             }
         });
 
-        // 3. Destruir la sesión correctamente (conservando fotos y configuraciones del sistema)
+        // 3. Destruir la sesión correctamente
         const btnLogout = document.getElementById('btn-logout');
         if (btnLogout) {
             btnLogout.addEventListener('click', function(e) {
