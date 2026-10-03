@@ -30,7 +30,7 @@
     .nav-item:hover { color: #ffffff !important; }
     #ui-nombre { color: #ffffff !important; }
     #ui-rol { color: rgba(255,255,255,0.7) !important; }
-    #ui-iniciales { background-color: #ffffff !important; color: #000000 !important; }
+    #ui-iniciales { background-color: #ffffff !important; color: #000000 !important; overflow: hidden; }
     .navbar-logo { filter: invert(1) brightness(100) !important; }
 
     /* =========================================================
@@ -98,17 +98,17 @@
         display: flex;
         flex-direction: column;
         align-items: center;
-        padding: 30px 20px;
+        padding: 30px 20px 24px;
         border-bottom: 1px solid rgba(255,255,255,0.08);
         text-align: center;
     }
 
     .avatar-grande {
-        width: 90px;
-        height: 90px;
+        width: 94px;
+        height: 94px;
         border-radius: 50%;
         background-color: rgba(255,255,255,0.1);
-        border: 1px solid rgba(255,255,255,0.15);
+        border: 2px solid rgba(255,255,255,0.18);
         color: white;
         display: flex;
         justify-content: center;
@@ -116,8 +116,43 @@
         font-size: 32px;
         font-family: 'Montserrat', sans-serif;
         font-weight: 700;
-        margin-bottom: 15px;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        margin-bottom: 12px;
+        box-shadow: 0 6px 18px rgba(0,0,0,0.35);
+        overflow: hidden;
+        cursor: pointer;
+        position: relative;
+        transition: border-color 0.25s ease, transform 0.25s ease;
+    }
+
+    .avatar-grande:hover {
+        border-color: rgba(255,255,255,0.5);
+        transform: scale(1.02);
+    }
+
+    .avatar-grande img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+    }
+
+    .btn-subir-foto {
+        background: rgba(255,255,255,0.06);
+        color: #d1d5db;
+        border: 1px solid rgba(255,255,255,0.14);
+        border-radius: 999px;
+        padding: 5px 12px;
+        font-family: 'Inter', sans-serif;
+        font-size: 11px;
+        font-weight: 600;
+        cursor: pointer;
+        margin-bottom: 14px;
+        transition: all 0.2s ease;
+    }
+
+    .btn-subir-foto:hover {
+        background: #ffffff;
+        color: #000000;
     }
 
     .sidebar-perfil-info h3 { 
@@ -165,7 +200,7 @@
         font-weight: 600; 
     }
 
-    /* Pestaña secreta de admin */
+    /* Pestaña exclusiva de Gerencia */
     #menu-admin { 
         display: none; 
         border-top: 1px solid rgba(255,255,255,0.08); 
@@ -200,14 +235,14 @@
         font-size: 26px; 
         font-weight: 700;
         letter-spacing: -0.5px;
-        text-align: center; /* Centrado como solicitaste */
+        text-align: center;
     }
     
     .subtitulo-seccion { 
         color: #9ca3af; 
         font-size: 14px; 
         margin-bottom: 35px; 
-        text-align: center; /* Centrado como solicitaste */
+        text-align: center;
     }
     
     hr { 
@@ -215,6 +250,72 @@
         height: 1px; 
         background: rgba(255,255,255,0.08); 
         margin: 30px 0; 
+    }
+
+    /* Bloque de foto dentro del formulario de Perfil */
+    .perfil-foto-box {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        background: rgba(255,255,255,0.03);
+        border: 1px solid rgba(255,255,255,0.08);
+        border-radius: 12px;
+        padding: 16px 20px;
+        margin-bottom: 24px;
+    }
+
+    .perfil-foto-izq {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+    }
+
+    .avatar-mediano {
+        width: 54px;
+        height: 54px;
+        border-radius: 50%;
+        background: rgba(255,255,255,0.08);
+        border: 1px solid rgba(255,255,255,0.16);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-family: 'Montserrat', sans-serif;
+        font-size: 18px;
+        font-weight: 700;
+        color: #ffffff;
+        overflow: hidden;
+        flex-shrink: 0;
+    }
+
+    .avatar-mediano img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .acciones-foto-perfil {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+    }
+
+    .btn-foto-accion {
+        background: rgba(255,255,255,0.08);
+        color: #ffffff;
+        border: 1px solid rgba(255,255,255,0.14);
+        border-radius: 8px;
+        padding: 8px 14px;
+        font-family: 'Inter', sans-serif;
+        font-size: 12px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s ease;
+    }
+
+    .btn-foto-accion:hover {
+        background: #ffffff;
+        color: #000000;
     }
 
     /* Formularios Premium Oscuros */
@@ -273,7 +374,7 @@
         font-family: 'Inter', sans-serif; 
         transition: all 0.3s ease; 
         margin-top: 15px;
-        width: 100%; /* El botón ocupa todo el ancho para acompañar el diseño centrado */
+        width: 100%;
     }
     
     .btn-guardar:hover { 
@@ -323,7 +424,7 @@
     }
 
     /* =========================================================
-       5. TABLA ADMIN (ESTILO OSCURO)
+       5. TABLA ADMIN (ESTILO OSCURO CON FOTO DE CHOFER)
        ========================================================= */
     .tabla-admin { 
         width: 100%; 
@@ -351,6 +452,41 @@
     
     .tabla-admin tr:last-child td { border-bottom: none; }
     .tabla-admin tr:hover td { background: rgba(255,255,255,0.02); }
+
+    .celda-conductor-foto {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .avatar-chofer-tabla {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: rgba(255,255,255,0.08);
+        border: 1px solid rgba(255,255,255,0.16);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-family: 'Montserrat', sans-serif;
+        font-size: 13px;
+        font-weight: 700;
+        color: #ffffff;
+        overflow: hidden;
+        cursor: pointer;
+        flex-shrink: 0;
+        transition: border-color 0.2s ease;
+    }
+
+    .avatar-chofer-tabla:hover {
+        border-color: #ffffff;
+    }
+
+    .avatar-chofer-tabla img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
     
     .badge-activo { 
         background: rgba(16, 185, 129, 0.15); 
@@ -412,19 +548,28 @@
     @media (max-width: 850px) {
         .ajustes-container { flex-direction: column; }
         .ajustes-sidebar { width: 100%; }
-        .ajustes-content { padding: 30px 20px; }
+        .ajustes-content { padding: 30px 20px; box-sizing: border-box; width: 100%; }
+        .perfil-foto-box { flex-direction: column; align-items: flex-start; }
     }
 </style>
 
 <div class="ajustes-page">
     <div class="ajustes-overlay"></div>
 
+    <!-- Input oculto para seleccionar imagen de perfil (propia o de chofer) -->
+    <input type="file" id="input-archivo-foto" accept="image/*" style="display: none;" onchange="procesarImagenSeleccionada(event)">
+
     <div class="ajustes-container">
 
         <!-- PANEL IZQUIERDO -->
         <div class="ajustes-sidebar">
             <div class="sidebar-perfil-info">
-                <div class="avatar-grande" id="sidebar-iniciales">--</div>
+                <div class="avatar-grande" id="sidebar-iniciales" onclick="solicitarCambioFoto(idUsuarioAjustes)" title="Haz clic para cambiar tu foto">
+                    --
+                </div>
+                <button type="button" class="btn-subir-foto" onclick="solicitarCambioFoto(idUsuarioAjustes)">
+                    Cambiar foto
+                </button>
                 <h3 id="sidebar-nombre">Cargando...</h3>
                 <p id="sidebar-rol">...</p>
             </div>
@@ -436,7 +581,7 @@
                 <div class="menu-item" onclick="cambiarPestana('seguridad', this)">
                     Seguridad de la cuenta
                 </div>
-                <!-- Esta pestaña solo la verán los Gerentes/Admins -->
+                <!-- Esta pestaña solo la verá el Gerente (Rol 1) -->
                 <div class="menu-item" id="menu-admin" onclick="cambiarPestana('admin', this)">
                     Gestión de Personal
                 </div>
@@ -452,8 +597,28 @@
             <!-- PESTAÑA: PERFIL -->
             <div id="tab-perfil" class="tab-seccion activa">
                 <h2 class="titulo-seccion">Perfil público</h2>
-                <p class="subtitulo-seccion">Actualiza tu información personal de contacto</p>
+                <p class="subtitulo-seccion">Actualiza tu fotografía e información personal de contacto</p>
                 <hr>
+
+                <!-- Bloque para subir o quitar la foto de perfil -->
+                <div class="perfil-foto-box">
+                    <div class="perfil-foto-izq">
+                        <div class="avatar-mediano" id="preview-foto-form">--</div>
+                        <div>
+                            <strong style="display: block; font-size: 13px; color: #ffffff;">Fotografía de perfil</strong>
+                            <span style="font-size: 11px; color: #9ca3af;">Se mostrará en tu cuenta y en el panel operativo</span>
+                        </div>
+                    </div>
+                    <div class="acciones-foto-perfil">
+                        <button type="button" class="btn-foto-accion" onclick="solicitarCambioFoto(idUsuarioAjustes)">
+                            Subir foto
+                        </button>
+                        <button type="button" class="btn-foto-accion" onclick="eliminarFotoUsuario(idUsuarioAjustes)" style="color: #9ca3af;">
+                            Quitar
+                        </button>
+                    </div>
+                </div>
+
                 <div class="form-grupo">
                     <label>Nombre Completo</label>
                     <input type="text" id="inp-nombre" class="form-input" autocomplete="off">
@@ -485,10 +650,10 @@
                 </div>
             </div>
 
-            <!-- PESTAÑA: ADMIN (GESTIÓN DE PERSONAL) -->
+            <!-- PESTAÑA: ADMIN (GESTIÓN DE PERSONAL - EXCLUSIVA GERENTE) -->
             <div id="tab-admin" class="tab-seccion">
                 <h2 class="titulo-seccion">Gestión de Personal</h2>
-                <p class="subtitulo-seccion">Administra las cuentas de los conductores operativos.</p>
+                <p class="subtitulo-seccion">Administra las cuentas y fotografías de los conductores operativos</p>
                 <hr>
                 
                 <div style="overflow-x: auto;">
@@ -531,22 +696,112 @@
 <script>
     const idUsuarioAjustes = parseInt(localStorage.getItem('id_usuario')) || 0;
     const rolActualUsuario = String(localStorage.getItem('id_rol')); 
+    let idUsuarioObjetivoFoto = idUsuarioAjustes;
+
+    // Obtener iniciales limpias de un nombre
+    function calcularIniciales(nombreTexto) {
+        if (!nombreTexto) return "--";
+        return nombreTexto.trim().split(" ").map(n => n[0]).join("").substring(0, 2).toUpperCase();
+    }
+
+    // Pintar la foto o las iniciales en el sidebar, en el formulario y en el navbar superior
+    function actualizarAvataresPropios() {
+        const nombreLocal = localStorage.getItem('usuarioNombre') || '';
+        const iniciales = calcularIniciales(nombreLocal);
+        const fotoGuardada = localStorage.getItem(`fv_foto_usuario_${idUsuarioAjustes}`);
+
+        const avatarSidebar = document.getElementById('sidebar-iniciales');
+        const avatarForm    = document.getElementById('preview-foto-form');
+        const avatarNavbar  = document.getElementById('ui-iniciales');
+
+        if (fotoGuardada) {
+            const imgTag = `<img src="${fotoGuardada}" alt="Foto de perfil">`;
+            if (avatarSidebar) avatarSidebar.innerHTML = imgTag;
+            if (avatarForm)    avatarForm.innerHTML    = imgTag;
+            if (avatarNavbar)  avatarNavbar.innerHTML  = `<img src="${fotoGuardada}" alt="Perfil" style="width:100%; height:100%; object-fit:cover; border-radius:50%;">`;
+        } else {
+            if (avatarSidebar) avatarSidebar.innerText = iniciales;
+            if (avatarForm)    avatarForm.innerText    = iniciales;
+            if (avatarNavbar)  avatarNavbar.innerText  = iniciales;
+        }
+    }
+
+    // Abrir el selector de archivos para subir foto (propia o de un chofer en la tabla)
+    function solicitarCambioFoto(idDestino) {
+        idUsuarioObjetivoFoto = idDestino || idUsuarioAjustes;
+        const input = document.getElementById('input-archivo-foto');
+        input.value = '';
+        input.click();
+    }
+
+    // Recortar y comprimir la imagen automáticamente en un cuadrado ligero (180x180)
+    function procesarImagenSeleccionada(event) {
+        const archivo = event.target.files[0];
+        if (!archivo) return;
+
+        const lector = new FileReader();
+        lector.onload = function(e) {
+            const img = new Image();
+            img.onload = function() {
+                const canvas = document.createElement('canvas');
+                const tamano = 180;
+                canvas.width = tamano;
+                canvas.height = tamano;
+                const ctx = canvas.getContext('2d');
+
+                // Recorte centrado cuadrado (Crop center)
+                const ladoMenor = Math.min(img.width, img.height);
+                const sx = (img.width - ladoMenor) / 2;
+                const sy = (img.height - ladoMenor) / 2;
+
+                ctx.drawImage(img, sx, sy, ladoMenor, ladoMenor, 0, 0, tamano, tamano);
+                const base64Comprimido = canvas.toDataURL('image/jpeg', 0.82);
+
+                localStorage.setItem(`fv_foto_usuario_${idUsuarioObjetivoFoto}`, base64Comprimido);
+
+                if (Number(idUsuarioObjetivoFoto) === idUsuarioAjustes) {
+                    actualizarAvataresPropios();
+                }
+                if (rolActualUsuario === "1") {
+                    cargarPersonalAdmin();
+                }
+
+                if (typeof notificar === "function") {
+                    notificar("Fotografía de perfil actualizada correctamente.", "success");
+                }
+            };
+            img.src = e.target.result;
+        };
+        lector.readAsDataURL(archivo);
+    }
+
+    function eliminarFotoUsuario(idDestino) {
+        localStorage.removeItem(`fv_foto_usuario_${idDestino}`);
+        if (Number(idDestino) === idUsuarioAjustes) {
+            actualizarAvataresPropios();
+        }
+        if (rolActualUsuario === "1") {
+            cargarPersonalAdmin();
+        }
+        if (typeof notificar === "function") {
+            notificar("Fotografía eliminada. Se mostrarán tus iniciales.", "info");
+        }
+    }
 
     // Iniciar
     window.addEventListener('DOMContentLoaded', async () => {
         if (idUsuarioAjustes === 0) return window.location.href = "/";
         
-        // Cargar panel izquierdo básico
-        const nombreLocal = localStorage.getItem('usuarioNombre');
+        const nombreLocal = localStorage.getItem('usuarioNombre') || 'Usuario';
         document.getElementById('sidebar-nombre').innerText = nombreLocal;
-        document.getElementById('sidebar-rol').innerText = localStorage.getItem('usuarioRol');
-        const iniciales = nombreLocal.split(" ").map(n => n[0]).join("").substring(0,2).toUpperCase();
-        document.getElementById('sidebar-iniciales').innerText = iniciales;
+        document.getElementById('sidebar-rol').innerText = localStorage.getItem('usuarioRol') || '';
 
-        // MAGIA RBAC (Control de Acceso): Mostrar panel de Admin solo a Gerentes (No a Choferes)
-        if (rolActualUsuario !== "3") {
+        actualizarAvataresPropios();
+
+        // Control de Acceso Estricto: Mostrar Gestión de Personal SOLO al Gerente (Rol 1)
+        if (rolActualUsuario === "1") {
             document.getElementById('menu-admin').style.display = "block";
-            cargarPersonalAdmin(); // Cargamos la tabla en segundo plano
+            cargarPersonalAdmin();
         }
 
         // Consultar info del perfil propio
@@ -572,7 +827,7 @@
         document.getElementById('tab-' + idTab).classList.add('activa');
     }
 
-    // 2. Cargar tabla de Personal (Solo para Admin)
+    // 2. Cargar tabla de Personal con Rostro del Conductor (Solo para Gerente)
     async function cargarPersonalAdmin() {
         try {
             const peticion = await fetch('/api/admin/choferes');
@@ -581,6 +836,12 @@
             let html = '';
             data.forEach(chofer => {
                 const estaActivo = (chofer.estado === 1 || chofer.estado === true);
+                const fotoChofer = localStorage.getItem(`fv_foto_usuario_${chofer.id}`);
+                const inicialesChofer = calcularIniciales(chofer.nombre);
+
+                const contenidoAvatar = fotoChofer
+                    ? `<img src="${fotoChofer}" alt="${chofer.nombre}">`
+                    : inicialesChofer;
                 
                 const badge = estaActivo 
                     ? `<span class="badge-activo">Activo</span>` 
@@ -593,8 +854,15 @@
                 html += `
                     <tr>
                         <td>
-                            <strong style="color: #ffffff; font-family: 'Inter', sans-serif;">${chofer.nombre}</strong><br>
-                            <span style="font-size:11px; color: #9ca3af; text-transform: uppercase;">DNI: ${chofer.dni}</span>
+                            <div class="celda-conductor-foto">
+                                <div class="avatar-chofer-tabla" onclick="solicitarCambioFoto(${chofer.id})" title="Haz clic para cambiar la foto de ${chofer.nombre}">
+                                    ${contenidoAvatar}
+                                </div>
+                                <div>
+                                    <strong style="color: #ffffff; font-family: 'Inter', sans-serif;">${chofer.nombre}</strong><br>
+                                    <span style="font-size:11px; color: #9ca3af; text-transform: uppercase;">DNI: ${chofer.dni}</span>
+                                </div>
+                            </div>
                         </td>
                         <td>
                             <span style="font-size:13px; color: #d1d5db;">${chofer.telefono}</span><br>
@@ -629,7 +897,7 @@
                 } else {
                     alert(`Cuenta de conductor ${accion.toLowerCase()}da.`);
                 }
-                cargarPersonalAdmin(); // Refrescar la tabla al instante
+                cargarPersonalAdmin();
             } else {
                 if (typeof notificar === "function") notificar("Error al actualizar el estado.", "error");
             }

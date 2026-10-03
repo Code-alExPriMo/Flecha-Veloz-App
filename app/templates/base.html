@@ -195,11 +195,11 @@
     <!-- BARRA SUPERIOR -->
     <header class="navbar">
         <div class="nav-left">
-            <img src="/static/img/logo.png" alt="Logo Flecha Veloz" class="navbar-logo">
+            <img src="/static/img/logo.png" alt="Logo Flecha Veloz" class="navbar-logo" onclick="window.location.href='/dashboard'">
             <nav class="nav-links">
                 <a href="/dashboard" class="nav-item">Inicio</a>
                 
-                <!-- Botones con ID para filtrarlos por Rol -->
+                <!-- Botones con ID para filtrarlos por Rol (HU-10) -->
                 <a href="/registro_chofer" class="nav-item" id="menu-registro">Registrar Chofer</a>
                 <a href="/panel_chofer" class="nav-item" id="menu-panel">Panel Chofer</a>
                 <a href="/central" class="nav-item" id="menu-central">Central Operativa</a>
@@ -235,114 +235,146 @@
     </main>
 
     <!-- =========================================================
-         LÓGICA DEL SISTEMA (ROLES, DATOS Y CIERRE DE SESIÓN)
+         LÓGICA DEL SISTEMA (3 ROLES ESTRICTOS SEGÚN HU-10)
          ========================================================= -->
     <script>
         // 1. Desplegar el menú del perfil al hacer clic
         document.addEventListener('click', function(event) {
             const profileBtn = document.getElementById('profileBtn');
             const dropdown = document.getElementById('dropdownMenu');
-            if (profileBtn.contains(event.target)) {
+            if (profileBtn && profileBtn.contains(event.target)) {
                 dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
-            } else {
+            } else if (dropdown) {
                 dropdown.style.display = 'none';
             }
         });
 
-        // 2. Inyectar datos y aplicar reglas de seguridad (RBAC)
+        // 2. Inyectar datos y aplicar reglas de seguridad por Rol (RBAC - HU-10)
         window.addEventListener('DOMContentLoaded', () => {
             const nombre = localStorage.getItem('usuarioNombre');
             const correo = localStorage.getItem('usuarioCorreo');
-            const rol = localStorage.getItem('usuarioRol');
+            const rol = localStorage.getItem('usuarioRol') || '';
             const idRol = String(localStorage.getItem('id_rol')); 
             const rutaActual = window.location.pathname;
 
-            // 🚨 EL GUARDIÁN DE RUTAS (SECURITY CHECK)
-            const rutasAdmin = ['/central', '/reportes', '/registro_chofer', '/registro_cliente'];
-            const rutasChofer = ['/panel_chofer'];
+            // Si no hay sesión activa, redirigir al Login
+            if (!nombre) {
+                window.location.href = "/";
+                return;
+            }
 
-            if (idRol === "3" && rutasAdmin.includes(rutaActual)) {
-                // Si es chofer y quiere entrar a zonas de gerencia, patada a su panel
+            // ========================================================
+            // 🚨 A. EL GUARDIÁN DE RUTAS (SECURITY CHECK POR URL)
+            // ========================================================
+            const rutasExclusivasGerente = ['/reportes', '/registro_chofer'];
+            const rutasOperativasAdmin   = ['/central', '/registro_cliente'];
+            const rutasExclusivasChofer  = ['/panel_chofer'];
+
+            // Regla para CHOFER (Rol 3): Si intenta entrar a módulos de Admin o Gerente -> redirigir a su panel
+            if (idRol === "3" && (rutasExclusivasGerente.includes(rutaActual) || rutasOperativasAdmin.includes(rutaActual))) {
                 window.location.replace('/panel_chofer');
                 return;
             }
 
-            if ((idRol === "1" || idRol === "2") && rutasChofer.includes(rutaActual)) {
-                // Si es gerente y quiere entrar al panel de chofer, patada al dashboard
+            // Regla para ADMINISTRATIVO (Rol 2 - HU-10 CA-01): No puede entrar a rutas exclusivas de Gerencia ni de Chofer
+            if (idRol === "2" && (rutasExclusivasGerente.includes(rutaActual) || rutasExclusivasChofer.includes(rutaActual))) {
+                window.location.replace('/central');
+                return;
+            }
+
+            // Regla para GERENTE (Rol 1 - HU-10 CA-02): Tiene acceso a todo excepto al panel móvil exclusivo del Chofer
+            if (idRol === "1" && rutasExclusivasChofer.includes(rutaActual)) {
                 window.location.replace('/dashboard');
                 return;
             }
 
-            if (nombre) {
-                // Llenar los datos visuales
-                document.getElementById('ui-nombre').textContent = nombre;
-                document.getElementById('ui-nombre-menu').textContent = nombre;
-                document.getElementById('ui-correo').textContent = correo;
-                document.getElementById('ui-rol').textContent = rol;
+            // ========================================================
+            // 👤 B. PINTAR DATOS VISUALES DEL USUARIO
+            // ========================================================
+            document.getElementById('ui-nombre').textContent = nombre;
+            document.getElementById('ui-nombre-menu').textContent = nombre;
+            document.getElementById('ui-correo').textContent = correo;
+            document.getElementById('ui-rol').textContent = rol;
 
-                const palabras = nombre.split(" ");
-                let iniciales = palabras[0].charAt(0);
-                if (palabras.length > 1) {
-                    iniciales += palabras[1].charAt(0);
-                }
-                document.getElementById('ui-iniciales').textContent = iniciales.toUpperCase();
+            const palabras = nombre.trim().split(" ");
+            let iniciales = palabras[0].charAt(0);
+            if (palabras.length > 1) {
+                iniciales += palabras[1].charAt(0);
+            }
+            document.getElementById('ui-iniciales').textContent = iniciales.toUpperCase();
 
-                const saludo = document.getElementById('saludo-dashboard');
-                if (saludo) {
-                    saludo.textContent = "Hola de nuevo, " + palabras[0];
-                }
+            const saludo = document.getElementById('saludo-dashboard');
+            if (saludo) {
+                saludo.textContent = "Hola de nuevo, " + palabras[0];
+            }
 
-                // ========================================================
-                // 🛡️ B. FILTRO VISUAL EXTREMO POR ROLES
-                // ========================================================
-                
-                // Paso 1: Ocultar los enlaces de la barra de navegación superior
-                const menuRegistro = document.getElementById('menu-registro');
-                const menuPanel = document.getElementById('menu-panel');
-                const menuReportes = document.getElementById('menu-reportes');
-                const menuCentral = document.getElementById('menu-central');
-                const menuRegistroCliente = document.getElementById('menu-registro-cliente');
+            // ========================================================
+            // 🛡️ C. FILTRO VISUAL ESTRICTO POR ROLES (HU-10 CA-01 y CA-02)
+            // ========================================================
+            const menuRegistroChofer  = document.getElementById('menu-registro');
+            const menuPanelChofer     = document.getElementById('menu-panel');
+            const menuReportes        = document.getElementById('menu-reportes');
+            const menuCentral         = document.getElementById('menu-central');
+            const menuRegistroCliente = document.getElementById('menu-registro-cliente');
 
-                if (idRol === "3") { 
-                    // Reglas para el CHOFER (Rol 3)
-                    if (menuRegistro) menuRegistro.style.display = "none";
-                    if (menuReportes) menuReportes.style.display = "none";
-                    if (menuCentral) menuCentral.style.display = "none"; 
-                    if (menuRegistroCliente) menuRegistroCliente.style.display = "none";
-                    if (menuPanel) menuPanel.style.display = "block"; 
-                } else {
-                    // Reglas para GERENCIA y ADMINISTRACIÓN
-                    if (menuRegistro) menuRegistro.style.display = "block";
-                    if (menuReportes) menuReportes.style.display = "block";
-                    if (menuCentral) menuCentral.style.display = "block"; 
-                    if (menuRegistroCliente) menuRegistroCliente.style.display = "block";
-                    if (menuPanel) menuPanel.style.display = "none"; 
-                }
+            if (idRol === "1") {
+                // 👑 ROL 1: GERENTE (HU-10 CA-02: Funciones de administrativos + herramientas gerenciales)
+                if (menuRegistroChofer)  menuRegistroChofer.style.display = "block";
+                if (menuReportes)        menuReportes.style.display = "block";
+                if (menuCentral)         menuCentral.style.display = "block"; 
+                if (menuRegistroCliente) menuRegistroCliente.style.display = "block";
+                if (menuPanelChofer)     menuPanelChofer.style.display = "none"; 
 
-                // Paso 2: Escáner profundo. Busca botones intrusos en CUALQUIER vista y los destruye
-                if (idRol === "3") {
-                    const todosLosElementos = document.querySelectorAll('a, button');
-                    todosLosElementos.forEach(el => {
-                        const href = (el.getAttribute('href') || '').toLowerCase();
-                        const texto = (el.innerText || '').toLowerCase();
-                        
-                        // Si el botón o enlace dice alguna de estas palabras o apunta a estas rutas, se oculta
-                        if (
-                            href.includes('/registro_chofer') || 
-                            href.includes('/reportes') || 
-                            href.includes('/registro_cliente') || 
-                            href.includes('/central') ||
-                            texto.includes('registrar chofer') ||
-                            texto.includes('ver reportes') ||
-                            texto.includes('registrar cliente')
-                        ) {
-                            el.style.display = 'none';
-                        }
-                    });
-                }
+            } else if (idRol === "2") {
+                // 🎧 ROL 2: ADMINISTRATIVO (HU-10 CA-01: Gestiona reservas y clientes, NO ve opciones de gerencia)
+                if (menuRegistroChofer)  menuRegistroChofer.style.display = "none";
+                if (menuReportes)        menuReportes.style.display = "none";
+                if (menuCentral)         menuCentral.style.display = "block"; 
+                if (menuRegistroCliente) menuRegistroCliente.style.display = "block";
+                if (menuPanelChofer)     menuPanelChofer.style.display = "none"; 
 
-            } else {
-                window.location.href = "/";
+                // Escáner profundo para ocultarle al Administrativo los botones de Gerencia en el Dashboard
+                const todosLosElementos = document.querySelectorAll('a, button');
+                todosLosElementos.forEach(el => {
+                    const href = (el.getAttribute('href') || '').toLowerCase();
+                    const texto = (el.innerText || '').toLowerCase();
+                    if (
+                        href.includes('/registro_chofer') || 
+                        href.includes('/reportes') || 
+                        texto.includes('registrar chofer') ||
+                        texto.includes('ver reportes') ||
+                        texto.includes('empezar a operar')
+                    ) {
+                        el.style.display = 'none';
+                    }
+                });
+
+            } else if (idRol === "3") { 
+                // 🚗 ROL 3: CHOFER (HU-10 CA-01: Solo ve su panel de chofer)
+                if (menuRegistroChofer)  menuRegistroChofer.style.display = "none";
+                if (menuReportes)        menuReportes.style.display = "none";
+                if (menuCentral)         menuCentral.style.display = "none"; 
+                if (menuRegistroCliente) menuRegistroCliente.style.display = "none";
+                if (menuPanelChofer)     menuPanelChofer.style.display = "block"; 
+
+                // Escáner profundo para ocultarle al Chofer todos los botones de Admin y Gerencia en cualquier vista
+                const todosLosElementos = document.querySelectorAll('a, button');
+                todosLosElementos.forEach(el => {
+                    const href = (el.getAttribute('href') || '').toLowerCase();
+                    const texto = (el.innerText || '').toLowerCase();
+                    if (
+                        href.includes('/registro_chofer') || 
+                        href.includes('/reportes') || 
+                        href.includes('/registro_cliente') || 
+                        href.includes('/central') ||
+                        texto.includes('registrar chofer') ||
+                        texto.includes('ver reportes') ||
+                        texto.includes('registrar cliente') ||
+                        texto.includes('empezar a operar')
+                    ) {
+                        el.style.display = 'none';
+                    }
+                });
             }
         });
 

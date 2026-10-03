@@ -42,18 +42,12 @@
     html,
     body {
         overflow-x: hidden;
-        margin-top: 0;
-        margin-right: 0;
-        margin-bottom: 0;
-        margin-left: 0;
-        padding-top: 0;
-        padding-right: 0;
-        padding-bottom: 0;
-        padding-left: 0;
+        margin: 0;
+        padding: 0;
         background-color: var(--color-background-base);
     }
 
-    /* Ocultar el cuadro de texto feo del GPS de Leaflet Routing Machine */
+    /* Ocultar el cuadro de texto nativo del GPS de Leaflet Routing Machine */
     .leaflet-routing-container { display: none !important; }
 
     /* ==========================================================================
@@ -61,8 +55,7 @@
        ========================================================================== */
     .navbar {
         background-color: transparent !important;
-        border-bottom-width: 0 !important;
-        border-bottom-style: none !important;
+        border-bottom: none !important;
         position: absolute !important;
         top: 0;
         left: 0;
@@ -106,9 +99,7 @@
         margin-left: calc(-50vw + 50%);
         margin-top: -40px;
         padding-top: 110px;
-        padding-right: 0;
         padding-bottom: 80px;
-        padding-left: 0;
         background-image: url('/static/img/portada.png');
         background-size: cover;
         background-position: center;
@@ -140,50 +131,37 @@
         z-index: 2;
         width: 100%;
         max-width: 1100px;
-        margin-top: 0;
-        margin-right: auto;
-        margin-bottom: 0;
-        margin-left: auto;
-        padding-top: 0;
-        padding-right: 25px;
-        padding-bottom: 0;
-        padding-left: 25px;
+        margin: 0 auto;
+        padding: 0 25px;
         box-sizing: border-box;
         color: var(--color-text-main);
     }
 
     /* ==========================================================================
-       4. TARJETAS SUPERIORES (GRID LAYOUT)
+       4. TARJETAS SUPERIORES (GRID LAYOUT ARMÓNICO)
        ========================================================================== */
     .top-cards {
         display: grid;
-        grid-template-columns: 1.5fr 1fr;
+        grid-template-columns: 1.45fr 1fr;
         gap: 18px;
-        margin-top: 0;
-        margin-right: 0;
         margin-bottom: 22px;
-        margin-left: 0;
     }
 
     /* ==========================================================================
-       TARJETA ESTADO OPERATIVO
+       TARJETA ESTADO OPERATIVO (HU-04)
        ========================================================================== */
     .estado-card {
         background-color: var(--glass-bg-medium);
         backdrop-filter: blur(16px);
         -webkit-backdrop-filter: blur(16px);
-        border-width: 1px;
-        border-style: solid;
-        border-color: var(--glass-border-light);
-        padding-top: 20px;
-        padding-right: 22px;
-        padding-bottom: 20px;
-        padding-left: 22px;
+        border: 1px solid var(--glass-border-light);
+        padding: 20px 22px;
         border-radius: 16px;
         display: flex;
         flex-direction: row;
         justify-content: space-between;
         align-items: center;
+        gap: 15px;
         box-shadow: var(--shadow-strong);
         transition: var(--transition-standard);
     }
@@ -194,10 +172,7 @@
     }
 
     .info-estado h2 {
-        margin-top: 0;
-        margin-right: 0;
-        margin-bottom: 0;
-        margin-left: 0;
+        margin: 0;
         font-family: var(--font-primary);
         font-size: 21px;
         font-weight: 600;
@@ -206,10 +181,7 @@
     }
 
     .info-estado p {
-        margin-top: 7px;
-        margin-right: 0;
-        margin-bottom: 0;
-        margin-left: 0;
+        margin: 7px 0 0 0;
         color: var(--color-text-muted);
         font-family: var(--font-secondary);
         font-size: 13px;
@@ -217,21 +189,12 @@
 
     .placa-badge {
         display: inline-flex;
-        flex-direction: row;
         align-items: center;
-        margin-top: 0;
-        margin-right: 0;
-        margin-bottom: 0;
         margin-left: 7px;
-        padding-top: 4px;
-        padding-right: 9px;
-        padding-bottom: 4px;
-        padding-left: 9px;
+        padding: 4px 9px;
         border-radius: 6px;
         background-color: var(--glass-bg-light);
-        border-width: 1px;
-        border-style: solid;
-        border-color: var(--glass-border-light);
+        border: 1px solid var(--glass-border-light);
         color: var(--color-text-main);
         font-size: 12px;
         font-weight: 700;
@@ -239,26 +202,52 @@
         vertical-align: middle;
     }
 
+    .acciones-terminal {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+    }
+
+    /* Botón discreto para abrir el modal de reservas por fecha (HU-05) */
+    .btn-agenda-modal {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        padding: 10px 14px;
+        border-radius: 999px;
+        font-weight: 600;
+        font-size: 12px;
+        font-family: var(--font-secondary);
+        background-color: rgba(255, 255, 255, 0.06);
+        color: #ffffff;
+        border: 1px solid rgba(255, 255, 255, 0.14);
+        cursor: pointer;
+        transition: var(--transition-standard);
+        white-space: nowrap;
+    }
+
+    .btn-agenda-modal:hover {
+        background-color: rgba(255, 255, 255, 0.14);
+        border-color: rgba(255, 255, 255, 0.28);
+    }
+
     /* ==========================================================================
        BOTÓN DE CONTROL DE ESTADO
        ========================================================================== */
     #btn-estado {
         display: inline-flex;
-        flex-direction: row;
         align-items: center;
         justify-content: center;
         gap: 8px;
-        padding-top: 10px;
-        padding-right: 14px;
-        padding-bottom: 10px;
-        padding-left: 14px;
+        padding: 10px 14px;
         border-radius: 999px;
         font-weight: 600;
         font-size: 12px;
         font-family: var(--font-secondary);
-        border-width: 1px;
-        border-style: solid;
-        border-color: transparent;
+        border: 1px solid transparent;
         cursor: pointer;
         transition: var(--transition-standard);
         white-space: nowrap;
@@ -280,18 +269,18 @@
         width: 7px;
         height: 7px;
         border-radius: 50%;
-        background-color: #737373;
-        box-shadow: 0 0 8px rgba(255, 255, 255, 0.15);
+        background-color: #ef4444;
+        box-shadow: 0 0 8px rgba(239, 68, 68, 0.4);
         transition: var(--transition-standard);
     }
 
     .btn-activo .status-dot {
-        background-color: var(--color-text-main);
-        box-shadow: 0 0 8px rgba(255, 255, 255, 0.75);
+        background-color: #10b981;
+        box-shadow: 0 0 8px rgba(16, 185, 129, 0.85);
     }
 
     /* ==========================================================================
-       5. TARJETA BILLETERA FINANCIERA
+       5. TARJETA BILLETERA FINANCIERA (CON DESCUENTO DE COMISIÓN APP)
        ========================================================================== */
     .wallet-card {
         background-image: linear-gradient(
@@ -302,14 +291,9 @@
         backdrop-filter: blur(16px);
         -webkit-backdrop-filter: blur(16px);
         color: var(--color-text-main);
-        padding-top: 18px;
-        padding-right: 20px;
-        padding-bottom: 18px;
-        padding-left: 20px;
+        padding: 18px 20px;
         border-radius: 16px;
-        border-width: 1px;
-        border-style: solid;
-        border-color: var(--glass-border-light);
+        border: 1px solid var(--glass-border-light);
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -321,31 +305,33 @@
 
     .wallet-header {
         display: flex;
-        flex-direction: row;
         justify-content: space-between;
         align-items: center;
-        margin-top: 0;
-        margin-right: 0;
-        margin-bottom: 8px;
-        margin-left: 0;
+        margin-bottom: 6px;
     }
 
     .wallet-title {
-        margin-top: 0;
-        margin-right: 0;
-        margin-bottom: 0;
-        margin-left: 0;
+        margin: 0;
         color: var(--color-text-muted);
         font-family: var(--font-secondary);
-        font-size: 12px;
+        font-size: 11px;
         text-transform: uppercase;
         letter-spacing: 0.7px;
         font-weight: 600;
     }
 
+    .wallet-badge-pct {
+        font-size: 10px;
+        font-weight: 700;
+        color: #10b981;
+        background: rgba(16, 185, 129, 0.12);
+        border: 1px solid rgba(16, 185, 129, 0.28);
+        padding: 2px 8px;
+        border-radius: 999px;
+    }
+
     .wallet-amount-container {
         display: flex;
-        flex-direction: row;
         align-items: baseline;
         gap: 5px;
     }
@@ -358,10 +344,7 @@
     }
 
     .wallet-amount {
-        margin-top: 0;
-        margin-right: 0;
-        margin-bottom: 0;
-        margin-left: 0;
+        margin: 0;
         font-family: var(--font-primary);
         font-size: 32px;
         font-weight: 700;
@@ -369,8 +352,17 @@
         color: var(--color-text-main);
     }
 
+    .wallet-sub-desglose {
+        margin-top: 4px;
+        font-size: 11px;
+        color: #9ca3af;
+        display: flex;
+        justify-content: space-between;
+        gap: 8px;
+    }
+
     .btn-retiro-premium {
-        margin-top: 15px;
+        margin-top: 12px;
         background: rgba(16, 185, 129, 0.15);
         color: #10b981;
         border: 1px solid rgba(16, 185, 129, 0.3);
@@ -400,25 +392,15 @@
         backdrop-filter: blur(18px);
         -webkit-backdrop-filter: blur(18px);
         color: var(--color-text-main);
-        padding-top: 24px;
-        padding-right: 24px;
-        padding-bottom: 24px;
-        padding-left: 24px;
+        padding: 24px;
         border-radius: 18px;
-        margin-top: 0;
-        margin-right: 0;
         margin-bottom: 22px;
-        margin-left: 0;
-        border-width: 1px;
-        border-style: solid;
-        border-color: rgba(255, 255, 255, 0.13);
+        border: 1px solid rgba(255, 255, 255, 0.13);
         box-shadow: 0 20px 50px rgba(0, 0, 0, 0.42);
     }
 
     .alerta-animada {
-        animation-name: aparecer-viaje;
-        animation-duration: 0.4s;
-        animation-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        animation: aparecer-viaje 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
 
     @keyframes aparecer-viaje {
@@ -426,13 +408,17 @@
         100% { opacity: 1; transform: translateY(0) scale(1); }
     }
 
-    #titulo-viaje {
-        margin-top: 0;
-        margin-right: 0;
-        margin-bottom: 0;
-        margin-left: 0;
+    .cabecera-mision {
         display: flex;
-        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 12px;
+    }
+
+    #titulo-viaje {
+        margin: 0;
+        display: flex;
         align-items: center;
         gap: 9px;
         font-family: var(--font-primary);
@@ -442,44 +428,113 @@
         color: var(--color-text-main);
     }
 
-    /* Modal de Retiro (NUEVO) */
+    /* Botón de Notificación Previa 30 minutos antes (HU-05 CA-01) */
+    .btn-notificar-30 {
+        background: rgba(245, 158, 11, 0.14);
+        color: #fbbf24;
+        border: 1px solid rgba(245, 158, 11, 0.35);
+        padding: 8px 13px;
+        border-radius: 999px;
+        font-family: var(--font-secondary);
+        font-size: 11px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: var(--transition-fast);
+    }
+
+    .btn-notificar-30:hover {
+        background: rgba(245, 158, 11, 0.25);
+    }
+
+    .btn-notificar-30:disabled {
+        background: rgba(16, 185, 129, 0.14);
+        color: #34d399;
+        border-color: rgba(16, 185, 129, 0.35);
+        cursor: default;
+    }
+
+    /* Modales Ocultos (Retiro y Mis Reservas por Fecha) */
     .modal-oculto {
         display: none;
         position: fixed;
         top: 0; left: 0; width: 100%; height: 100%;
-        background: rgba(0,0,0,0.75);
-        backdrop-filter: blur(5px);
+        background: rgba(0,0,0,0.78);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
         z-index: 10000;
         justify-content: center;
         align-items: center;
+        padding: 20px;
+        box-sizing: border-box;
     }
+
     .modal-contenido-retiro {
-        background: linear-gradient(145deg, rgba(28,28,28,0.95), rgba(10,10,10,0.95));
-        border: 1px solid rgba(255,255,255,0.1);
-        padding: 30px;
-        border-radius: 16px;
+        background: linear-gradient(145deg, rgba(28,28,28,0.97), rgba(10,10,10,0.97));
+        border: 1px solid rgba(255,255,255,0.12);
+        padding: 28px;
+        border-radius: 18px;
         width: 100%;
-        max-width: 350px;
-        box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+        max-width: 390px;
+        box-shadow: 0 25px 60px rgba(0,0,0,0.6);
         text-align: center;
+        color: #ffffff;
+    }
+
+    .modal-contenido-agenda {
+        background: linear-gradient(145deg, rgba(26,26,26,0.98), rgba(10,10,10,0.98));
+        border: 1px solid rgba(255,255,255,0.13);
+        padding: 26px;
+        border-radius: 18px;
+        width: 100%;
+        max-width: 560px;
+        max-height: 85vh;
+        overflow-y: auto;
+        box-shadow: 0 30px 70px rgba(0,0,0,0.65);
+        color: #ffffff;
+    }
+
+    .desglose-retiro-caja {
+        background: rgba(255,255,255,0.03);
+        border: 1px solid rgba(255,255,255,0.08);
+        border-radius: 12px;
+        padding: 14px;
+        margin-bottom: 18px;
+        text-align: left;
+        font-size: 12px;
+    }
+
+    .desglose-fila {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 8px;
+        color: #9ca3af;
+    }
+
+    .desglose-fila:last-child {
+        margin-bottom: 0;
+        padding-top: 8px;
+        border-top: 1px dashed rgba(255,255,255,0.12);
+        color: #ffffff;
+        font-weight: 700;
     }
 
     .input-monto-retiro {
         width: 100%;
-        padding: 15px;
-        border-radius: 8px;
+        padding: 14px;
+        border-radius: 10px;
         border: 1px solid rgba(255,255,255,0.2);
         background: rgba(0,0,0,0.5);
         color: #10b981;
         font-weight: 700;
         text-align: center;
-        font-size: 32px;
+        font-size: 30px;
         font-family: var(--font-primary);
         box-sizing: border-box;
-        margin-bottom: 20px;
+        margin-bottom: 18px;
         outline: none;
         transition: border-color 0.3s;
     }
+
     .input-monto-retiro:focus {
         border-color: #10b981;
     }
@@ -492,18 +547,10 @@
         grid-template-columns: 1fr 1fr;
         gap: 16px;
         margin-top: 20px;
-        margin-right: 0;
-        margin-bottom: 0;
-        margin-left: 0;
         background-color: rgba(255, 255, 255, 0.03);
-        padding-top: 18px;
-        padding-right: 18px;
-        padding-bottom: 18px;
-        padding-left: 18px;
+        padding: 18px;
         border-radius: 12px;
-        border-width: 1px;
-        border-style: solid;
-        border-color: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.05);
     }
 
     .viaje-item { display: flex; flex-direction: column; }
@@ -520,7 +567,6 @@
         font-size: 24px !important; color: #10b981 !important; font-weight: 700 !important; letter-spacing: -0.5px;
     }
 
-    /* Nueva cajita de resumen de OSRM en el chofer */
     .ruta-info-box {
         background: rgba(59, 130, 246, 0.1);
         border: 1px solid rgba(59, 130, 246, 0.3);
@@ -570,7 +616,7 @@
     .btn-origen:hover { background-color: #2563eb !important; }
 
     /* ==========================================================================
-       8. CONTENEDOR DEL MAPA LEAFLET
+       8. CONTENEDOR DEL MAPA LEAFLET (LIMPIO Y PROTAGONISTA)
        ========================================================================== */
     .mapa-wrapper {
         padding: 8px; background-image: linear-gradient(145deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.03));
@@ -582,6 +628,15 @@
     .leaflet-control-zoom { border: none !important; box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4) !important; }
     .leaflet-control-zoom a { background-color: rgba(20, 20, 20, 0.9) !important; color: var(--color-text-main) !important; border: none !important; }
     .leaflet-control-zoom a:hover { background-color: rgba(45, 45, 45, 1) !important; }
+
+    /* Tarjetas dentro del modal de reservas por fecha */
+    .item-reserva-modal {
+        background: rgba(255,255,255,0.03);
+        border: 1px solid rgba(255,255,255,0.08);
+        border-radius: 12px;
+        padding: 14px;
+        margin-bottom: 10px;
+    }
 
     /* ==========================================================================
        9. MEDIA QUERIES (DISEÑO RESPONSIVO)
@@ -595,7 +650,8 @@
     @media (max-width: 600px) {
         .panel-container { padding: 0 15px; }
         .estado-card { flex-direction: column; align-items: flex-start; }
-        #btn-estado { width: 100%; margin-top: 10px; }
+        .acciones-terminal { width: 100%; justify-content: stretch; }
+        #btn-estado, .btn-agenda-modal { flex: 1; }
         .viaje-detalles { grid-template-columns: 1fr; }
         .viaje-item[style*="grid-column"] { grid-column: span 1 !important; }
         .botones-accion { flex-direction: column; }
@@ -610,10 +666,11 @@
     <div class="panel-container">
 
         <!-- ==================================================================
-             SECCIÓN SUPERIOR: ESTADO Y BILLETERA
+             SECCIÓN SUPERIOR: ESTADO Y BILLETERA (DISEÑO LIMPIO ORIGINAL)
              ================================================================== -->
         <div class="top-cards" id="tarjetas-superiores">
 
+            <!-- TARJETA 1: ESTADO OPERATIVO (HU-04) + ACCESO A RESERVAS (HU-05) -->
             <div class="estado-card">
                 <div class="info-estado">
                     <h2>Terminal del Conductor</h2>
@@ -622,15 +679,22 @@
                         <strong id="ui-placa" class="placa-badge">Validando...</strong>
                     </p>
                 </div>
-                <button id="btn-estado" class="btn-inactivo" onclick="cambiarEstado()">
-                    <span class="status-dot"></span> No Operativo
-                </button>
+
+                <div class="acciones-terminal">
+                    <button type="button" class="btn-agenda-modal" onclick="abrirModalAgenda()">
+                        Mis Reservas
+                    </button>
+                    <button id="btn-estado" class="btn-inactivo" onclick="cambiarEstado()">
+                        <span class="status-dot"></span> No Operativo
+                    </button>
+                </div>
             </div>
 
-            <!-- TARJETA 2: BILLETERA (AHORA SOLO MUESTRA SALDO DISPONIBLE) -->
+            <!-- TARJETA 2: BILLETERA (SOLO SALDO NETO DESCONTANDO COMISIÓN APP) -->
             <div class="wallet-card">
                 <div class="wallet-header">
-                    <h3 class="wallet-title">Saldo Disponible</h3>
+                    <h3 class="wallet-title">Tu Saldo Neto Disponible</h3>
+                    <span class="wallet-badge-pct" id="ui-badge-porcentaje-chofer">Tu 80% Neto</span>
                 </div>
 
                 <div class="wallet-amount-container">
@@ -638,24 +702,36 @@
                     <h2 id="ui-ganancias-principal" class="wallet-amount">0.00</h2>
                 </div>
 
+                <div class="wallet-sub-desglose">
+                    <span id="ui-texto-bruto">Viajes Bruto: S/ 0.00</span>
+                    <span id="ui-texto-comision-app" style="color: #f59e0b;">Comisión App (20%): -S/ 0.00</span>
+                </div>
+
                 <button class="btn-retiro-premium" onclick="abrirModalRetiro()">
-                    Retirar Fondos
+                    Retirar Mi Saldo Neto
                 </button>
             </div>
 
         </div>
 
         <!-- ==================================================================
-             PANEL MODAL FLOTANTE: MISIÓN DE VIAJE
+             PANEL FLOTANTE: MISIÓN DE VIAJE EN CURSO (HU-05 y HU-06)
              ================================================================== -->
         <div id="alerta-viaje" class="alerta-viaje alerta-animada">
-            <h2 id="titulo-viaje">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M12 22s-8-4.5-8-11.8A8 8 0 0 1 12 2a8 8 0 0 1 8 8.2c0 7.3-8 11.8-8 11.8z"></path>
-                    <circle cx="12" cy="10" r="3"></circle>
-                </svg>
-                Solicitud de Viaje Entrante
-            </h2>
+            <div class="cabecera-mision">
+                <h2 id="titulo-viaje">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 22s-8-4.5-8-11.8A8 8 0 0 1 12 2a8 8 0 0 1 8 8.2c0 7.3-8 11.8-8 11.8z"></path>
+                        <circle cx="12" cy="10" r="3"></circle>
+                    </svg>
+                    Solicitud de Viaje Entrante
+                </h2>
+
+                <!-- Botón HU-05 CA-01: Notificar 30 minutos antes a administración -->
+                <button id="btn-notificar-previo" type="button" class="btn-notificar-30" onclick="notificarAdministrativo30Min('ACTUAL')">
+                    Notificar Salida (30 min antes)
+                </button>
+            </div>
 
             <input type="hidden" id="viaje-id-actual">
             <input type="hidden" id="v-origen-lat">
@@ -665,12 +741,16 @@
 
             <div class="viaje-detalles">
                 <div class="viaje-item"><span>Identidad del Pasajero</span><strong id="v-pasajero">Buscando datos...</strong></div>
-                <div class="viaje-item"><span>Monto a Recaudar</span><strong id="v-tarifa" class="tarifa-gigante">S/ 0.00</strong></div>
+                <div class="viaje-item">
+                    <span>Tarifa del Servicio / Tu Neto</span>
+                    <strong id="v-tarifa" class="tarifa-gigante">S/ 0.00</strong>
+                    <small id="v-neto-viaje" style="color:#9ca3af; font-size:11px; margin-top:3px;">Tu ganancia neta (80%): S/ 0.00</small>
+                </div>
                 <div class="viaje-item" style="grid-column: span 2;"><span>Punto A (Recojo)</span><strong id="v-origen">Calculando ruta...</strong></div>
                 <div class="viaje-item" style="grid-column: span 2;"><span>Punto B (Llegada)</span><strong id="v-destino">Calculando ruta...</strong></div>
             </div>
 
-            <!-- NUEVO: CUADRO DE RESUMEN DE TIEMPO Y DISTANCIA -->
+            <!-- CUADRO DE RESUMEN DE TIEMPO Y DISTANCIA -->
             <div id="ruta-resumen" class="ruta-info-box">
                 <div id="ruta-distancia">Distancia total: Calculando...</div>
                 <div id="ruta-tiempo">Tiempo est. por calles: Calculando...</div>
@@ -686,7 +766,7 @@
         </div>
 
         <!-- ==================================================================
-             LIENZO DEL MAPA
+             LIENZO DEL MAPA (SIN TABLAS ABAJO PARA MANTENER ARMONÍA)
              ================================================================== -->
         <div class="mapa-wrapper">
             <div id="mapa-chofer"></div>
@@ -696,20 +776,39 @@
 </div>
 
 <!-- ==================================================================
-     MODAL DE RETIRO DE FONDOS (PARCIAL O TOTAL)
+     MODAL 1: RETIRO DE FONDOS CON LÍMITE ESTRICTO DEL 80% NETO
      ================================================================== -->
 <div id="modal-retiro" class="modal-oculto">
     <div class="modal-contenido-retiro">
         
-        <h3 style="color: #10b981; margin-top: 0; margin-bottom: 10px; font-family: var(--font-primary);">Retiro de Ganancias</h3>
+        <h3 style="color: #10b981; margin-top: 0; margin-bottom: 8px; font-family: var(--font-primary);">Retiro de Ganancias Netas</h3>
         
-        <p style="color: var(--color-text-muted); font-size: 13px; margin-bottom: 25px; line-height: 1.4;">
-            Ingresa el monto que deseas transferir a tu cuenta bancaria. Saldo máximo: <strong id="maximo-retiro-txt" style="color: white;">S/ 0.00</strong>
+        <p style="color: var(--color-text-muted); font-size: 12px; margin-bottom: 16px; line-height: 1.4;">
+            Solo puedes transferir tu porcentaje neto. La comisión de <strong>Flecha Veloz</strong> se retiene automáticamente para la empresa.
         </p>
+
+        <!-- Desglose transparente para el chofer -->
+        <div class="desglose-retiro-caja">
+            <div class="desglose-fila">
+                <span>Total recaudado en viajes:</span>
+                <strong id="ret-bruto">S/ 0.00</strong>
+            </div>
+            <div class="desglose-fila" style="color: #f59e0b;">
+                <span id="ret-label-comision">Comisión Flecha Veloz (20%):</span>
+                <strong id="ret-comision">- S/ 0.00</strong>
+            </div>
+            <div class="desglose-fila">
+                <span>Retiros / Liquidaciones previas:</span>
+                <strong id="ret-previos">- S/ 0.00</strong>
+            </div>
+            <div class="desglose-fila">
+                <span>Límite máximo a transferir:</span>
+                <strong id="maximo-retiro-txt" style="color: #10b981;">S/ 0.00</strong>
+            </div>
+        </div>
         
-        <!-- Input para que el chofer decida cuánto retirar -->
         <div style="text-align: left;">
-            <label style="color: var(--text-muted); font-size: 12px; display: block; margin-bottom: 5px; font-weight: 600; text-transform: uppercase;">Monto a retirar (S/)</label>
+            <label style="color: var(--color-text-muted); font-size: 11px; display: block; margin-bottom: 6px; font-weight: 600; text-transform: uppercase;">Monto a transferir (S/)</label>
             <input type="number" id="input-monto-retiro" class="input-monto-retiro" min="1" step="0.50">
         </div>
 
@@ -721,6 +820,32 @@
     </div>
 </div>
 
+<!-- ==================================================================
+     MODAL 2: MIS RESERVAS POR FECHA Y AVISO 30 MIN ANTES (HU-05 / HU-06)
+     ================================================================== -->
+<div id="modal-agenda" class="modal-oculto">
+    <div class="modal-contenido-agenda">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; border-bottom:1px solid rgba(255,255,255,0.08); padding-bottom:14px;">
+            <div>
+                <h3 style="margin:0; font-family:var(--font-primary); font-size:18px;">Mis Reservas Asignadas</h3>
+                <span style="font-size:11px; color:#9ca3af;">Filtra por fecha y notifica 30 min antes a los administrativos (HU-05)</span>
+            </div>
+            <div style="display:flex; gap:8px; align-items:center;">
+                <input type="date" id="filtro-fecha-chofer" onchange="renderizarAgendaChofer()" style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.15); color:#fff; padding:7px 10px; border-radius:8px; font-size:12px;">
+                <button type="button" onclick="limpiarFechaAgendaChofer()" style="background:rgba(255,255,255,0.08); color:#fff; border:1px solid rgba(255,255,255,0.15); padding:7px 10px; border-radius:8px; font-size:11px; cursor:pointer;">Todas</button>
+            </div>
+        </div>
+
+        <div id="contenedor-reservas-modal" style="max-height: 340px; overflow-y: auto; padding-right: 4px;">
+            <div style="text-align:center; color:#777; padding:25px; font-size:12px;">Cargando reservas...</div>
+        </div>
+
+        <button type="button" onclick="cerrarModalAgenda()" style="width:100%; margin-top:16px; padding:12px; background:rgba(255,255,255,0.08); color:#fff; border:1px solid rgba(255,255,255,0.12); border-radius:10px; font-weight:600; cursor:pointer;">
+            Cerrar Ventana
+        </button>
+    </div>
+</div>
+
 <script>
     const idChofer = parseInt(localStorage.getItem("id_usuario")) || 0;
     let estadoOperativo = 0;
@@ -729,7 +854,14 @@
     let buscadorInterval = null;
     let pinPuntoA = null;
     let pinPuntoB = null;
-    let saldoDisponible = 0.00; 
+
+    // Variables financieras separadas (Bruto vs Comisión Flecha Veloz vs Neto Chofer)
+    let saldoDisponible = 0.00;
+    let totalBrutoChofer = 0.00;
+    let comisionAppMonto = 0.00;
+    let totalRetiradoPrevio = 0.00;
+    let porcentajeComisionApp = 20.0;
+    let historialRemotoChofer = [];
 
     const mapa = L.map('mapa-chofer').setView([-12.0463, -77.0427], 13);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(mapa);
@@ -738,29 +870,26 @@
     const iconoPinesRuta = L.icon({ iconUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png', iconSize: [25, 41], iconAnchor: [12, 41] });
 
     /* ========================================================================
-       NUEVO: MOTOR DE RUTAS INTELIGENTE PARA EL CHOFER (OSRM)
+       MOTOR DE RUTAS INTELIGENTE PARA EL CHOFER (OSRM)
        ======================================================================== */
-    let coordenadasRutaActual = []; // Memoria para almacenar las curvas de la calle
+    let coordenadasRutaActual = [];
 
     const controlRutaChofer = L.Routing.control({
         waypoints: [],
         routeWhileDragging: false,
         addWaypoints: false,
-        show: false, // Ocultar panel nativo
+        show: false,
         lineOptions: {
             styles: [{ color: '#3b82f6', opacity: 0.9, weight: 6 }]
         },
-        createMarker: function() { return null; } // Tú ya creas los pines manuales
+        createMarker: function() { return null; }
     }).addTo(mapa);
 
-    // Evento que se dispara cuando OSRM encuentra la ruta por la pista
     controlRutaChofer.on('routesfound', function(e) {
         const rutas = e.routes;
         if (rutas && rutas.length > 0) {
-            // Guardamos las coordenadas exactas de la calle para que el auto las siga
             coordenadasRutaActual = rutas[0].coordinates; 
             
-            // Llenamos el cuadro de Tiempo y Distancia
             const resumen = rutas[0].summary;
             const distanciaKm = (resumen.totalDistance / 1000).toFixed(2);
             const tiempoMin = Math.round(resumen.totalTime / 60);
@@ -792,18 +921,44 @@
             });
         } catch (error) {}
 
+        await cargarHistorialServidorChofer();
         buscarViajeAsignado();
         buscadorInterval = setInterval(buscarViajeAsignado, 5000);
     }
 
+    /* ========================================================================
+       CÁLCULO FINANCIERO BLINDADO: SEPARA LA COMISIÓN DE FLECHA VELOZ
+       ======================================================================== */
     async function cargarMapeoFinanciero() {
         try {
             const peticionGanancias = await fetch(`/api/chofer/ganancias/${idChofer}`);
-            const datosFinancieros = await peticionGanancias.json();
-            
-            saldoDisponible = parseFloat(datosFinancieros.ganancias_hoy || 0);
+            const datos = await peticionGanancias.json();
+
+            porcentajeComisionApp = parseFloat(datos.comision_pct || localStorage.getItem('fv_comision_pct') || 20);
+            const porcentajeChofer = 100 - porcentajeComisionApp;
+
+            // Si el backend ya manda el desglose nuevo lo usamos; si es el backend anterior, lo calculamos aquí mismo
+            if (datos.comision_app !== undefined) {
+                totalBrutoChofer    = parseFloat(datos.ganancias_totales || 0);
+                comisionAppMonto    = parseFloat(datos.comision_app || 0);
+                totalRetiradoPrevio = parseFloat(datos.total_retirado || 0);
+                saldoDisponible     = parseFloat(datos.ganancias_hoy || 0);
+            } else {
+                totalBrutoChofer    = parseFloat(datos.ganancias_totales || 0);
+                const saldoAntiguo  = parseFloat(datos.ganancias_hoy || 0);
+                totalRetiradoPrevio = Math.max(0, totalBrutoChofer - saldoAntiguo);
+                comisionAppMonto    = +(totalBrutoChofer * (porcentajeComisionApp / 100)).toFixed(2);
+                const netoTotal     = +(totalBrutoChofer - comisionAppMonto).toFixed(2);
+                saldoDisponible     = Math.max(0, +(netoTotal - totalRetiradoPrevio).toFixed(2));
+            }
+
+            document.getElementById('ui-badge-porcentaje-chofer').innerText = `Tu ${porcentajeChofer}% Neto`;
             document.getElementById('ui-ganancias-principal').innerText = saldoDisponible.toFixed(2);
-        } catch (error) {}
+            document.getElementById('ui-texto-bruto').innerText = `Bruto: S/ ${totalBrutoChofer.toFixed(2)}`;
+            document.getElementById('ui-texto-comision-app').innerText = `App (${porcentajeComisionApp}%): -S/ ${comisionAppMonto.toFixed(2)}`;
+        } catch (error) {
+            console.error("Error al calcular finanzas del chofer:", error);
+        }
     }
 
     async function buscarViajeAsignado() {
@@ -812,6 +967,10 @@
             const paqueteViaje = await peticionViaje.json();
 
             if (paqueteViaje.id_viaje && !viajeActivo) {
+                const tarifaBruta = parseFloat(paqueteViaje.tarifa) || 0;
+                const pctChofer = 100 - porcentajeComisionApp;
+                const gananciaNetaViaje = tarifaBruta * (pctChofer / 100);
+
                 document.getElementById('viaje-id-actual').value = paqueteViaje.id_viaje;
                 document.getElementById('v-origen-lat').value = paqueteViaje.origen_lat;
                 document.getElementById('v-origen-lng').value = paqueteViaje.origen_lng;
@@ -821,7 +980,8 @@
                 document.getElementById('v-pasajero').innerText = paqueteViaje.pasajero;
                 document.getElementById('v-origen').innerText = paqueteViaje.origen;
                 document.getElementById('v-destino').innerText = paqueteViaje.destino;
-                document.getElementById('v-tarifa').innerText = `S/ ${parseFloat(paqueteViaje.tarifa).toFixed(2)}`;
+                document.getElementById('v-tarifa').innerText = `S/ ${tarifaBruta.toFixed(2)}`;
+                document.getElementById('v-neto-viaje').innerText = `Tu ganancia neta (${pctChofer}%): S/ ${gananciaNetaViaje.toFixed(2)} | App (${porcentajeComisionApp}%): S/ ${(tarifaBruta - gananciaNetaViaje).toFixed(2)}`;
 
                 document.getElementById('alerta-viaje').style.display = 'block';
                 document.getElementById('tarjetas-superiores').style.display = 'none';
@@ -843,7 +1003,6 @@
         if(latA && lngA) pinPuntoA = L.marker([latA, lngA], { icon: iconoPinesRuta }).addTo(mapa).bindPopup("Punto A (Pasajero)").openPopup();
         if(latB && lngB) pinPuntoB = L.marker([latB, lngB], { icon: iconoPinesRuta }).addTo(mapa).bindPopup("Punto B (Destino)");
 
-        // Pedimos a Leaflet Routing que trace la calle entre el Auto y el Cliente
         const latVehiculo = miMarcador.getLatLng().lat;
         const lngVehiculo = miMarcador.getLatLng().lng;
         
@@ -853,7 +1012,6 @@
                 L.latLng(latA, lngA)
             ]);
 
-            // Damos 1 segundo para que la ruta azul se dibuje antes de arrancar el auto
             setTimeout(() => {
                 simularManejoPorCalles(function() {
                     document.getElementById('titulo-viaje').innerHTML = `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"></path><circle cx="12" cy="10" r="3"></circle></svg> ¡Llegaste al origen!`;
@@ -875,7 +1033,6 @@
 
         if(pinPuntoB) pinPuntoB.openPopup();
 
-        // Limpiamos la ruta actual y trazamos la nueva desde el Punto A al B
         coordenadasRutaActual = [];
         if (latA && lngA && latB && lngB) {
             controlRutaChofer.setWaypoints([
@@ -892,12 +1049,8 @@
         }
     }
 
-    /* ========================================================================
-       NUEVO: FUNCIÓN DE MANEJO INTELIGENTE POR LAS PISTAS (Sigue la línea)
-       ======================================================================== */
     function simularManejoPorCalles(callbackDeLlegada) {
         if (!coordenadasRutaActual || coordenadasRutaActual.length === 0) {
-            // Failsafe por si el internet falla al trazar la ruta
             if (typeof callbackDeLlegada === "function") callbackDeLlegada();
             return;
         }
@@ -914,11 +1067,10 @@
                 miMarcador.setLatLng([punto.lat, punto.lng]);
                 mapa.panTo([punto.lat, punto.lng]);
                 
-                // Avanzamos de 3 en 3 puntos para que el auto "corra" fluido y no tarde 10 minutos
                 indiceActual += 3; 
                 if (indiceActual >= totalPuntos) indiceActual = totalPuntos - 1;
             }
-        }, 80); // Velocidad del auto (milisegundos entre cada fotograma)
+        }, 80);
     }
 
     async function finalizarViaje() {
@@ -928,7 +1080,17 @@
                 method: 'POST', headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ id_viaje: parseInt(idViajeActual), id_chofer: idChofer })
             });
-            notificar("¡Transacción Exitosa! Los fondos han sido asegurados en la bóveda virtual.", "success");
+
+            // HU-06 CA-01: Marcar como Atendida para bloquear modificaciones o cancelaciones
+            let reservasLocal = JSON.parse(localStorage.getItem('fv_reservas_central') || '[]');
+            reservasLocal.forEach(r => {
+                if (Number(r.id_chofer) === idChofer && (r.estado === 'Confirmada' || r.estado === 'Pendiente')) {
+                    r.estado = 'Atendida';
+                }
+            });
+            localStorage.setItem('fv_reservas_central', JSON.stringify(reservasLocal));
+
+            notificar("¡Viaje finalizado como 'Atendida'! Tu ganancia neta ha sido abonada.", "success");
             setTimeout(() => { window.location.reload(); }, 2500);
         } catch (error) {
             notificar("Fallo de comunicación al procesar el comprobante.", "error");
@@ -946,7 +1108,6 @@
             document.getElementById('tarjetas-superiores').style.display = 'grid';
             viajeActivo = false;
             
-            // Borrar ruta trazada si rechaza
             controlRutaChofer.setWaypoints([]);
             if (pinPuntoA) mapa.removeLayer(pinPuntoA);
             if (pinPuntoB) mapa.removeLayer(pinPuntoB);
@@ -977,21 +1138,28 @@
             if (miMarcador) miMarcador.setOpacity(1.0);
         } else {
             botonInterface.className = 'btn-inactivo';
-            botonInterface.innerHTML = `<span class="status-dot"></span> Fuera de Servicio`;
+            botonInterface.innerHTML = `<span class="status-dot"></span> No Operativo`;
             if (miMarcador) miMarcador.setOpacity(0.4);
         }
     }
 
     /* ------------------------------------------------------------------------
-       LÓGICA DEL MODAL DE RETIRO DE FONDOS
+       MODAL DE RETIRO DE FONDOS (CON TOPE ESTRICTO DEL 80% NETO DEL CHOFER)
        ------------------------------------------------------------------------ */
     function abrirModalRetiro() {
         if (saldoDisponible <= 0) {
-            return notificar("No tienes saldo disponible para retirar.", "warning");
+            return notificar("No tienes saldo neto disponible para retirar.", "warning");
         }
         
+        document.getElementById('ret-bruto').innerText = `S/ ${totalBrutoChofer.toFixed(2)}`;
+        document.getElementById('ret-label-comision').innerText = `Comisión Flecha Veloz (${porcentajeComisionApp}%):`;
+        document.getElementById('ret-comision').innerText = `- S/ ${comisionAppMonto.toFixed(2)}`;
+        document.getElementById('ret-previos').innerText = `- S/ ${totalRetiradoPrevio.toFixed(2)}`;
         document.getElementById('maximo-retiro-txt').innerText = `S/ ${saldoDisponible.toFixed(2)}`;
-        document.getElementById('input-monto-retiro').value = saldoDisponible.toFixed(2);
+
+        const inputRetiro = document.getElementById('input-monto-retiro');
+        inputRetiro.max = saldoDisponible.toFixed(2);
+        inputRetiro.value = saldoDisponible.toFixed(2);
         document.getElementById('modal-retiro').style.display = 'flex';
     }
 
@@ -1006,8 +1174,8 @@
             return notificar("Ingresa un monto válido mayor a S/ 0.00", "warning");
         }
         
-        if (montoIngresado > saldoDisponible) {
-            return notificar("No puedes retirar más dinero del que tienes disponible.", "error");
+        if (montoIngresado > (saldoDisponible + 0.01)) {
+            return notificar(`Límite excedido: Solo puedes transferir hasta S/ ${saldoDisponible.toFixed(2)} (el ${porcentajeComisionApp}% pertenece a Flecha Veloz).`, "error");
         }
 
         try {
@@ -1022,14 +1190,119 @@
 
             if (peticion.ok) {
                 cerrarModalRetiro();
-                notificar(`¡Retiro de S/ ${montoIngresado.toFixed(2)} procesado con éxito!`, "success");
+                notificar(`¡Transferencia neta de S/ ${montoIngresado.toFixed(2)} procesada con éxito!`, "success");
                 await cargarMapeoFinanciero(); 
             } else {
-                notificar("Hubo un error al intentar procesar el retiro.", "error");
+                const errData = await peticion.json().catch(() => ({}));
+                notificar(errData.detail || "Hubo un error al intentar procesar el retiro.", "error");
             }
         } catch (e) {
             notificar("Error de red. Intenta nuevamente.", "error");
         }
+    }
+
+    /* ------------------------------------------------------------------------
+       MODAL DE RESERVAS POR FECHA Y NOTIFICACIÓN 30 MIN ANTES (HU-05)
+       ------------------------------------------------------------------------ */
+    function abrirModalAgenda() {
+        renderizarAgendaChofer();
+        document.getElementById('modal-agenda').style.display = 'flex';
+    }
+
+    function cerrarModalAgenda() {
+        document.getElementById('modal-agenda').style.display = 'none';
+    }
+
+    function notificarAdministrativo30Min(idReserva) {
+        if (idReserva === 'ACTUAL') {
+            const btn = document.getElementById('btn-notificar-previo');
+            btn.disabled = true;
+            btn.innerText = 'Administración Notificada (30m)';
+        } else {
+            let reservasLocal = JSON.parse(localStorage.getItem('fv_reservas_central') || '[]');
+            const idx = reservasLocal.findIndex(r => r.id_reserva === idReserva);
+            if (idx !== -1) {
+                reservasLocal[idx].notificado_30m = true;
+                localStorage.setItem('fv_reservas_central', JSON.stringify(reservasLocal));
+            }
+            renderizarAgendaChofer();
+        }
+        notificar("Notificación enviada a los administrativos (30 min antes) para confirmar con el cliente.", "info");
+    }
+
+    async function cargarHistorialServidorChofer() {
+        const hoyStr = new Date().toISOString().split('T')[0];
+        try {
+            const res = await fetch(`/api/reportes/historial_chofer/${idChofer}?rango=total`);
+            if (res.ok) {
+                const data = await res.json();
+                if (Array.isArray(data)) {
+                    historialRemotoChofer = data.map((v, i) => ({
+                        id_reserva: `BD-${idChofer}-${i}`,
+                        id_chofer: idChofer,
+                        fecha: v.fecha || hoyStr,
+                        hora: v.hora || '--:--',
+                        pasajero: v.pasajero ? v.pasajero.split(' - ')[0].trim() : 'Cliente',
+                        origen: v.origen || 'Origen',
+                        destino: v.destino || 'Destino',
+                        tarifa: Number(v.tarifa) || 0,
+                        estado: (v.estado === 'Completado' || v.estado === 'Atendida') ? 'Atendida' : (v.estado || 'Atendida'),
+                        notificado_30m: true
+                    }));
+                }
+            }
+        } catch (e) {}
+    }
+
+    function renderizarAgendaChofer() {
+        const contenedor = document.getElementById('contenedor-reservas-modal');
+        const filtroFecha = (document.getElementById('filtro-fecha-chofer').value || '').trim();
+
+        const reservasCentral = JSON.parse(localStorage.getItem('fv_reservas_central') || '[]')
+            .filter(r => Number(r.id_chofer) === idChofer);
+
+        const todas = [...reservasCentral, ...historialRemotoChofer];
+        const filtradas = todas.filter(r => !filtroFecha || r.fecha === filtroFecha);
+
+        if (filtradas.length === 0) {
+            contenedor.innerHTML = `<div style="text-align:center; color:#777; padding:25px; font-size:12px;">No hay reservas registradas para esta fecha.</div>`;
+            return;
+        }
+
+        contenedor.innerHTML = '';
+        filtradas.forEach(r => {
+            const esAtendida = (r.estado === 'Atendida' || r.estado === 'Completado');
+            const colorEstado = esAtendida ? '#10b981' : (r.estado === 'Cancelado' ? '#ef4444' : '#f59e0b');
+            const netoViaje = (Number(r.tarifa) || 0) * ((100 - porcentajeComisionApp) / 100);
+
+            const botonAviso = (!esAtendida && r.estado !== 'Cancelado')
+                ? (r.notificado_30m
+                    ? `<span style="color:#10b981; font-size:11px; font-weight:600;">Aviso 30m enviado</span>`
+                    : `<button type="button" onclick="notificarAdministrativo30Min('${r.id_reserva}')" style="background:rgba(245,158,11,0.15); color:#fbbf24; border:1px solid rgba(245,158,11,0.35); padding:5px 10px; border-radius:6px; font-size:11px; font-weight:600; cursor:pointer;">Avisar 30 min antes</button>`)
+                : `<span style="color:#666; font-size:11px;">Cerrada</span>`;
+
+            contenedor.innerHTML += `
+                <div class="item-reserva-modal">
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+                        <strong style="font-size:13px;">${r.pasajero} <span style="color:#888; font-weight:400; font-size:11px;">(${r.fecha} · ${r.hora})</span></strong>
+                        <span style="color:${colorEstado}; font-size:10px; font-weight:700; text-transform:uppercase;">${esAtendida ? 'Atendida' : r.estado}</span>
+                    </div>
+                    <div style="font-size:11px; color:#9ca3af; margin-bottom:8px;">
+                        <div>Origen: ${r.origen}</div>
+                        <div>Destino: ${r.destino}</div>
+                    </div>
+                    <div style="display:flex; justify-content:space-between; align-items:center; border-top:1px dashed rgba(255,255,255,0.1); padding-top:8px;">
+                        <span style="font-size:12px;">Tarifa: <strong>S/ ${Number(r.tarifa).toFixed(2)}</strong> <small style="color:#10b981;">(Tu neto: S/ ${netoViaje.toFixed(2)})</small></span>
+                        ${botonAviso}
+                    </div>
+                </div>
+            `;
+        });
+    }
+
+    function limpiarFechaAgendaChofer() {
+        document.getElementById('filtro-fecha-chofer').value = '';
+        renderizarAgendaChofer();
     }
 
     window.onload = inicializarPanel;

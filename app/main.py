@@ -1,3 +1,4 @@
+from typing import Optional
 from fastapi import FastAPI, HTTPException, status, Request
 from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
@@ -31,6 +32,7 @@ class RegistroChoferRequest(BaseModel):
     password: str
 
 class RegistroClienteRequest(BaseModel):
+    dni: Optional[str] = None
     nombre: str
     telefono: str
 
@@ -87,7 +89,7 @@ async def pagina_central(request: Request):
 
 @app.get("/reportes", response_class=HTMLResponse)
 async def pagina_reportes(request: Request):
-    """Renderiza la pantalla de Inteligencia de Negocios para Gerencia"""
+    """Renderiza la pantalla de Inteligencia de Negocios para Gerencia."""
     return templates.TemplateResponse(request=request, name="reportes.html")
 
 @app.get("/ajustes", response_class=HTMLResponse)
@@ -100,8 +102,9 @@ async def pagina_legales(request: Request):
     """Renderiza el Centro de Confianza y Transparencia (Políticas y Reclamaciones)."""
     return templates.TemplateResponse(request=request, name="legales.html")
 
+
 # ==============================================================================
-# 3. ENDPOINTS DE API (LÓGICA DE NEGOCIO Y BASE DE DATOS)
+# 3. ENDPOINTS DE API (LÓGICA DE NEGOCIO Y BASE DE DATOS POSTGRESQL)
 # ==============================================================================
 @app.post("/api/login")
 def iniciar_sesion(credenciales: LoginRequest):
@@ -114,7 +117,7 @@ def iniciar_sesion(credenciales: LoginRequest):
         cursor = conexion.cursor()
         cursor.execute("""
             SELECT ID_Usuario, ID_Rol, PasswordHash, Estado, Nombre_Completo, Correo 
-            FROM Usuarios WHERE DNI = ?
+            FROM Usuarios WHERE DNI = %s
         """, (credenciales.dni,))
         usuario = cursor.fetchone()
 
@@ -136,6 +139,8 @@ def iniciar_sesion(credenciales: LoginRequest):
             "nombre": nombre_completo,
             "correo": correo
         }
+    except HTTPException as he:
+        raise he
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
     finally:
@@ -143,7 +148,7 @@ def iniciar_sesion(credenciales: LoginRequest):
 
 @app.post("/api/registrar_chofer")
 def api_registrar_chofer(datos: RegistroChoferRequest):
-    """Endpoint para registrar un nuevo chofer y su vehículo."""
+    """Endpoint para registrar un nuevo chofer y su vehículo en PostgreSQL (HU-07)."""
     conexion = obtener_conexion()
     if not conexion:
         raise HTTPException(status_code=500, detail="Error de conexión a la BD.")
@@ -151,7 +156,7 @@ def api_registrar_chofer(datos: RegistroChoferRequest):
     try:
         cursor = conexion.cursor()
         
-        cursor.execute("SELECT ID_Usuario FROM Usuarios WHERE DNI = ?", (datos.dni,))
+        cursor.execute("SELECT ID_Usuario FROM Usuarios WHERE DNI = %s", (datos.dni,))
         if cursor.fetchone():
             raise HTTPException(status_code=400, detail="Este DNI ya está registrado.")
 
@@ -159,20 +164,23 @@ def api_registrar_chofer(datos: RegistroChoferRequest):
         
         cursor.execute("""
             INSERT INTO Usuarios (ID_Rol, DNI, Nombre_Completo, Correo, PasswordHash, Estado)
-            OUTPUT INSERTED.ID_Usuario
-            VALUES (3, ?, ?, ?, ?, 1)
+            VALUES (3, %s, %s, %s, %s, 1)
+            RETURNING ID_Usuario
         """, (datos.dni, datos.nombre, datos.correo, hash_pass))
         
         nuevo_id_usuario = cursor.fetchone()[0]
 
         cursor.execute("""
             INSERT INTO Vehiculos (ID_Chofer, Placa, Operativo)
-            VALUES (?, ?, 0)
+            VALUES (%s, %s, 0)
         """, (nuevo_id_usuario, datos.placa.upper()))
 
         conexion.commit()
         return {"mensaje": "Chofer y vehículo registrados con éxito", "id": nuevo_id_usuario}
 
+    except HTTPException as he:
+        conexion.rollback()
+        raise he
     except Exception as e:
         conexion.rollback()
         raise HTTPException(status_code=500, detail=str(e))
@@ -180,8 +188,9 @@ def api_registrar_chofer(datos: RegistroChoferRequest):
         conexion.close()
 
 @app.post("/api/registrar_cliente")
+@app.post("/api/clientes/registrar")
 def api_registrar_cliente(datos: RegistroClienteRequest):
-    """Endpoint para registrar un nuevo pasajero frecuente."""
+    """Endpoint para registrar un nuevo cliente directo o desde una reserva (HU-01)."""
     conexion = obtener_conexion()
     if not conexion:
         raise HTTPException(status_code=500, detail="Error de conexión a la BD.")
@@ -189,18 +198,21 @@ def api_registrar_cliente(datos: RegistroClienteRequest):
     try:
         cursor = conexion.cursor()
         
-        cursor.execute("SELECT ID_Cliente FROM Clientes WHERE Telefono = ?", (datos.telefono,))
+        cursor.execute("SELECT ID_Cliente FROM Clientes WHERE Telefono = %s", (datos.telefono,))
         if cursor.fetchone():
             raise HTTPException(status_code=400, detail="Este teléfono ya está registrado.")
 
         cursor.execute("""
             INSERT INTO Clientes (Nombre_Cliente, Telefono)
-            VALUES (?, ?)
+            VALUES (%s, %s)
         """, (datos.nombre, datos.telefono))
 
         conexion.commit()
         return {"mensaje": "Cliente registrado con éxito"}
 
+    except HTTPException as he:
+        conexion.rollback()
+        raise he
     except Exception as e:
         conexion.rollback()
         raise HTTPException(status_code=500, detail=str(e))
@@ -216,11 +228,8 @@ def listar_clientes_central():
     
     try:
         cursor = conexion.cursor()
-        # Traemos todos los clientes ordenados alfabéticamente
         cursor.execute("SELECT Nombre_Cliente, Telefono FROM Clientes ORDER BY Nombre_Cliente ASC")
         clientes = cursor.fetchall()
-        
-        # Lo convertimos en un diccionario para inyectarlo en el Datalist del Frontend
         return [{"nombre": c[0], "telefono": c[1]} for c in clientes]
     except Exception as e:
         print(f"Error obteniendo clientes: {e}")
@@ -235,7 +244,7 @@ def obtener_perfil(id_usuario: int):
     conexion = obtener_conexion()
     try:
         cursor = conexion.cursor()
-        cursor.execute("SELECT Nombre_Completo, Correo, DNI, Telefono FROM Usuarios WHERE ID_Usuario = ?", (id_usuario,))
+        cursor.execute("SELECT Nombre_Completo, Correo, DNI, Telefono FROM Usuarios WHERE ID_Usuario = %s", (id_usuario,))
         user = cursor.fetchone()
         if not user:
             raise HTTPException(status_code=404, detail="Usuario no encontrado")
@@ -257,8 +266,8 @@ def actualizar_perfil(datos: PerfilUpdateRequest):
         cursor = conexion.cursor()
         cursor.execute("""
             UPDATE Usuarios 
-            SET Nombre_Completo = ?, Correo = ?, Telefono = ? 
-            WHERE ID_Usuario = ?
+            SET Nombre_Completo = %s, Correo = %s, Telefono = %s 
+            WHERE ID_Usuario = %s
         """, (datos.nombre, datos.correo, datos.telefono, datos.id_usuario))
         conexion.commit()
         return {"mensaje": "Perfil actualizado correctamente"}
@@ -274,8 +283,8 @@ def cerrar_cuenta(datos: CerrarCuentaRequest):
     conexion = obtener_conexion()
     try:
         cursor = conexion.cursor()
-        cursor.execute("UPDATE Usuarios SET Estado = 0 WHERE ID_Usuario = ?", (datos.id_usuario,))
-        cursor.execute("UPDATE Vehiculos SET Operativo = 0 WHERE ID_Chofer = ?", (datos.id_usuario,))
+        cursor.execute("UPDATE Usuarios SET Estado = 0 WHERE ID_Usuario = %s", (datos.id_usuario,))
+        cursor.execute("UPDATE Vehiculos SET Operativo = 0 WHERE ID_Chofer = %s", (datos.id_usuario,))
         conexion.commit()
         
         return {"mensaje": "Cuenta suspendida permanentemente"}
@@ -321,14 +330,14 @@ def listar_choferes_admin():
 
 @app.put("/api/admin/choferes/estado")
 def cambiar_estado_usuario(datos: CambiarEstadoRequest):
-    """El Administrador suspende (0) o reactiva (1) a un chofer."""
+    """El Gerente suspende (0) o reactiva (1) a un chofer."""
     conexion = obtener_conexion()
     try:
         cursor = conexion.cursor()
-        cursor.execute("UPDATE Usuarios SET Estado = ? WHERE ID_Usuario = ?", (datos.estado, datos.id_usuario))
+        cursor.execute("UPDATE Usuarios SET Estado = %s WHERE ID_Usuario = %s", (datos.estado, datos.id_usuario))
         
         if datos.estado == 0:
-            cursor.execute("UPDATE Vehiculos SET Operativo = 0 WHERE ID_Chofer = ?", (datos.id_usuario,))
+            cursor.execute("UPDATE Vehiculos SET Operativo = 0 WHERE ID_Chofer = %s", (datos.id_usuario,))
             
         conexion.commit()
         return {"mensaje": "Estado de la cuenta actualizado exitosamente."}

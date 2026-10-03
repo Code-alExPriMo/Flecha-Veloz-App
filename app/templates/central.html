@@ -37,13 +37,10 @@
     .navbar {
         background-color: transparent !important;
         border-bottom: none !important;
-
         position: absolute !important;
-
         top: 0;
         left: 0;
         right: 0;
-
         z-index: 9999;
     }
 
@@ -118,7 +115,7 @@
         position: relative;
         z-index: 2;
         display: grid;
-        grid-template-columns: 350px 1fr;
+        grid-template-columns: 360px 1fr;
         gap: 20px;
         width: 100%;
         max-width: 1350px;
@@ -148,11 +145,11 @@
 
 
     /* =========================================================
-       ENCABEZADO SIDEBAR
+       ENCABEZADO SIDEBAR Y ACCIONES OPERATIVAS
        ========================================================= */
 
     .sidebar-header {
-        padding: 22px 22px 20px;
+        padding: 22px 20px 16px;
         background: linear-gradient(
             145deg,
             rgba(255,255,255,0.10),
@@ -171,12 +168,56 @@
     }
 
     .sidebar-header p {
-        margin: 6px 0 0;
+        margin: 6px 0 14px;
         font-family: 'Inter', sans-serif;
         font-size: 11px;
         color: #9ca3af;
         text-transform: uppercase;
         letter-spacing: 0.7px;
+    }
+
+    .sidebar-actions {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+    }
+
+    .btn-sidebar-primary {
+        background: #ffffff;
+        color: #000000;
+        border: none;
+        padding: 10px 12px;
+        border-radius: 9px;
+        font-family: 'Inter', sans-serif;
+        font-size: 11px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.25s ease;
+        text-align: center;
+    }
+
+    .btn-sidebar-primary:hover {
+        background: #e5e7eb;
+        transform: translateY(-1px);
+    }
+
+    .btn-sidebar-secondary {
+        background: rgba(255,255,255,0.07);
+        color: #ffffff;
+        border: 1px solid rgba(255,255,255,0.14);
+        padding: 10px 12px;
+        border-radius: 9px;
+        font-family: 'Inter', sans-serif;
+        font-size: 11px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.25s ease;
+        text-align: center;
+    }
+
+    .btn-sidebar-secondary:hover {
+        background: rgba(255,255,255,0.14);
+        border-color: rgba(255,255,255,0.25);
     }
 
 
@@ -185,7 +226,7 @@
        ========================================================= */
        
     .buscador-container {
-        padding: 15px 20px;
+        padding: 14px 20px;
         border-bottom: 1px solid rgba(255,255,255,0.08);
         background: rgba(0,0,0,0.2);
     }
@@ -194,7 +235,7 @@
         width: 100%;
         background: rgba(255, 255, 255, 0.05);
         border: 1px solid rgba(255, 255, 255, 0.1);
-        padding: 12px 15px;
+        padding: 11px 14px;
         border-radius: 8px;
         color: white;
         font-family: 'Inter', sans-serif;
@@ -236,7 +277,7 @@
 
 
     /* =========================================================
-       6. TARJETA CHOFER (AHORA ES UN BOTÓN CLICKEABLE)
+       6. TARJETA CHOFER
        ========================================================= */
 
     .chofer-card {
@@ -289,11 +330,12 @@
        ========================================================= */
 
     .badge-verde,
-    .badge-rojo {
+    .badge-rojo,
+    .badge-amarillo {
         display: inline-flex;
         align-items: center;
         gap: 6px;
-        padding: 5px 8px;
+        padding: 5px 9px;
         border-radius: 999px;
         font-family: 'Inter', sans-serif;
         font-size: 9px;
@@ -303,10 +345,12 @@
         background: rgba(255,255,255,0.06);
         color: #cfcfcf;
         border: 1px solid rgba(255,255,255,0.10);
+        text-transform: uppercase;
     }
 
     .badge-verde::before,
-    .badge-rojo::before {
+    .badge-rojo::before,
+    .badge-amarillo::before {
         content: "";
         width: 6px;
         height: 6px;
@@ -314,12 +358,17 @@
     }
 
     .badge-verde::before {
-        background: #ffffff;
-        box-shadow: 0 0 7px rgba(255,255,255,0.65);
+        background: #10b981;
+        box-shadow: 0 0 7px rgba(16, 185, 129, 0.75);
+    }
+
+    .badge-amarillo::before {
+        background: #f59e0b;
+        box-shadow: 0 0 7px rgba(245, 158, 11, 0.75);
     }
 
     .badge-rojo::before {
-        background: #666666;
+        background: #ef4444;
     }
 
 
@@ -406,7 +455,7 @@
 
 
     /* =========================================================
-       11. MODAL DE ASIGNACIÓN
+       11. MODALES (NUEVA RESERVA E HISTORIAL DE RESERVAS)
        ========================================================= */
 
     .modal-oculto {
@@ -414,9 +463,9 @@
         position: fixed;
         top: 0; left: 0;
         width: 100%; height: 100%;
-        background: rgba(0,0,0,0.72);
-        backdrop-filter: blur(7px);
-        -webkit-backdrop-filter: blur(7px);
+        background: rgba(0,0,0,0.75);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
         z-index: 2000;
         justify-content: center;
         align-items: center;
@@ -426,8 +475,8 @@
 
     .modal-contenido {
         width: 100%;
-        max-width: 420px;
-        max-height: 90vh;
+        max-width: 450px;
+        max-height: 92vh;
         overflow-y: auto;
         background: linear-gradient(
             145deg,
@@ -435,16 +484,38 @@
             rgba(10,10,10,0.97)
         );
         color: white;
-        padding: 25px;
+        padding: 26px;
         border-radius: 18px;
         border: 1px solid rgba(255,255,255,0.13);
-        box-shadow: 0 30px 80px rgba(0,0,0,0.60);
+        box-shadow: 0 30px 80px rgba(0,0,0,0.65);
         box-sizing: border-box;
         animation: modal-aparecer 0.25s ease;
     }
+
+    /* Modal amplio para la tabla de Historial y Gestión de Reservas */
+    .modal-contenido-amplio {
+        width: 100%;
+        max-width: 920px;
+        max-height: 88vh;
+        display: flex;
+        flex-direction: column;
+        background: linear-gradient(
+            145deg,
+            rgba(24,24,24,0.98),
+            rgba(10,10,10,0.98)
+        );
+        color: white;
+        border-radius: 18px;
+        border: 1px solid rgba(255,255,255,0.13);
+        box-shadow: 0 30px 80px rgba(0,0,0,0.7);
+        overflow: hidden;
+        animation: modal-aparecer 0.25s ease;
+    }
     
-    .modal-contenido::-webkit-scrollbar { width: 6px; }
-    .modal-contenido::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 10px; }
+    .modal-contenido::-webkit-scrollbar,
+    .tabla-historial-scroll::-webkit-scrollbar { width: 6px; }
+    .modal-contenido::-webkit-scrollbar-thumb,
+    .tabla-historial-scroll::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 10px; }
 
     @keyframes modal-aparecer {
         from { opacity: 0; transform: translateY(12px) scale(0.98); }
@@ -452,7 +523,7 @@
     }
 
     .modal-contenido h3 {
-        margin: 0 0 22px;
+        margin: 0 0 20px;
         font-family: 'Montserrat', sans-serif;
         font-size: 19px;
         font-weight: 600;
@@ -460,11 +531,24 @@
 
 
     /* =========================================================
-       12. FORMULARIO DEL MODAL
+       12. FORMULARIO DEL MODAL DE RESERVA
        ========================================================= */
 
     .form-group {
-        margin-bottom: 15px;
+        margin-bottom: 14px;
+    }
+
+    .form-row-2 {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+    }
+
+    .label-flex {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 7px;
     }
 
     .form-group label {
@@ -476,6 +560,45 @@
         font-weight: 600;
         text-transform: uppercase;
         letter-spacing: 0.7px;
+    }
+
+    .label-flex label {
+        margin-bottom: 0;
+    }
+
+    .btn-inline-cliente {
+        background: rgba(255,255,255,0.08);
+        color: #ffffff;
+        border: 1px solid rgba(255,255,255,0.16);
+        border-radius: 6px;
+        padding: 4px 9px;
+        font-family: 'Inter', sans-serif;
+        font-size: 10px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s ease;
+    }
+
+    .btn-inline-cliente:hover {
+        background: #ffffff;
+        color: #000000;
+    }
+
+    .caja-nuevo-cliente-inline {
+        display: none;
+        background: rgba(255,255,255,0.035);
+        border: 1px dashed rgba(255,255,255,0.18);
+        border-radius: 12px;
+        padding: 14px;
+        margin-bottom: 15px;
+    }
+
+    .caja-nuevo-cliente-inline h4 {
+        margin: 0 0 10px 0;
+        font-family: 'Montserrat', sans-serif;
+        font-size: 12px;
+        color: #ffffff;
+        font-weight: 600;
     }
 
     .input-premium {
@@ -490,6 +613,11 @@
         font-family: 'Inter', sans-serif;
         font-size: 13px;
         transition: all 0.25s ease;
+    }
+
+    .input-premium option {
+        background: #111111;
+        color: #ffffff;
     }
 
     .input-premium::placeholder {
@@ -507,9 +635,42 @@
         color: #a3a3a3;
     }
 
+    .alerta-conflicto {
+        display: none;
+        margin-top: 6px;
+        padding: 8px 10px;
+        border-radius: 8px;
+        font-size: 11px;
+        font-weight: 600;
+        background: rgba(239, 68, 68, 0.12);
+        border: 1px solid rgba(239, 68, 68, 0.35);
+        color: #f87171;
+    }
+
+    .check-confirmacion-inmediata {
+        display: flex;
+        align-items: center;
+        gap: 9px;
+        background: rgba(255,255,255,0.03);
+        border: 1px solid rgba(255,255,255,0.08);
+        padding: 10px 12px;
+        border-radius: 9px;
+        margin-top: 6px;
+        cursor: pointer;
+        font-size: 12px;
+        color: #d1d5db;
+    }
+
+    .check-confirmacion-inmediata input {
+        accent-color: #10b981;
+        width: 15px;
+        height: 15px;
+        cursor: pointer;
+    }
+
 
     /* =========================================================
-       13. BOTÓN SELECCIONAR EN MAPA (RADAR)
+       13. BOTONES DEL MODAL DE RESERVA
        ========================================================= */
 
     .btn-mapa {
@@ -532,16 +693,11 @@
         border-color: rgba(255,255,255,0.20);
     }
 
-
-    /* =========================================================
-       14. BOTONES INFERIORES DEL MODAL
-       ========================================================= */
-
     .modal-botones {
         display: grid;
         grid-template-columns: 1.5fr 0.8fr;
         gap: 9px;
-        margin-top: 20px;
+        margin-top: 18px;
     }
 
     .btn-negro {
@@ -560,6 +716,13 @@
     .btn-negro:hover {
         background: #e5e7eb;
         transform: translateY(-1px);
+    }
+
+    .btn-negro:disabled {
+        background: rgba(255,255,255,0.15);
+        color: #666666;
+        cursor: not-allowed;
+        transform: none;
     }
 
     .btn-gris {
@@ -582,12 +745,137 @@
 
 
     /* =========================================================
+       14. ESTILOS DEL MODAL DE HISTORIAL Y CONTROL DE RESERVAS
+       ========================================================= */
+
+    .historial-modal-header {
+        padding: 20px 24px;
+        background: linear-gradient(145deg, rgba(255,255,255,0.08), rgba(255,255,255,0.02));
+        border-bottom: 1px solid rgba(255,255,255,0.08);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 15px;
+    }
+
+    .historial-modal-header h3 {
+        margin: 0;
+        font-family: 'Montserrat', sans-serif;
+        font-size: 18px;
+        font-weight: 600;
+    }
+
+    .historial-modal-header p {
+        margin: 4px 0 0;
+        font-family: 'Inter', sans-serif;
+        font-size: 12px;
+        color: #9ca3af;
+    }
+
+    .historial-barra-filtros {
+        padding: 14px 24px;
+        background: rgba(0,0,0,0.25);
+        border-bottom: 1px solid rgba(255,255,255,0.07);
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        align-items: center;
+    }
+
+    .input-filtro-hist {
+        background: rgba(255,255,255,0.05);
+        border: 1px solid rgba(255,255,255,0.12);
+        border-radius: 8px;
+        padding: 9px 12px;
+        color: #ffffff;
+        font-family: 'Inter', sans-serif;
+        font-size: 12px;
+        outline: none;
+    }
+
+    .input-filtro-hist:focus {
+        border-color: rgba(255,255,255,0.35);
+    }
+
+    .tabla-historial-scroll {
+        flex: 1;
+        overflow-y: auto;
+        overflow-x: auto;
+    }
+
+    .tabla-reservas {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    .tabla-reservas th {
+        padding: 13px 18px;
+        text-align: left;
+        background: rgba(255,255,255,0.025);
+        color: #888888;
+        font-family: 'Inter', sans-serif;
+        font-size: 9px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        border-bottom: 1px solid rgba(255,255,255,0.07);
+    }
+
+    .tabla-reservas td {
+        padding: 14px 18px;
+        color: #d6d6d6;
+        font-family: 'Inter', sans-serif;
+        font-size: 12px;
+        border-bottom: 1px solid rgba(255,255,255,0.055);
+        vertical-align: middle;
+    }
+
+    .tabla-reservas tbody tr:hover td {
+        background: rgba(255,255,255,0.03);
+    }
+
+    .acciones-reserva {
+        display: flex;
+        gap: 6px;
+        flex-wrap: wrap;
+    }
+
+    .btn-acc-reserva {
+        background: rgba(255,255,255,0.07);
+        color: #ffffff;
+        border: 1px solid rgba(255,255,255,0.15);
+        border-radius: 7px;
+        padding: 6px 10px;
+        font-family: 'Inter', sans-serif;
+        font-size: 11px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s ease;
+    }
+
+    .btn-acc-reserva:hover {
+        background: #ffffff;
+        color: #000000;
+    }
+
+    .btn-acc-cancelar {
+        border-color: rgba(239, 68, 68, 0.35);
+        color: #f87171;
+    }
+
+    .btn-acc-cancelar:hover {
+        background: #ef4444;
+        color: #ffffff;
+    }
+
+
+    /* =========================================================
        15. RESPONSIVE
        ========================================================= */
 
     @media (max-width: 1000px) {
         .central-container {
-            grid-template-columns: 280px 1fr;
+            grid-template-columns: 300px 1fr;
         }
     }
 
@@ -605,11 +893,15 @@
         }
 
         .sidebar {
-            height: 350px;
+            height: 360px;
         }
 
         .mapa-wrapper {
             height: 500px;
+        }
+
+        .tabla-reservas {
+            min-width: 760px;
         }
     }
 
@@ -618,7 +910,7 @@
             padding: 0 15px;
         }
         .sidebar {
-            height: 320px;
+            height: 340px;
         }
         .mapa-wrapper {
             height: 400px;
@@ -626,7 +918,9 @@
         .modal-contenido {
             padding: 21px;
         }
-        .modal-botones {
+        .modal-botones,
+        .form-row-2,
+        .sidebar-actions {
             grid-template-columns: 1fr;
         }
     }
@@ -651,7 +945,16 @@
         <div class="sidebar">
             <div class="sidebar-header">
                 <h2>Flota en Tiempo Real</h2>
-                <p>Monitoreo de disponibilidad</p>
+                <p>Monitoreo y despacho de unidades</p>
+
+                <div class="sidebar-actions">
+                    <button type="button" class="btn-sidebar-primary" onclick="abrirModalViaje('')">
+                        + Nueva Reserva
+                    </button>
+                    <button type="button" class="btn-sidebar-secondary" onclick="abrirModalHistorial()">
+                        Historial de Reservas
+                    </button>
+                </div>
             </div>
 
             <div class="buscador-container">
@@ -673,7 +976,7 @@
 
 
         <!-- =====================================================
-             MAPA PRINCIPAL
+             MAPA PRINCIPAL (LIMPIO Y SIN ELEMENTOS ENCIMA)
              ===================================================== -->
 
         <div class="mapa-wrapper">
@@ -683,36 +986,86 @@
 
 
     <!-- =========================================================
-         MODAL ASIGNACIÓN DE VIAJES
+         MODAL 1: ASIGNACIÓN DE VIAJES Y NUEVA RESERVA
          ========================================================= -->
 
     <div id="modal-viaje" class="modal-oculto">
         <div class="modal-contenido">
             <h3>Asignar viaje</h3>
 
-            <!-- DATOS OCULTOS DE CONTROL (PARA ORIGEN Y DESTINO) -->
+            <!-- DATOS OCULTOS DE CONTROL -->
             <input type="hidden" id="v-chofer">
             <input type="hidden" id="v-origen-lat" value="0">
             <input type="hidden" id="v-origen-lng" value="0">
             <input type="hidden" id="v-destino-lat" value="0">
             <input type="hidden" id="v-destino-lng" value="0">
 
-
-            <!-- FORMULARIO: PASAJERO (CON AUTOCOMPLETADO INTELIGENTE) -->
+            <!-- SELECTOR DE CONDUCTOR -->
             <div class="form-group">
-                <label>Pasajero (Busque por nombre o teléfono)</label>
+                <label>Conductor y unidad asignada</label>
+                <select id="v-chofer-select" class="input-premium" onchange="sincronizarYValidarChofer()">
+                    <option value="">Seleccione un conductor disponible</option>
+                </select>
+                <div id="alerta-conflicto-chofer" class="alerta-conflicto"></div>
+            </div>
+
+            <!-- FORMULARIO: PASAJERO + OPCIÓN PARA AGREGAR CLIENTE NUEVO -->
+            <div class="form-group">
+                <div class="label-flex">
+                    <label>Pasajero (Nombre o teléfono)</label>
+                    <button type="button" class="btn-inline-cliente" onclick="toggleNuevoClienteInline()">
+                        + Nuevo cliente
+                    </button>
+                </div>
                 <input
                     type="text"
                     id="v-pasajero"
                     class="input-premium"
                     list="lista-clientes"
-                    placeholder="Ej. Escriba o seleccione un cliente..."
+                    placeholder="Escriba o seleccione un cliente..."
                     autocomplete="off"
                 >
-                <!-- Datalist oculto que se alimenta de la base de datos -->
                 <datalist id="lista-clientes"></datalist>
             </div>
 
+            <!-- SUB-FORMULARIO PARA REGISTRAR CLIENTE NUEVO DIRECTAMENTE -->
+            <div id="caja-nuevo-cliente" class="caja-nuevo-cliente-inline">
+                <h4>Registrar Nuevo Cliente</h4>
+                <div class="form-row-2" style="margin-bottom: 10px;">
+                    <div>
+                        <label style="font-size:9px; color:#9ca3af; display:block; margin-bottom:4px;">Documento DNI</label>
+                        <input type="text" id="nc-dni" class="input-premium" maxlength="12" placeholder="Nro. de documento">
+                    </div>
+                    <div>
+                        <label style="font-size:9px; color:#9ca3af; display:block; margin-bottom:4px;">Teléfono</label>
+                        <input type="text" id="nc-telefono" class="input-premium" maxlength="15" placeholder="987654321">
+                    </div>
+                </div>
+                <div style="margin-bottom: 10px;">
+                    <label style="font-size:9px; color:#9ca3af; display:block; margin-bottom:4px;">Nombre Completo</label>
+                    <input type="text" id="nc-nombre" class="input-premium" placeholder="Nombres y apellidos">
+                </div>
+                <div style="display:flex; gap:8px;">
+                    <button type="button" class="btn-negro" style="flex:1; padding:8px;" onclick="guardarClienteInline()">
+                        Guardar cliente
+                    </button>
+                    <button type="button" class="btn-gris" style="padding:8px 12px;" onclick="toggleNuevoClienteInline()">
+                        Cerrar
+                    </button>
+                </div>
+            </div>
+
+            <!-- FECHA Y HORA DE SALIDA -->
+            <div class="form-row-2 form-group">
+                <div>
+                    <label>Fecha de salida</label>
+                    <input type="date" id="v-fecha" class="input-premium" onchange="sincronizarYValidarChofer()">
+                </div>
+                <div>
+                    <label>Hora de salida</label>
+                    <input type="time" id="v-hora" class="input-premium" onchange="sincronizarYValidarChofer()">
+                </div>
+            </div>
 
             <!-- FORMULARIO: PUNTO A (ORIGEN) -->
             <div class="form-group">
@@ -729,7 +1082,6 @@
                 >
             </div>
 
-
             <!-- FORMULARIO: PUNTO B (DESTINO) -->
             <div class="form-group">
                 <label>Punto B (Destino Final)</label>
@@ -745,10 +1097,14 @@
                 >
             </div>
 
-
             <!-- FORMULARIO: TARIFA -->
             <div class="form-group">
-                <label>Tarifa acordada (S/.)</label>
+                <div class="label-flex">
+                    <label>Tarifa acordada (S/.)</label>
+                    <span id="etiqueta-calculo-tarifa" style="font-size:10px; color:#10b981; font-weight:600;">
+                        Cálculo automático por ruta
+                    </span>
+                </div>
                 <input
                     type="number"
                     id="v-tarifa"
@@ -759,14 +1115,89 @@
                 >
             </div>
 
+            <!-- CONFIRMACIÓN INMEDIATA -->
+            <label class="check-confirmacion-inmediata">
+                <input type="checkbox" id="v-confirmar-inmediato" checked>
+                <span>Confirmar reserva inmediatamente y despachar unidad</span>
+            </label>
 
             <!-- BOTONES DE CONFIRMACIÓN -->
             <div class="modal-botones">
-                <button onclick="guardarViaje()" class="btn-negro">Confirmar viaje</button>
+                <button id="btn-confirmar-modal" onclick="guardarViaje()" class="btn-negro">Confirmar viaje</button>
                 <button onclick="cerrarModal()" class="btn-gris">Cancelar</button>
             </div>
         </div>
     </div>
+
+
+    <!-- =========================================================
+         MODAL 2: HISTORIAL Y CONTROL DE RESERVAS
+         ========================================================= -->
+
+    <div id="modal-historial" class="modal-oculto">
+        <div class="modal-contenido-amplio">
+            <div class="historial-modal-header">
+                <div>
+                    <h3>Control e Historial de Reservas</h3>
+                    <p>Consulta el seguimiento de servicios por cliente o por fecha</p>
+                </div>
+                <button type="button" class="btn-gris" style="padding: 8px 16px;" onclick="cerrarModalHistorial()">
+                    Cerrar
+                </button>
+            </div>
+
+            <div class="historial-barra-filtros">
+                <input
+                    type="text"
+                    id="filtro-hist-cliente"
+                    class="input-filtro-hist"
+                    style="flex: 1; min-width: 200px;"
+                    placeholder="Buscar por nombre de cliente..."
+                    onkeyup="filtrarHistorialReservas()"
+                >
+                <input
+                    type="date"
+                    id="filtro-hist-fecha"
+                    class="input-filtro-hist"
+                    onchange="filtrarHistorialReservas()"
+                >
+                <select id="filtro-hist-estado" class="input-filtro-hist" onchange="filtrarHistorialReservas()">
+                    <option value="">Todos los estados</option>
+                    <option value="Pendiente">Pendientes</option>
+                    <option value="En Curso">En Curso</option>
+                    <option value="Atendida">Atendidas</option>
+                    <option value="Cancelado">Canceladas</option>
+                </select>
+                <button type="button" class="btn-acc-reserva" onclick="limpiarFiltrosHistorial()">
+                    Restablecer
+                </button>
+            </div>
+
+            <div class="tabla-historial-scroll">
+                <table class="tabla-reservas">
+                    <thead>
+                        <tr>
+                            <th>Fecha y Hora</th>
+                            <th>Cliente</th>
+                            <th>Conductor / Unidad</th>
+                            <th>Ruta (Origen → Destino)</th>
+                            <th>Tarifa</th>
+                            <th>Estado</th>
+                            <th>Control</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabla-historial-reservas">
+                        <tr>
+                            <td colspan="7" style="text-align: center; padding: 30px; color: #777;">
+                                Sincronizando historial de reservas...
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
 </div>
 
 
@@ -782,9 +1213,6 @@
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(mapa);
 
-    /* =========================================================
-       CONFIGURACIÓN DE LOS ICONOS DEL VEHÍCULO Y PINES
-       ========================================================= */
     const iconoCarro = L.icon({
         iconUrl: '/static/img/autoo.png',
         iconSize: [35, 35],
@@ -816,6 +1244,13 @@
         }
     }).addTo(mapa);
 
+    controlRuta.on('routesfound', function(e) {
+        if (e.routes && e.routes.length > 0) {
+            const distanciaMetros = e.routes[0].summary.totalDistance || 0;
+            aplicarTarifaGerencial(distanciaMetros / 1000);
+        }
+    });
+
 
     /* =========================================================
        VARIABLES GLOBALES DE ESTADO
@@ -828,32 +1263,127 @@
     let memoriaFlota = [];
     let historialEstados = {}; 
     let primeraCarga = true; 
+    let memoriaReservasBD = [];
 
 
     /* =========================================================
-       CARGAR LISTA DE CLIENTES (AUTOCOMPLETADO)
+       CÁLCULO AUTOMÁTICO DE TARIFA SEGÚN CONFIGURACIÓN VIGENTE
        ========================================================= */
-    async function cargarClientes() {
-        try {
-            const res = await fetch('/api/clientes');
-            const clientes = await res.json();
-            
-            const datalist = document.getElementById('lista-clientes');
-            datalist.innerHTML = ''; 
-            
-            clientes.forEach(cliente => {
-                const opcion = document.createElement('option');
-                // value: Es lo que se quedará escrito en la caja (Solo el nombre)
-                opcion.value = cliente.nombre;
-                // textContent: Es la sugerencia visual que aparece abajo (El teléfono)
-                opcion.textContent = "Tel: " + cliente.telefono;
-                
-                datalist.appendChild(opcion);
-            });
-        } catch (error) {
-            console.error("Error al cargar el autocompletado de clientes:", error);
+    function aplicarTarifaGerencial(distanciaKm) {
+        const tarifaBase = parseFloat(localStorage.getItem('fv_tarifa_base')) || 5.00;
+        const costoKm    = parseFloat(localStorage.getItem('fv_costo_km')) || 2.50;
+        const promoPct   = parseFloat(localStorage.getItem('fv_promo_pct')) || 0;
+
+        let subtotal = tarifaBase + (distanciaKm * costoKm);
+        if (promoPct > 0) {
+            subtotal = subtotal * (1 - (promoPct / 100));
+        }
+
+        const tarifaFinal = Math.max(tarifaBase, subtotal).toFixed(2);
+        document.getElementById('v-tarifa').value = tarifaFinal;
+
+        const etiqueta = document.getElementById('etiqueta-calculo-tarifa');
+        if (promoPct > 0) {
+            etiqueta.innerText = `${distanciaKm.toFixed(1)} km · Descuento ${promoPct}% aplicado`;
+        } else {
+            etiqueta.innerText = `Distancia estimada: ${distanciaKm.toFixed(1)} km`;
         }
     }
+
+    function calcularDistanciaLinealKm(lat1, lon1, lat2, lon2) {
+        const R = 6371;
+        const dLat = (lat2 - lat1) * Math.PI / 180;
+        const dLon = (lon2 - lon1) * Math.PI / 180;
+        const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                  Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+                  Math.sin(dLon / 2) * Math.sin(dLon / 2);
+        return R * (2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a)));
+    }
+
+
+    /* =========================================================
+       CARGAR Y REGISTRAR CLIENTES (AUTOCOMPLETADO E INLINE)
+       ========================================================= */
+    async function cargarClientes() {
+        const datalist = document.getElementById('lista-clientes');
+        datalist.innerHTML = '';
+
+        const clientesLocales = JSON.parse(localStorage.getItem('fv_clientes_extra') || '[]');
+        let clientesTotales = [...clientesLocales];
+
+        try {
+            const res = await fetch('/api/clientes');
+            if (res.ok) {
+                const clientesBD = await res.json();
+                if (Array.isArray(clientesBD)) {
+                    clientesTotales = [...clientesBD, ...clientesLocales];
+                }
+            }
+        } catch (error) {
+            console.error("Error al cargar clientes:", error);
+        }
+
+        const nombresVistos = new Set();
+        clientesTotales.forEach(cliente => {
+            if (!cliente || !cliente.nombre || nombresVistos.has(cliente.nombre)) return;
+            nombresVistos.add(cliente.nombre);
+
+            const opcion = document.createElement('option');
+            opcion.value = cliente.nombre;
+            opcion.textContent = "Tel: " + (cliente.telefono || 'S/N');
+            datalist.appendChild(opcion);
+        });
+    }
+
+    function toggleNuevoClienteInline() {
+        const caja = document.getElementById('caja-nuevo-cliente');
+        caja.style.display = (caja.style.display === 'block') ? 'none' : 'block';
+    }
+
+    async function guardarClienteInline() {
+        const dni      = document.getElementById('nc-dni').value.trim();
+        const nombre   = document.getElementById('nc-nombre').value.trim();
+        const telefono = document.getElementById('nc-telefono').value.trim();
+
+        if (!dni || !nombre || !telefono) {
+            if (typeof notificar === "function") {
+                notificar("Por favor, complete el DNI, nombre completo y teléfono del cliente.", "warning");
+            }
+            return;
+        }
+
+        if (dni.length < 8) {
+            if (typeof notificar === "function") {
+                notificar("El documento de identidad debe tener al menos 8 dígitos.", "warning");
+            }
+            return;
+        }
+
+        const clientesLocales = JSON.parse(localStorage.getItem('fv_clientes_extra') || '[]');
+        clientesLocales.push({ dni, nombre, telefono });
+        localStorage.setItem('fv_clientes_extra', JSON.stringify(clientesLocales));
+
+        try {
+            await fetch('/api/clientes/registrar', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ dni, nombre, telefono })
+            });
+        } catch (err) {}
+
+        await cargarClientes();
+        document.getElementById('v-pasajero').value = nombre;
+
+        document.getElementById('nc-dni').value = '';
+        document.getElementById('nc-nombre').value = '';
+        document.getElementById('nc-telefono').value = '';
+        document.getElementById('caja-nuevo-cliente').style.display = 'none';
+
+        if (typeof notificar === "function") {
+            notificar(`Cliente "${nombre}" registrado y seleccionado.`, "success");
+        }
+    }
+
 
     /* =========================================================
        CARGAR Y FILTRAR CENTRAL (CON ANTI-CACHÉ)
@@ -874,6 +1404,8 @@
             const flotaData = await res.json();
             memoriaFlota = flotaData.filter(vehiculo => vehiculo.nombre && !vehiculo.nombre.toLowerCase().includes("administrador"));
 
+            actualizarSelectorChoferesModal();
+
             marcadoresActivos.forEach(m => mapa.removeLayer(m));
             marcadoresActivos = [];
 
@@ -884,9 +1416,11 @@
                 
                 if (!primeraCarga && historialEstados[id] !== undefined) {
                     if (historialEstados[id] === 0 && estadoNumerico === 1) {
-                        if (typeof notificar === "function") notificar(`✅ ${vehiculo.nombre} (${vehiculo.placa}) finalizó su ruta y está DISPONIBLE.`, "success");
+                        if (typeof notificar === "function") notificar(`${vehiculo.nombre} (${vehiculo.placa}) finalizó su servicio y está disponible.`, "success");
+                        sincronizarHistorialDesdeBackend();
                     } else if (historialEstados[id] === 1 && estadoNumerico === 0) {
-                        if (typeof notificar === "function") notificar(`🚖 ${vehiculo.nombre} (${vehiculo.placa}) ha iniciado un viaje (OCUPADO).`, "info");
+                        if (typeof notificar === "function") notificar(`${vehiculo.nombre} (${vehiculo.placa}) ha iniciado un servicio.`, "info");
+                        sincronizarHistorialDesdeBackend();
                     }
                 }
                 
@@ -899,7 +1433,7 @@
 
                 if (!esOperativo) marcador.setOpacity(0.4);
 
-                const estadoTxt = esOperativo ? 'Disponible' : 'Ocupado / Inactivo';
+                const estadoTxt = esOperativo ? 'Disponible' : 'Ocupado / No Operativo';
                 const botonAsignar = esOperativo
                     ? `<br><button onclick="abrirModalViaje(${id})" class="popup-asignar">Asignar viaje a esta unidad</button>`
                     : '';
@@ -914,6 +1448,10 @@
                 `);
             });
 
+            if (primeraCarga) {
+                sincronizarHistorialDesdeBackend();
+            }
+
             primeraCarga = false; 
             filtrarListaFlota();
             
@@ -924,7 +1462,75 @@
 
 
     /* =========================================================
-       RENDERIZAR LISTA LATERAL (INYECCIÓN DE HTML)
+       VALIDACIÓN DE DISPONIBILIDAD Y HORARIO DEL CONDUCTOR
+       ========================================================= */
+    function actualizarSelectorChoferesModal() {
+        const select = document.getElementById('v-chofer-select');
+        if (!select) return;
+
+        const valorActual = select.value || document.getElementById('v-chofer').value;
+        select.innerHTML = '<option value="">Seleccione un conductor disponible</option>';
+
+        memoriaFlota.forEach(v => {
+            const esOperativo = (v.operativo === true || v.operativo === 1);
+            const estadoTexto = esOperativo ? 'Disponible' : 'Ocupado / No operativo';
+            const option = document.createElement('option');
+            option.value = v.id_chofer;
+            option.textContent = `${v.nombre} (${v.placa}) - ${estadoTexto}`;
+            select.appendChild(option);
+        });
+
+        if (valorActual) {
+            select.value = String(valorActual);
+        }
+    }
+
+    function sincronizarYValidarChofer() {
+        const select = document.getElementById('v-chofer-select');
+        const idSeleccionado = parseInt(select.value) || 0;
+        document.getElementById('v-chofer').value = idSeleccionado || '';
+
+        const alerta = document.getElementById('alerta-conflicto-chofer');
+        const btnConfirmar = document.getElementById('btn-confirmar-modal');
+        alerta.style.display = 'none';
+        btnConfirmar.disabled = false;
+
+        if (!idSeleccionado) return true;
+
+        const choferObj = memoriaFlota.find(v => Number(v.id_chofer) === idSeleccionado);
+        const fechaSel = document.getElementById('v-fecha').value;
+        const horaSel  = document.getElementById('v-hora').value;
+
+        if (choferObj && !(choferObj.operativo === true || choferObj.operativo === 1)) {
+            alerta.innerText = `La unidad ${choferObj.placa} (${choferObj.nombre}) se encuentra ocupada o fuera de servicio en este momento.`;
+            alerta.style.display = 'block';
+            btnConfirmar.disabled = true;
+            return false;
+        }
+
+        if (fechaSel && horaSel) {
+            const pendientesLocales = obtenerReservasPendientesLocales();
+            const conflicto = pendientesLocales.find(r =>
+                Number(r.id_chofer) === idSeleccionado &&
+                r.fecha === fechaSel &&
+                r.hora === horaSel &&
+                r.estado === 'Pendiente'
+            );
+
+            if (conflicto) {
+                alerta.innerText = `El conductor seleccionado ya tiene una reserva programada el ${fechaSel} a las ${horaSel}.`;
+                alerta.style.display = 'block';
+                btnConfirmar.disabled = true;
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+
+    /* =========================================================
+       RENDERIZAR LISTA LATERAL Y BUSCADOR DE FLOTA
        ========================================================= */
     function renderizarLista(listaVehiculos) {
         const panelLista = document.getElementById('panel-lista');
@@ -958,10 +1564,6 @@
         });
     }
 
-
-    /* =========================================================
-       BUSCADOR EN TIEMPO REAL
-       ========================================================= */
     function filtrarListaFlota() {
         const textoBusqueda = document.getElementById('input-buscador').value.toLowerCase();
         const flotaFiltrada = memoriaFlota.filter(
@@ -972,17 +1574,13 @@
         renderizarLista(flotaFiltrada);
     }
 
-
-    /* =========================================================
-       FLY TO (EFECTO CÁMARA AÉREA AL HACER CLIC)
-       ========================================================= */
     function volarHaciaVehiculo(lat, lng) {
         mapa.flyTo([lat, lng], 16, { animate: true, duration: 1.5 });
     }
 
 
     /* =========================================================
-       RADAR MÚLTIPLE (ORIGEN O DESTINO)
+       RADAR MÚLTIPLE (ORIGEN O DESTINO EN EL MAPA)
        ========================================================= */
     function activarRadar(tipo) {
         document.getElementById('modal-viaje').style.display = 'none';
@@ -991,16 +1589,12 @@
         document.getElementById('mapa-central').style.cursor = 'crosshair';
         
         const mensaje = tipo === 'origen'
-            ? "PUNTO A: Haz clic en el mapa para indicar dónde recoger al pasajero."
-            : "PUNTO B: Haz clic en el mapa para indicar dónde dejar al pasajero.";
+            ? "PUNTO A: Haz clic en el mapa para fijar el punto de recojo."
+            : "PUNTO B: Haz clic en el mapa para fijar el punto de destino.";
             
         if (typeof notificar === "function") notificar(mensaje, "info");
     }
 
-
-    /* =========================================================
-       EVENTO CLIC EN EL MAPA (REVERSE GEOCODING)
-       ========================================================= */
     mapa.on('click', function(e) {
         if (modoRadar) {
             const lat = e.latlng.lat;
@@ -1030,6 +1624,11 @@
             const puntosValidos = [wpOrigen, wpDestino].filter(w => w !== null);
             controlRuta.setWaypoints(puntosValidos);
 
+            if (wpOrigen && wpDestino) {
+                const distLineal = calcularDistanciaLinealKm(wpOrigen.lat, wpOrigen.lng, wpDestino.lat, wpDestino.lng) * 1.25;
+                aplicarTarifaGerencial(distLineal);
+            }
+
             document.getElementById('mapa-central').style.cursor = '';
             document.getElementById('modal-viaje').style.display = 'flex';
             modoRadar = false;
@@ -1038,15 +1637,36 @@
 
 
     /* =========================================================
-       ABRIR Y CERRAR MODALES DE ASIGNACIÓN
+       ABRIR Y CERRAR MODALES
        ========================================================= */
+    function inicializarFechaHoraReserva() {
+        const ahora = new Date();
+        const yyyy = ahora.getFullYear();
+        const mm = String(ahora.getMonth() + 1).padStart(2, '0');
+        const dd = String(ahora.getDate()).padStart(2, '0');
+        const hh = String(ahora.getHours()).padStart(2, '0');
+        const min = String(ahora.getMinutes()).padStart(2, '0');
+
+        const inputFecha = document.getElementById('v-fecha');
+        const inputHora  = document.getElementById('v-hora');
+        if (inputFecha && !inputFecha.value) inputFecha.value = `${yyyy}-${mm}-${dd}`;
+        if (inputHora && !inputHora.value)   inputHora.value  = `${hh}:${min}`;
+    }
+
     function abrirModalViaje(idChofer) {
-        document.getElementById('v-chofer').value = idChofer;
+        actualizarSelectorChoferesModal();
+        inicializarFechaHoraReserva();
+
+        document.getElementById('v-chofer').value = idChofer || '';
+        document.getElementById('v-chofer-select').value = idChofer ? String(idChofer) : '';
+        sincronizarYValidarChofer();
+
         document.getElementById('modal-viaje').style.display = 'flex';
     }
 
     function cerrarModal() {
         document.getElementById('modal-viaje').style.display = 'none';
+        document.getElementById('caja-nuevo-cliente').style.display = 'none';
 
         document.getElementById('v-pasajero').value = '';
         document.getElementById('v-origen').value = '';
@@ -1058,20 +1678,50 @@
         document.getElementById('v-destino-lat').value = '0';
         document.getElementById('v-destino-lng').value = '0';
 
+        wpOrigen = null;
+        wpDestino = null;
+        controlRuta.setWaypoints([]);
+
         if (pinOrigen) mapa.removeLayer(pinOrigen);
         if (pinDestino) mapa.removeLayer(pinDestino);
     }
 
+    async function abrirModalHistorial() {
+        document.getElementById('modal-historial').style.display = 'flex';
+        await sincronizarHistorialDesdeBackend();
+    }
+
+    function cerrarModalHistorial() {
+        document.getElementById('modal-historial').style.display = 'none';
+    }
+
 
     /* =========================================================
-       GUARDAR VIAJE (CON ORIGEN Y DESTINO)
+       GUARDAR VIAJE O RESERVA PROGRAMADA
        ========================================================= */
+    function obtenerReservasPendientesLocales() {
+        const guardadas = JSON.parse(localStorage.getItem('fv_reservas_central') || '[]');
+        // Conservamos en localStorage únicamente las reservas programadas que aún no han sido despachadas a BD
+        const soloPendientes = guardadas.filter(r => r.estado === 'Pendiente');
+        if (soloPendientes.length !== guardadas.length) {
+            localStorage.setItem('fv_reservas_central', JSON.stringify(soloPendientes));
+        }
+        return soloPendientes;
+    }
+
     async function guardarViaje() {
+        if (!sincronizarYValidarChofer()) return;
+
+        const idChofer = parseInt(document.getElementById('v-chofer').value || document.getElementById('v-chofer-select').value);
+        const fechaSalida = document.getElementById('v-fecha').value;
+        const horaSalida  = document.getElementById('v-hora').value;
+        const confirmarInmediato = document.getElementById('v-confirmar-inmediato').checked;
+
         const datos = {
-            id_chofer: parseInt(document.getElementById('v-chofer').value),
-            nombre_pasajero: document.getElementById('v-pasajero').value,
-            origen: document.getElementById('v-origen').value,
-            destino: document.getElementById('v-destino').value,
+            id_chofer: idChofer,
+            nombre_pasajero: document.getElementById('v-pasajero').value.trim(),
+            origen: document.getElementById('v-origen').value.trim(),
+            destino: document.getElementById('v-destino').value.trim(),
             tarifa: parseFloat(document.getElementById('v-tarifa').value),
             origen_lat: parseFloat(document.getElementById('v-origen-lat').value),
             origen_lng: parseFloat(document.getElementById('v-origen-lng').value),
@@ -1079,29 +1729,65 @@
             destino_lng: parseFloat(document.getElementById('v-destino-lng').value)
         };
 
-        if (!datos.nombre_pasajero || !datos.origen || !datos.destino || isNaN(datos.tarifa) || datos.origen_lat === 0 || datos.destino_lat === 0) {
-            if (typeof notificar === "function") notificar("Por favor, completa todos los campos y fija AMBOS puntos en el mapa.", "warning");
+        if (!datos.id_chofer || !datos.nombre_pasajero || !datos.origen || !datos.destino || !fechaSalida || !horaSalida || isNaN(datos.tarifa) || datos.origen_lat === 0 || datos.destino_lat === 0) {
+            if (typeof notificar === "function") {
+                notificar("Por favor, complete todos los datos y fije ambos puntos en el mapa.", "warning");
+            }
             return;
         }
 
         if (datos.tarifa <= 0) {
-            if (typeof notificar === "function") notificar("La tarifa debe ser un monto mayor a 0 soles.", "warning");
+            if (typeof notificar === "function") notificar("La tarifa debe ser mayor a 0 soles.", "warning");
             return;
         }
 
-        try {
-            const res = await fetch('/api/viajes/asignar', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(datos)
-            });
+        const choferObj = memoriaFlota.find(v => Number(v.id_chofer) === datos.id_chofer);
+        const nombreChofer = choferObj ? `${choferObj.nombre} (${choferObj.placa})` : `Conductor #${datos.id_chofer}`;
 
-            if (res.ok) {
-                cerrarModal();
-                cargarCentral();
-                if (typeof notificar === "function") notificar("¡Viaje de dos puntos asignado! El conductor ha sido notificado.", "success");
+        try {
+            if (confirmarInmediato) {
+                // Se registra directamente en PostgreSQL para evitar duplicados que queden abiertos
+                const res = await fetch('/api/viajes/asignar', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(datos)
+                });
+
+                if (res.ok) {
+                    cerrarModal();
+                    await cargarCentral();
+                    await sincronizarHistorialDesdeBackend();
+                    if (typeof notificar === "function") notificar("Viaje confirmado y asignado a la unidad.", "success");
+                } else {
+                    if (typeof notificar === "function") notificar("Error al procesar el viaje en el servidor.", "error");
+                }
             } else {
-                if (typeof notificar === "function") notificar("Error al procesar el viaje en el servidor de asignación.", "error");
+                // Reserva programada pendiente de despacho
+                const nuevaReservaPendiente = {
+                    origen_registro: 'LOCAL',
+                    id_reserva: 'RES-' + Date.now(),
+                    id_chofer: datos.id_chofer,
+                    chofer: nombreChofer,
+                    pasajero: datos.nombre_pasajero,
+                    origen: datos.origen,
+                    destino: datos.destino,
+                    fecha: fechaSalida,
+                    hora: horaSalida,
+                    tarifa: datos.tarifa,
+                    estado: 'Pendiente',
+                    origen_lat: datos.origen_lat,
+                    origen_lng: datos.origen_lng,
+                    destino_lat: datos.destino_lat,
+                    destino_lng: datos.destino_lng
+                };
+
+                const pendientes = obtenerReservasPendientesLocales();
+                pendientes.unshift(nuevaReservaPendiente);
+                localStorage.setItem('fv_reservas_central', JSON.stringify(pendientes));
+
+                cerrarModal();
+                filtrarHistorialReservas();
+                if (typeof notificar === "function") notificar("Reserva registrada como Pendiente de confirmación.", "info");
             }
         } catch (e) {
             if (typeof notificar === "function") notificar("Fallo de conexión. Revisa tu internet.", "error");
@@ -1110,11 +1796,223 @@
 
 
     /* =========================================================
+       SINCRONIZACIÓN E HISTORIAL REAL DESDE POSTGRESQL
+       ========================================================= */
+    async function sincronizarHistorialDesdeBackend() {
+        const hoyStr = new Date().toISOString().split('T')[0];
+        let reservasRemotas = [];
+
+        for (const v of memoriaFlota) {
+            try {
+                const res = await fetch(`/api/reportes/historial_chofer/${v.id_chofer}?rango=total`);
+                if (res.ok) {
+                    const lista = await res.json();
+                    if (Array.isArray(lista)) {
+                        lista.forEach((item, idx) => {
+                            let estadoNormalizado = item.estado || 'Atendida';
+                            if (estadoNormalizado === 'Completado') estadoNormalizado = 'Atendida';
+
+                            reservasRemotas.push({
+                                origen_registro: 'BD',
+                                id_viaje: item.id_viaje,
+                                id_reserva: `BD-${item.id_viaje || idx}`,
+                                id_chofer: v.id_chofer,
+                                chofer: `${v.nombre} (${v.placa})`,
+                                pasajero: item.pasajero ? item.pasajero.split(' - ')[0].trim() : 'Cliente registrado',
+                                origen: item.origen || 'Origen',
+                                destino: item.destino || 'Destino',
+                                fecha: item.fecha || hoyStr,
+                                hora: item.hora ? item.hora.substring(0, 5) : '--:--',
+                                tarifa: Number(item.tarifa) || 0,
+                                estado: estadoNormalizado
+                            });
+                        });
+                    }
+                }
+            } catch (e) {}
+        }
+
+        // Ordenar de más reciente a más antiguo por ID de viaje
+        reservasRemotas.sort((a, b) => (Number(b.id_viaje) || 0) - (Number(a.id_viaje) || 0));
+        memoriaReservasBD = reservasRemotas;
+        filtrarHistorialReservas();
+    }
+
+    function obtenerTodasLasReservas() {
+        const pendientesLocales = obtenerReservasPendientesLocales();
+        return [...pendientesLocales, ...memoriaReservasBD];
+    }
+
+    function filtrarHistorialReservas() {
+        const filtroCliente = (document.getElementById('filtro-hist-cliente').value || '').toLowerCase().trim();
+        const filtroFecha   = (document.getElementById('filtro-hist-fecha').value || '').trim();
+        const filtroEstado  = (document.getElementById('filtro-hist-estado').value || '').trim();
+        const tbody = document.getElementById('tabla-historial-reservas');
+
+        const todas = obtenerTodasLasReservas();
+        const filtradas = todas.filter(r => {
+            const coincideCliente = !filtroCliente || (r.pasajero || '').toLowerCase().includes(filtroCliente);
+            const coincideFecha   = !filtroFecha || (r.fecha === filtroFecha);
+            const coincideEstado  = !filtroEstado || (r.estado === filtroEstado);
+            return coincideCliente && coincideFecha && coincideEstado;
+        });
+
+        if (filtradas.length === 0) {
+            tbody.innerHTML = `
+                <tr>
+                    <td colspan="7" style="text-align: center; padding: 30px; color: #777;">
+                        No se encontraron reservas con los filtros seleccionados.
+                    </td>
+                </tr>
+            `;
+            return;
+        }
+
+        tbody.innerHTML = '';
+        filtradas.forEach(r => {
+            let badgeClass = 'badge-amarillo';
+            if (r.estado === 'Atendida') badgeClass = 'badge-verde';
+            if (r.estado === 'Cancelado') badgeClass = 'badge-rojo';
+
+            // LÓGICA ESTRICTA DE CONTROL:
+            // Si el viaje ya fue Atendido o Cancelado, NO se muestra ningún botón de acción.
+            let columnaControl = `<span style="color:#6b7280; font-size:11px;">Viaje finalizado</span>`;
+            if (r.estado === 'Cancelado') {
+                columnaControl = `<span style="color:#6b7280; font-size:11px;">Reserva cancelada</span>`;
+            } else if (r.estado === 'Pendiente') {
+                columnaControl = `
+                    <div class="acciones-reserva">
+                        <button type="button" class="btn-acc-reserva" onclick="confirmarReservaPendiente('${r.id_reserva}')">Confirmar</button>
+                        <button type="button" class="btn-acc-reserva btn-acc-cancelar" onclick="cancelarReservaPendiente('${r.id_reserva}')">Cancelar</button>
+                    </div>
+                `;
+            } else if (r.estado === 'En Curso') {
+                columnaControl = `
+                    <div class="acciones-reserva">
+                        <button type="button" class="btn-acc-reserva" onclick="finalizarViajeEnCursoBD(${r.id_viaje}, ${r.id_chofer})">Marcar atendida</button>
+                        <button type="button" class="btn-acc-reserva btn-acc-cancelar" onclick="cancelarViajeEnCursoBD(${r.id_viaje}, ${r.id_chofer})">Cancelar</button>
+                    </div>
+                `;
+            }
+
+            tbody.innerHTML += `
+                <tr>
+                    <td>
+                        <strong style="color:#fff;">${r.fecha}</strong><br>
+                        <span style="color:#888; font-size:11px;">${r.hora}</span>
+                    </td>
+                    <td><strong style="color:#fff;">${r.pasajero}</strong></td>
+                    <td>${r.chofer}</td>
+                    <td>
+                        <div style="font-size:11px; color:#d1d5db;">Origen: ${r.origen}</div>
+                        <div style="font-size:11px; color:#888;">Destino: ${r.destino}</div>
+                    </td>
+                    <td><strong style="color:#10b981;">S/ ${Number(r.tarifa).toFixed(2)}</strong></td>
+                    <td><span class="${badgeClass}">${r.estado}</span></td>
+                    <td>${columnaControl}</td>
+                </tr>
+            `;
+        });
+    }
+
+    /* Acciones sobre reservas programadas (Pendientes) */
+    async function confirmarReservaPendiente(idReserva) {
+        let pendientes = obtenerReservasPendientesLocales();
+        const index = pendientes.findIndex(r => r.id_reserva === idReserva);
+        if (index === -1) return;
+
+        const resObj = pendientes[index];
+        try {
+            const res = await fetch('/api/viajes/asignar', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    id_chofer: resObj.id_chofer,
+                    nombre_pasajero: resObj.pasajero,
+                    origen: resObj.origen,
+                    destino: resObj.destino,
+                    tarifa: resObj.tarifa,
+                    origen_lat: resObj.origen_lat,
+                    origen_lng: resObj.origen_lng,
+                    destino_lat: resObj.destino_lat,
+                    destino_lng: resObj.destino_lng
+                })
+            });
+
+            if (res.ok) {
+                pendientes.splice(index, 1);
+                localStorage.setItem('fv_reservas_central', JSON.stringify(pendientes));
+                await cargarCentral();
+                await sincronizarHistorialDesdeBackend();
+                if (typeof notificar === "function") notificar("Reserva confirmada y despachada a la unidad.", "success");
+            } else {
+                if (typeof notificar === "function") notificar("No se pudo despachar la unidad.", "error");
+            }
+        } catch (e) {
+            if (typeof notificar === "function") notificar("Error de conexión.", "error");
+        }
+    }
+
+    function cancelarReservaPendiente(idReserva) {
+        let pendientes = obtenerReservasPendientesLocales();
+        pendientes = pendientes.filter(r => r.id_reserva !== idReserva);
+        localStorage.setItem('fv_reservas_central', JSON.stringify(pendientes));
+        filtrarHistorialReservas();
+        if (typeof notificar === "function") notificar("Reserva pendiente cancelada.", "info");
+    }
+
+    /* Acciones reales en PostgreSQL sobre viajes que están 'En Curso' */
+    async function finalizarViajeEnCursoBD(idViaje, idChofer) {
+        if (!idViaje) return;
+        try {
+            const res = await fetch('/api/viajes/completar', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ id_viaje: Number(idViaje), id_chofer: Number(idChofer) })
+            });
+            if (res.ok) {
+                await cargarCentral();
+                await sincronizarHistorialDesdeBackend();
+                if (typeof notificar === "function") notificar("Reserva marcada como Atendida.", "success");
+            }
+        } catch (e) {
+            if (typeof notificar === "function") notificar("Error al actualizar el viaje.", "error");
+        }
+    }
+
+    async function cancelarViajeEnCursoBD(idViaje, idChofer) {
+        if (!idViaje) return;
+        try {
+            const res = await fetch('/api/viajes/rechazar', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ id_viaje: Number(idViaje), id_chofer: Number(idChofer) })
+            });
+            if (res.ok) {
+                await cargarCentral();
+                await sincronizarHistorialDesdeBackend();
+                if (typeof notificar === "function") notificar("Viaje en curso cancelado y unidad liberada.", "info");
+            }
+        } catch (e) {
+            if (typeof notificar === "function") notificar("Error al cancelar el viaje.", "error");
+        }
+    }
+
+    function limpiarFiltrosHistorial() {
+        document.getElementById('filtro-hist-cliente').value = '';
+        document.getElementById('filtro-hist-fecha').value = '';
+        document.getElementById('filtro-hist-estado').value = '';
+        filtrarHistorialReservas();
+    }
+
+
+    /* =========================================================
        INICIO Y BUCLE DE ACTUALIZACIÓN
        ========================================================= */
     window.onload = () => {
+        inicializarFechaHoraReserva();
         cargarCentral();
-        cargarClientes(); // <- Aquí arranca el autocompletado inteligente
+        cargarClientes();
     };
 
     setInterval(cargarCentral, 5000);

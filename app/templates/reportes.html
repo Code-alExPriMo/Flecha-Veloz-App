@@ -77,7 +77,7 @@
         margin-left: calc(-50vw + 50%);
         margin-top: -40px;
         padding-top: 105px;
-        padding-bottom: 70px;
+        padding-bottom: 80px;
         background-image: url('/static/img/portada.png');
         background-size: cover;
         background-position: center;
@@ -85,7 +85,6 @@
         box-sizing: border-box;
     }
 
-    /* El filtro oscuro que va encima de la imagen de fondo */
     .dashboard-overlay {
         position: absolute;
         top: 0;
@@ -101,7 +100,6 @@
         z-index: 1;
     }
 
-    /* Contenedor que centra y limita el ancho del contenido */
     .dashboard-container {
         position: relative;
         z-index: 2;
@@ -144,7 +142,6 @@
         font-size: 13px;
     }
 
-    /* Diseño del desplegable (Select) */
     .select-premium {
         background: rgba(255,255,255,0.06);
         border: 1px solid rgba(255,255,255,0.11);
@@ -174,14 +171,14 @@
 
 
     /* =========================================================
-       4. TARJETAS DE INDICADORES (KPIs)
+       4. CUADRÍCULA ARMÓNICA DE 6 KPIs (3 FINANCIEROS + 3 OPERATIVOS)
        ========================================================= */
 
     .kpi-grid {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
         gap: 18px;
-        margin-bottom: 22px;
+        margin-bottom: 24px;
     }
 
     .kpi-card {
@@ -194,7 +191,7 @@
         );
         backdrop-filter: blur(18px);
         -webkit-backdrop-filter: blur(18px);
-        padding: 20px 21px;
+        padding: 20px 22px;
         border-radius: 16px;
         border: 1px solid rgba(255,255,255,0.11);
         box-shadow: 0 15px 35px rgba(0,0,0,0.32);
@@ -206,7 +203,16 @@
         border-color: rgba(255,255,255,0.18);
     }
 
-    /* Brillo circular decorativo en la esquina de la tarjeta */
+    /* Destacado sutil para la tarjeta de Ganancia de la Empresa */
+    .kpi-card-empresa {
+        border-color: rgba(16, 185, 129, 0.28);
+        background: linear-gradient(
+            145deg,
+            rgba(16, 45, 35, 0.55),
+            rgba(12, 12, 12, 0.88)
+        );
+    }
+
     .kpi-card::after {
         content: "";
         position: absolute;
@@ -232,27 +238,134 @@
     .kpi-value {
         margin: 0;
         font-family: 'Montserrat', sans-serif;
-        font-size: 31px;
+        font-size: 30px;
         font-weight: 600;
         letter-spacing: -1px;
         color: #ffffff;
     }
 
     .kpi-subtext {
-        margin-top: 5px;
-        color: #6f6f6f;
+        margin-top: 6px;
+        color: #7a7a7a;
         font-family: 'Inter', sans-serif;
-        font-size: 10px;
+        font-size: 11px;
     }
 
-    /* Clases utilitarias de color */
-    .text-verde { color: #ffffff; }
-    .text-azul { color: #ffffff; }
-    .text-rojo { color: #ffffff; }
+    .text-esmeralda { color: #10b981 !important; }
+    .text-blanco { color: #ffffff !important; }
 
 
     /* =========================================================
-       5. PANEL DE RANKING DE CONDUCTORES
+       5. PANEL DE CONFIGURACIÓN DE TARIFAS Y COMISIÓN (HU-08 CA-01)
+       ========================================================= */
+
+    .comercial-panel {
+        background: rgba(15,15,15,0.82);
+        backdrop-filter: blur(18px);
+        -webkit-backdrop-filter: blur(18px);
+        border: 1px solid rgba(255,255,255,0.11);
+        border-radius: 18px;
+        margin-bottom: 24px;
+        overflow: hidden;
+        box-shadow: 0 20px 50px rgba(0,0,0,0.35);
+    }
+
+    .comercial-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 16px 21px;
+        background: linear-gradient(
+            145deg,
+            rgba(255,255,255,0.08),
+            rgba(255,255,255,0.03)
+        );
+        border-bottom: 1px solid rgba(255,255,255,0.08);
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .comercial-header h2 {
+        margin: 0;
+        font-family: 'Montserrat', sans-serif;
+        font-size: 16px;
+        color: #ffffff;
+        font-weight: 600;
+    }
+
+    .comercial-header span {
+        color: #9ca3af;
+        font-family: 'Inter', sans-serif;
+        font-size: 10px;
+        text-transform: uppercase;
+        letter-spacing: 0.7px;
+    }
+
+    .comercial-body {
+        padding: 20px 21px;
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 15px;
+        align-items: end;
+    }
+
+    .comercial-field {
+        display: flex;
+        flex-direction: column;
+        gap: 7px;
+    }
+
+    .comercial-field label {
+        color: #8f8f8f;
+        font-size: 10px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.7px;
+    }
+
+    .comercial-input {
+        background: rgba(255,255,255,0.04);
+        border: 1px solid rgba(255,255,255,0.12);
+        border-radius: 10px;
+        padding: 11px 13px;
+        color: #ffffff;
+        font-family: 'Inter', sans-serif;
+        font-size: 13px;
+        font-weight: 600;
+        outline: none;
+        transition: all 0.25s ease;
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .comercial-input:focus {
+        border-color: rgba(255,255,255,0.35);
+        background: rgba(255,255,255,0.08);
+    }
+
+    .btn-actualizar-tarifa {
+        background: #ffffff;
+        color: #000000;
+        border: none;
+        border-radius: 10px;
+        padding: 12px 16px;
+        font-family: 'Inter', sans-serif;
+        font-size: 12px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.25s ease;
+        height: 41px;
+        white-space: nowrap;
+    }
+
+    .btn-actualizar-tarifa:hover {
+        background: #e5e7eb;
+        transform: translateY(-2px);
+    }
+
+
+    /* =========================================================
+       6. PANEL DE RANKING Y DESGLOSE FINANCIERO POR CHOFER
        ========================================================= */
 
     .ranking-container {
@@ -300,7 +413,7 @@
     }
 
     .ranking-table th {
-        padding: 13px 20px;
+        padding: 13px 18px;
         text-align: left;
         background: rgba(255,255,255,0.025);
         color: #777777;
@@ -313,7 +426,7 @@
     }
 
     .ranking-table td {
-        padding: 15px 20px;
+        padding: 15px 18px;
         color: #d6d6d6;
         font-family: 'Inter', sans-serif;
         font-size: 12px;
@@ -381,9 +494,28 @@
         white-space: nowrap;
     }
 
+    .btn-tabla-liquidar {
+        background: rgba(255,255,255,0.06);
+        color: #ffffff;
+        border: 1px solid rgba(255,255,255,0.14);
+        border-radius: 8px;
+        padding: 7px 12px;
+        font-family: 'Inter', sans-serif;
+        font-size: 11px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        white-space: nowrap;
+    }
+
+    .btn-tabla-liquidar:hover {
+        background: #ffffff;
+        color: #000000;
+    }
+
 
     /* =========================================================
-       6. MODAL DE FICHA DEL CHOFER Y HISTORIAL
+       7. MODAL DE FICHA DEL CHOFER, HISTORIAL Y LIQUIDACIÓN REAL
        ========================================================= */
 
     .modal-oculto {
@@ -402,7 +534,9 @@
 
     .modal-contenido {
         width: 100%;
-        max-width: 440px;
+        max-width: 470px;
+        max-height: 90vh;
+        overflow-y: auto;
         padding: 25px;
         box-sizing: border-box;
         background: linear-gradient(
@@ -462,7 +596,6 @@
         letter-spacing: -0.5px;
     }
 
-    /* Badges de estado del chofer */
     .badge-verde,
     .badge-rojo {
         display: inline-flex;
@@ -479,6 +612,10 @@
         font-weight: 700;
         letter-spacing: 0.5px;
         text-transform: uppercase;
+    }
+
+    .badge-tabla {
+        margin-top: 0;
     }
 
     .badge-verde::before,
@@ -503,7 +640,7 @@
         display: flex;
         justify-content: space-between;
         gap: 20px;
-        margin-bottom: 14px;
+        margin-bottom: 11px;
         font-family: 'Inter', sans-serif;
         font-size: 12px;
     }
@@ -521,17 +658,62 @@
 
     .perfil-separador {
         border-top: 1px dashed rgba(255,255,255,0.12);
-        margin: 18px 0;
+        margin: 16px 0;
     }
 
-    #m-recaudado {
-        color: #ffffff;
-        font-size: 14px;
+    /* Caja Contable de Liquidación Mensual (HU-08 CA-02) */
+    .caja-liquidacion {
+        background: rgba(255,255,255,0.03);
+        border: 1px solid rgba(255,255,255,0.09);
+        border-radius: 12px;
+        padding: 15px;
+        margin-top: 12px;
+    }
+
+    .caja-liquidacion-titulo {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 12px;
+        padding-bottom: 8px;
+        border-bottom: 1px solid rgba(255,255,255,0.07);
+        font-size: 10px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.6px;
+        color: #9ca3af;
+    }
+
+    .btn-ejecutar-liquidacion {
+        width: 100%;
+        margin-top: 12px;
+        padding: 12px;
+        background: #ffffff;
+        color: #000000;
+        border: none;
+        border-radius: 9px;
+        cursor: pointer;
+        font-family: 'Inter', sans-serif;
+        font-size: 12px;
+        font-weight: 700;
+        transition: all 0.25s ease;
+    }
+
+    .btn-ejecutar-liquidacion:hover {
+        background: #e5e7eb;
+        transform: translateY(-1px);
+    }
+
+    .btn-ejecutar-liquidacion:disabled {
+        background: rgba(255,255,255,0.08);
+        color: #6b7280;
+        cursor: not-allowed;
+        transform: none;
     }
 
     .btn-cerrar-ficha {
         width: 100%;
-        margin-top: 24px;
+        margin-top: 14px;
         padding: 13px;
         background: rgba(255,255,255,0.07);
         color: #d1d5db;
@@ -550,29 +732,42 @@
         transform: translateY(-1px);
     }
 
-    /* SCROLLBAR PERSONALIZADA PARA EL HISTORIAL DE VIAJES */
-    #contenedor-historial-viajes::-webkit-scrollbar {
+    #contenedor-historial-viajes::-webkit-scrollbar,
+    .modal-contenido::-webkit-scrollbar {
         width: 5px;
     }
-    #contenedor-historial-viajes::-webkit-scrollbar-track {
+    #contenedor-historial-viajes::-webkit-scrollbar-track,
+    .modal-contenido::-webkit-scrollbar-track {
         background: rgba(0,0,0,0.2);
         border-radius: 10px;
     }
-    #contenedor-historial-viajes::-webkit-scrollbar-thumb {
+    #contenedor-historial-viajes::-webkit-scrollbar-thumb,
+    .modal-contenido::-webkit-scrollbar-thumb {
         background: rgba(255,255,255,0.2);
         border-radius: 10px;
-    }
-    #contenedor-historial-viajes::-webkit-scrollbar-thumb:hover {
-        background: rgba(255,255,255,0.4);
     }
 
 
     /* =========================================================
-       7. RESPONSIVIDAD (MÓVILES Y TABLETS)
+       8. RESPONSIVIDAD (MÓVILES Y TABLETS)
        ========================================================= */
 
-    @media (max-width: 800px) {
+    @media (max-width: 950px) {
         .kpi-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        .comercial-body {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+
+    @media (max-width: 750px) {
+        .kpi-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .comercial-body {
             grid-template-columns: 1fr;
         }
 
@@ -590,7 +785,7 @@
         }
 
         .ranking-table {
-            min-width: 700px;
+            min-width: 850px;
         }
     }
 
@@ -608,7 +803,7 @@
         }
 
         .kpi-value {
-            font-size: 28px;
+            font-size: 26px;
         }
 
         .modal-contenido {
@@ -621,12 +816,11 @@
 
 
 <!-- =========================================================
-     ESTRUCTURA HTML PRINCIPAL DEL DASHBOARD
+     ESTRUCTURA HTML PRINCIPAL DEL DASHBOARD GERENCIAL
      ========================================================= -->
 
 <div class="dashboard-page">
 
-    <!-- Capa de oscurecimiento del fondo -->
     <div class="dashboard-overlay"></div>
 
     <div class="dashboard-container">
@@ -639,7 +833,7 @@
                     Resumen <strong>Gerencial</strong>
                 </h1>
                 <p>
-                    Métricas operativas y financieras de la flota.
+                    Separación financiera de la empresa, métricas estratégicas y liquidación de flota.
                 </p>
             </div>
 
@@ -648,45 +842,107 @@
                 <option value="hoy">Día de Hoy</option>
                 <option value="ayer">El día de Ayer</option>
                 <option value="semana">Últimos 7 días</option>
-                <option value="mes">Este Mes</option>
+                <option value="mes">Este Mes (Liquidación)</option>
                 <option value="total">Histórico Total (Todo)</option>
             </select>
 
         </div>
 
-        <!-- RECUADROS DE KPIS (INDICADORES CLAVE) -->
+        <!-- =========================================================
+             CUADRÍCULA DE 6 KPIs (FILA 1: DINERO SEPARADO | FILA 2: OPERACIÓN HU-09)
+             ========================================================= -->
         <div class="kpi-grid">
 
-            <!-- KPI: INGRESOS -->
+            <!-- KPI 1: RECAUDACIÓN BRUTA DE VIAJES (100%) -->
             <div class="kpi-card">
-                <span class="kpi-title">Ingresos generados</span>
-                <h3 class="kpi-value text-verde" id="kpi-ingresos">S/ 0.00</h3>
-                <div class="kpi-subtext">Recaudación registrada</div>
+                <span class="kpi-title">Recaudación Bruta (100%)</span>
+                <h3 class="kpi-value text-blanco" id="kpi-ingresos">S/ 0.00</h3>
+                <div class="kpi-subtext">Total cobrado a los pasajeros</div>
             </div>
 
-            <!-- KPI: COMPLETADOS -->
-            <div class="kpi-card">
-                <span class="kpi-title">Viajes completados</span>
-                <h3 class="kpi-value text-azul" id="kpi-completados">0</h3>
-                <div class="kpi-subtext">Servicios finalizados</div>
+            <!-- KPI 2: GANANCIA NETA DE FLECHA VELOZ (LA PLATA DE LA EMPRESA) -->
+            <div class="kpi-card kpi-card-empresa">
+                <span class="kpi-title" id="kpi-titulo-comision-app">Ganancia Flecha Veloz (20%)</span>
+                <h3 class="kpi-value text-esmeralda" id="kpi-ganancia-empresa">S/ 0.00</h3>
+                <div class="kpi-subtext">Retención exclusiva de la plataforma</div>
             </div>
 
-            <!-- KPI: CANCELADOS -->
+            <!-- KPI 3: FONDO NETO CORRESPONDIENTE A CHOFERES (80%) -->
             <div class="kpi-card">
-                <span class="kpi-title">Viajes cancelados</span>
-                <h3 class="kpi-value text-rojo" id="kpi-cancelados">0</h3>
-                <div class="kpi-subtext">Servicios no completados</div>
+                <span class="kpi-title" id="kpi-titulo-neto-choferes">Neto de Conductores (80%)</span>
+                <h3 class="kpi-value text-blanco" id="kpi-neto-choferes">S/ 0.00</h3>
+                <div class="kpi-subtext">Monto asignado a la flota operativa</div>
+            </div>
+
+            <!-- KPI 4: VIAJES REALIZADOS Y CANCELADOS (HU-09 CA-01) -->
+            <div class="kpi-card">
+                <span class="kpi-title">Viajes realizados</span>
+                <h3 class="kpi-value text-blanco" id="kpi-completados">0</h3>
+                <div class="kpi-subtext" id="kpi-cancelados-sub">0 servicios cancelados en el periodo</div>
+            </div>
+
+            <!-- KPI 5: NUEVOS CLIENTES (HU-09 CA-01) -->
+            <div class="kpi-card">
+                <span class="kpi-title">Nuevos clientes</span>
+                <h3 class="kpi-value text-blanco" id="kpi-clientes">0</h3>
+                <div class="kpi-subtext">Pasajeros registrados en padrón</div>
+            </div>
+
+            <!-- KPI 6: ESTADO OPERATIVO DE VEHÍCULOS (HU-09 CA-01) -->
+            <div class="kpi-card">
+                <span class="kpi-title">Estado de vehículos</span>
+                <h3 class="kpi-value text-blanco" id="kpi-vehiculos">0 / 0</h3>
+                <div class="kpi-subtext" id="kpi-vehiculos-sub">Unidades operativas en tiempo real</div>
             </div>
 
         </div>
 
 
-        <!-- TABLA DE RANKING DE CONDUCTORES -->
+        <!-- =========================================================
+             PANEL GERENCIAL: TARIFAS, PROMOCIONES Y COMISIÓN APP (HU-08 CA-01)
+             ========================================================= -->
+        <div class="comercial-panel">
+            <div class="comercial-header">
+                <h2>Gestión de Tarifas, Promociones y Comisión de Flecha Veloz</h2>
+                <span id="badge-promo-activa">Sincronizado con Central Operativa y Billetera de Choferes</span>
+            </div>
+
+            <div class="comercial-body">
+                <div class="comercial-field">
+                    <label>Tarifa Base Mínima (S/)</label>
+                    <input type="number" step="0.50" min="1" id="cfg-tarifa-base" class="comercial-input" value="5.00">
+                </div>
+
+                <div class="comercial-field">
+                    <label>Costo por Kilómetro (S/)</label>
+                    <input type="number" step="0.10" min="0.5" id="cfg-costo-km" class="comercial-input" value="2.50">
+                </div>
+
+                <div class="comercial-field">
+                    <label>Descuento Promoción (%)</label>
+                    <input type="number" step="1" min="0" max="80" id="cfg-promo-pct" class="comercial-input" value="0">
+                </div>
+
+                <div class="comercial-field">
+                    <label>Comisión Flecha Veloz (%)</label>
+                    <input type="number" step="1" min="1" max="50" id="cfg-comision-pct" class="comercial-input" value="20">
+                </div>
+
+                <button class="btn-actualizar-tarifa" onclick="guardarConfiguracionComercial()">
+                    Actualizar Tarifas
+                </button>
+            </div>
+        </div>
+
+
+        <!-- =========================================================
+             TABLA DE RENDIMIENTO DE FLOTA Y DESGLOSE DE COMISIONES
+             ========================================================= -->
         <div class="ranking-container">
 
             <div class="ranking-header">
-                <h2>Rendimiento de flota</h2>
-                <span>Tabla de clasificación</span>
+                <h2>Rendimiento de flota y liquidación contable</h2>
+                <span>Separación exacta entre ganancia de la app y neto del conductor</span>
             </div>
 
             <table class="ranking-table">
@@ -694,13 +950,17 @@
                     <tr>
                         <th>Posición</th>
                         <th>Conductor</th>
-                        <th>Viajes filtrados</th>
-                        <th>Total recaudado</th>
+                        <th>Unidad / Estado</th>
+                        <th>Viajes</th>
+                        <th>Bruto (100%)</th>
+                        <th>Ganancia App</th>
+                        <th>Neto Chofer / Saldo</th>
+                        <th>Acción</th>
                     </tr>
                 </thead>
                 <tbody id="tabla-ranking">
                     <tr>
-                        <td colspan="4" style="text-align:center; padding:30px; color:#777;">
+                        <td colspan="8" style="text-align:center; padding:30px; color:#777;">
                             Iniciando conexión con la base de datos...
                         </td>
                     </tr>
@@ -713,7 +973,7 @@
 
 
     <!-- =========================================================
-         VENTANA MODAL: PERFIL DEL CHOFER Y SU HISTORIAL
+         VENTANA MODAL: FICHA DEL CHOFER Y LIQUIDACIÓN EN BASE DE DATOS
          ========================================================= -->
     <div id="modal-perfil" class="modal-oculto">
 
@@ -748,11 +1008,8 @@
 
             <div class="perfil-separador"></div>
 
-            <!-- ===================================================
-                 NUEVO BLOQUE: HISTORIAL DE VIAJES DETALLADO
-                 =================================================== -->
+            <!-- HISTORIAL DE VIAJES DETALLADO -->
             <div style="margin-bottom: 15px;">
-                
                 <div style="display: flex; justify-content: space-between; align-items: center;">
                     <span style="color: #888; font-family: 'Inter', sans-serif; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">
                         Auditoría de Viajes
@@ -760,26 +1017,52 @@
                     <span style="color: #555; font-size: 9px;" id="m-rango-texto">Rango actual</span>
                 </div>
                 
-                <div style="margin-top: 12px; max-height: 220px; overflow-y: auto; padding-right: 8px;" id="contenedor-historial-viajes">
-                    <!-- Javascript inyectará las mini-tarjetas de los viajes aquí -->
+                <div style="margin-top: 12px; max-height: 180px; overflow-y: auto; padding-right: 8px;" id="contenedor-historial-viajes">
                     <div style="text-align: center; color: #555; font-size: 12px; padding: 20px;">
                         Consultando historial en la base de datos...
                     </div>
                 </div>
-
             </div>
 
             <div class="perfil-separador"></div>
 
-            <!-- Totales del Chofer -->
-            <div class="perfil-dato">
-                <span>Viajes exitosos</span>
-                <strong id="m-viajes">0</strong>
-            </div>
+            <!-- ===================================================
+                 CAJA CONTABLE DE LIQUIDACIÓN (HU-08 CA-02)
+                 =================================================== -->
+            <div class="caja-liquidacion">
+                <div class="caja-liquidacion-titulo">
+                    <span>Desglose de Liquidación (HU-08)</span>
+                    <span id="m-estado-liquidacion" style="color: #eab308;">Verificando...</span>
+                </div>
 
-            <div class="perfil-dato">
-                <span>Dinero total generado</span>
-                <strong id="m-recaudado" style="color: #10b981;">S/ 0.00</strong>
+                <div class="perfil-dato">
+                    <span>Viajes atendidos (Bruto 100%)</span>
+                    <strong id="m-recaudado">S/ 0.00</strong>
+                </div>
+
+                <div class="perfil-dato">
+                    <span id="m-label-comision">Ganancia Flecha Veloz (20%)</span>
+                    <strong id="m-comision-monto" style="color: #10b981;">S/ 0.00</strong>
+                </div>
+
+                <div class="perfil-dato">
+                    <span id="m-label-neto-chofer">Corresponde al Chofer (80%)</span>
+                    <strong id="m-neto-total-chofer">S/ 0.00</strong>
+                </div>
+
+                <div class="perfil-dato">
+                    <span>Retirado / Liquidado previamente</span>
+                    <strong id="m-retirado-chofer" style="color: #9ca3af;">- S/ 0.00</strong>
+                </div>
+
+                <div class="perfil-dato" style="border-top: 1px dashed rgba(255,255,255,0.12); padding-top: 9px; margin-bottom: 4px;">
+                    <span style="color: #ffffff; font-weight: 700;">Saldo Pendiente por Desembolsar</span>
+                    <strong id="m-pendiente-chofer" style="color: #fbbf24; font-size: 14px;">S/ 0.00</strong>
+                </div>
+
+                <button id="btn-liquidar-chofer" onclick="ejecutarLiquidacionChofer()" class="btn-ejecutar-liquidacion">
+                    Liquidar y Desembolsar Saldo
+                </button>
             </div>
 
             <!-- Botón de Cierre -->
@@ -795,26 +1078,120 @@
 
 
 <!-- =========================================================
-     JAVASCRIPT: LÓGICA DEL SISTEMA DE REPORTES Y MODALES
+     JAVASCRIPT: LÓGICA FINANCIERA SEPARADA Y LIQUIDACIÓN REAL
      ========================================================= -->
 <script>
 
-    // Variable global para almacenar los datos extraídos de la BD y usarlos en el modal
     let datosFlota = [];
+    let choferSeleccionadoIndex = null;
 
     /* -----------------------------------------------------------
-       FUNCIÓN 1: OBTENER KPIs GENERALES
+       FUNCIÓN 0: GESTIÓN DE TARIFAS Y COMISIÓN APP (HU-08 CA-01)
+       ----------------------------------------------------------- */
+    async function cargarConfiguracionComercial() {
+        try {
+            const res = await fetch('/api/configuracion/comercial');
+            if (res.ok) {
+                const cfg = await res.json();
+                localStorage.setItem('fv_tarifa_base', Number(cfg.tarifa_base).toFixed(2));
+                localStorage.setItem('fv_costo_km', Number(cfg.costo_km).toFixed(2));
+                localStorage.setItem('fv_promo_pct', String(cfg.promo_pct));
+                localStorage.setItem('fv_comision_pct', String(cfg.comision_pct));
+            }
+        } catch (e) {}
+
+        const tarifaBase  = localStorage.getItem('fv_tarifa_base') || '5.00';
+        const costoKm     = localStorage.getItem('fv_costo_km') || '2.50';
+        const promoPct    = localStorage.getItem('fv_promo_pct') || '0';
+        const comisionPct = localStorage.getItem('fv_comision_pct') || '20';
+
+        document.getElementById('cfg-tarifa-base').value  = tarifaBase;
+        document.getElementById('cfg-costo-km').value     = costoKm;
+        document.getElementById('cfg-promo-pct').value    = promoPct;
+        document.getElementById('cfg-comision-pct').value = comisionPct;
+
+        actualizarBadgePromocion();
+    }
+
+    function actualizarBadgePromocion() {
+        const promoPct    = parseFloat(document.getElementById('cfg-promo-pct').value) || 0;
+        const tarifaKm    = parseFloat(document.getElementById('cfg-costo-km').value) || 2.50;
+        const comisionPct = parseFloat(document.getElementById('cfg-comision-pct').value) || 20;
+        const badge       = document.getElementById('badge-promo-activa');
+
+        if (promoPct > 0) {
+            badge.innerText = `Promo activa: -${promoPct}% | S/ ${tarifaKm.toFixed(2)}/Km | App retiene ${comisionPct}%`;
+            badge.style.color = '#10b981';
+        } else {
+            badge.innerText = `Tarifa vigente: S/ ${tarifaKm.toFixed(2)}/Km | App retiene ${comisionPct}% y Chofer ${100 - comisionPct}%`;
+            badge.style.color = '#9ca3af';
+        }
+    }
+
+    async function guardarConfiguracionComercial() {
+        const tarifaBase  = Math.max(1, parseFloat(document.getElementById('cfg-tarifa-base').value) || 5.00);
+        const costoKm     = Math.max(0.5, parseFloat(document.getElementById('cfg-costo-km').value) || 2.50);
+        const promoPct    = Math.min(80, Math.max(0, parseInt(document.getElementById('cfg-promo-pct').value) || 0));
+        const comisionPct = Math.min(50, Math.max(1, parseInt(document.getElementById('cfg-comision-pct').value) || 20));
+
+        localStorage.setItem('fv_tarifa_base', tarifaBase.toFixed(2));
+        localStorage.setItem('fv_costo_km', costoKm.toFixed(2));
+        localStorage.setItem('fv_promo_pct', String(promoPct));
+        localStorage.setItem('fv_comision_pct', String(comisionPct));
+
+        // Sincronizamos con el Backend para que el límite de retiro de los choferes use este mismo porcentaje
+        try {
+            await fetch('/api/configuracion/comercial', {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    tarifa_base: tarifaBase,
+                    costo_km: costoKm,
+                    promo_pct: promoPct,
+                    comision_pct: comisionPct
+                })
+            });
+        } catch (e) {}
+
+        actualizarBadgePromocion();
+        cargarResumen();
+        cargarRanking();
+
+        if (typeof notificar === 'function') {
+            notificar(`Configuración guardada: Flecha Veloz retiene ${comisionPct}% y los choferes reciben ${100 - comisionPct}%.`, 'success');
+        }
+    }
+
+
+    /* -----------------------------------------------------------
+       FUNCIÓN 1: OBTENER KPIs CON SEPARACIÓN FINANCIERA (HU-09)
        ----------------------------------------------------------- */
     async function cargarResumen() {
         const rango = document.getElementById('filtro-tiempo').value;
+        const comisionPct = parseFloat(localStorage.getItem('fv_comision_pct')) || 20;
+        const choferPct   = 100 - comisionPct;
+
+        document.getElementById('kpi-titulo-comision-app').innerText  = `Ganancia Flecha Veloz (${comisionPct}%)`;
+        document.getElementById('kpi-titulo-neto-choferes').innerText = `Neto de Conductores (${choferPct}%)`;
+
         try {
             const res = await fetch(`/api/reportes/resumen?rango=${rango}`);
             const data = await res.json();
 
-            // Animación de actualización de texto
-            document.getElementById('kpi-ingresos').innerText = `S/ ${data.ganancias_hoy.toFixed(2)}`;
-            document.getElementById('kpi-completados').innerText = data.viajes_completados;
-            document.getElementById('kpi-cancelados').innerText = data.viajes_cancelados;
+            const brutoTotal      = Number(data.ganancias_hoy || 0);
+            const gananciaEmpresa = Number(data.comision_empresa !== undefined ? data.comision_empresa : (brutoTotal * (comisionPct / 100)));
+            const netoConductores = Math.max(0, brutoTotal - gananciaEmpresa);
+
+            document.getElementById('kpi-ingresos').innerText         = `S/ ${brutoTotal.toFixed(2)}`;
+            document.getElementById('kpi-ganancia-empresa').innerText = `S/ ${gananciaEmpresa.toFixed(2)}`;
+            document.getElementById('kpi-neto-choferes').innerText    = `S/ ${netoConductores.toFixed(2)}`;
+
+            document.getElementById('kpi-completados').innerText    = data.viajes_completados || 0;
+            document.getElementById('kpi-cancelados-sub').innerText = `${data.viajes_cancelados || 0} servicios cancelados en el periodo`;
+
+            if (data.nuevos_clientes !== undefined) {
+                document.getElementById('kpi-clientes').innerText = data.nuevos_clientes;
+            }
         } catch (e) {
             console.error("Error al cargar KPIs:", e);
         }
@@ -822,32 +1199,41 @@
 
 
     /* -----------------------------------------------------------
-       FUNCIÓN 2: OBTENER Y DIBUJAR LA TABLA DE RANKING
+       FUNCIÓN 2: TABLA DE RANKING Y DESGLOSE POR CHOFER
        ----------------------------------------------------------- */
     async function cargarRanking() {
         const rango = document.getElementById('filtro-tiempo').value;
+        const comisionPct = parseFloat(localStorage.getItem('fv_comision_pct')) || 20;
+        const choferPct   = 100 - comisionPct;
+
         try {
             const res = await fetch(`/api/reportes/ranking?rango=${rango}`);
             datosFlota = await res.json();
             
             const tabla = document.getElementById('tabla-ranking');
-            tabla.innerHTML = ''; // Limpiamos la tabla
+            tabla.innerHTML = '';
+
+            // Actualizar KPI de Estado Operativo de Vehículos (HU-09 CA-01)
+            const totalVehiculos = Array.isArray(datosFlota) ? datosFlota.length : 0;
+            const vehiculosOperativos = Array.isArray(datosFlota)
+                ? datosFlota.filter(c => c.operativo === 1 || c.operativo === true).length
+                : 0;
+
+            document.getElementById('kpi-vehiculos').innerText = `${vehiculosOperativos} / ${totalVehiculos}`;
+            document.getElementById('kpi-vehiculos-sub').innerText = `${vehiculosOperativos} operativos, ${totalVehiculos - vehiculosOperativos} no operativos`;
 
             if (datosFlota.length === 0) {
                 tabla.innerHTML = `
                     <tr>
-                        <td colspan="4" style="text-align:center; padding:40px; color:#666; font-size: 13px;">
-                            No existen registros de viajes de conductores en el rango de tiempo seleccionado.
+                        <td colspan="8" style="text-align:center; padding:40px; color:#666; font-size: 13px;">
+                            No existen registros de conductores en el rango seleccionado.
                         </td>
                     </tr>
                 `;
                 return;
             }
 
-            // Dibujamos cada fila de la tabla
             datosFlota.forEach((chofer, index) => {
-                
-                // Asignar medallas a los 3 primeros si tienen ingresos
                 let medalla = `${index + 1}º`;
                 if (chofer.recaudado > 0) {
                     if (index === 0) medalla = '🥇';
@@ -858,23 +1244,59 @@
                 }
 
                 const inicial = chofer.nombre.charAt(0).toUpperCase();
+                const esOperativo = (chofer.operativo === 1 || chofer.operativo === true);
+                const badgeVehiculo = esOperativo
+                    ? `<span class="badge-verde badge-tabla">Operativo</span>`
+                    : `<span class="badge-rojo badge-tabla">No operativo</span>`;
+
+                const brutoChofer    = Number(chofer.recaudado || 0);
+                const comisionApp    = Number(chofer.comision !== undefined ? chofer.comision : (brutoChofer * (comisionPct / 100)));
+                const netoChofer     = Number(chofer.neto_chofer !== undefined ? chofer.neto_chofer : (brutoChofer - comisionApp));
+                const pendienteSaldo = Number(chofer.pendiente_liquidar !== undefined ? chofer.pendiente_liquidar : netoChofer);
+
+                let etiquetaEstadoSaldo = `<span style="color:#666; font-size:10px;">Sin saldo</span>`;
+                if (brutoChofer > 0 || pendienteSaldo > 0) {
+                    if (chofer.liquidado || pendienteSaldo <= 0.01) {
+                        etiquetaEstadoSaldo = `<span style="color:#10b981; font-size:10px; font-weight:700;">✔ Liquidado (S/ 0.00)</span>`;
+                    } else {
+                        etiquetaEstadoSaldo = `<span style="color:#fbbf24; font-size:10px; font-weight:700;">Pendiente: S/ ${pendienteSaldo.toFixed(2)}</span>`;
+                    }
+                }
 
                 tabla.innerHTML += `
                     <tr>
                         <td>
-                            <span class="ranking-top" style="background: ${index < 3 && chofer.recaudado > 0 ? 'rgba(255,215,0,0.15)' : 'rgba(255,255,255,0.08)'}">${medalla}</span>
+                            <span class="ranking-top" style="background: ${index < 3 && brutoChofer > 0 ? 'rgba(255,215,0,0.15)' : 'rgba(255,255,255,0.08)'}">${medalla}</span>
                         </td>
                         <td>
                             <div class="driver-name">
                                 <div class="driver-avatar">${inicial}</div>
-                                <span class="link-perfil" onclick="abrirPerfil(${index})" title="Ver detalles y auditoría">
+                                <span class="link-perfil" onclick="abrirPerfil(${index})" title="Auditar y liquidar">
                                     ${chofer.nombre}
                                 </span>
                             </div>
                         </td>
+                        <td>
+                            <div style="display:flex; align-items:center; gap:8px;">
+                                <strong style="color:#fff; font-size:11px;">${chofer.placa || 'S/P'}</strong>
+                                ${badgeVehiculo}
+                            </div>
+                        </td>
                         <td>${chofer.viajes}</td>
-                        <td class="recaudado-destacado" style="color: ${chofer.recaudado > 0 ? '#10b981' : '#fff'}">
-                            S/ ${chofer.recaudado.toFixed(2)}
+                        <td class="recaudado-destacado">
+                            S/ ${brutoChofer.toFixed(2)}
+                        </td>
+                        <td style="color:#10b981; font-weight:700;">
+                            S/ ${comisionApp.toFixed(2)} <span style="color:#666; font-size:10px; font-weight:400;">(${comisionPct}%)</span>
+                        </td>
+                        <td>
+                            <div style="font-weight:600; color:#fff;">S/ ${netoChofer.toFixed(2)} <span style="color:#666; font-size:10px; font-weight:400;">(${choferPct}%)</span></div>
+                            ${etiquetaEstadoSaldo}
+                        </td>
+                        <td>
+                            <button class="btn-tabla-liquidar" onclick="abrirPerfil(${index})">
+                                Auditar / Liquidar
+                            </button>
                         </td>
                     </tr>
                 `;
@@ -886,17 +1308,17 @@
 
 
     /* -----------------------------------------------------------
-       FUNCIÓN 3: ACTUALIZACIÓN GLOBAL (AL CAMBIAR EL SELECTOR)
+       FUNCIÓN 3: ACTUALIZACIÓN GLOBAL
        ----------------------------------------------------------- */
     function actualizarReportes() {
-        // Mostramos un feedback visual mientras la API responde
-        document.getElementById('kpi-ingresos').innerText = "...";
-        document.getElementById('kpi-completados').innerText = "-";
-        document.getElementById('kpi-cancelados').innerText = "-";
+        document.getElementById('kpi-ingresos').innerText         = "...";
+        document.getElementById('kpi-ganancia-empresa').innerText = "...";
+        document.getElementById('kpi-neto-choferes').innerText    = "...";
+        document.getElementById('kpi-completados').innerText      = "-";
         
         document.getElementById('tabla-ranking').innerHTML = `
             <tr>
-                <td colspan="4" style="text-align:center; padding:30px; color:#777;">
+                <td colspan="8" style="text-align:center; padding:30px; color:#777;">
                     Sincronizando información con la base de datos...
                 </td>
             </tr>
@@ -908,128 +1330,179 @@
 
 
     /* -----------------------------------------------------------
-       FUNCIÓN 4: ABRIR PERFIL Y OBTENER HISTORIAL (AUDITORÍA)
+       FUNCIÓN 4: ABRIR MODAL DE AUDITORÍA Y LIQUIDACIÓN CONTABLE
        ----------------------------------------------------------- */
     async function abrirPerfil(index) {
+        choferSeleccionadoIndex = index;
         const chofer = datosFlota[index];
         const combo = document.getElementById('filtro-tiempo');
         const rangoSeleccionado = combo.value;
         const textoRango = combo.options[combo.selectedIndex].text;
 
-        // 1. Llenamos los datos fijos del modal extraídos del array global
+        const comisionPct   = parseFloat(localStorage.getItem('fv_comision_pct')) || 20;
+        const choferPct     = 100 - comisionPct;
+        const montoBruto    = Number(chofer.recaudado) || 0;
+        const montoComision = Number(chofer.comision !== undefined ? chofer.comision : (montoBruto * (comisionPct / 100)));
+        const montoNeto     = Number(chofer.neto_chofer !== undefined ? chofer.neto_chofer : (montoBruto - montoComision));
+        const montoRetirado = Number(chofer.retirado || 0);
+        const pendienteLiq  = Number(chofer.pendiente_liquidar !== undefined ? chofer.pendiente_liquidar : Math.max(0, montoNeto - montoRetirado));
+
+        // 1. Datos de identidad del conductor
         document.getElementById('m-inicial').innerText = chofer.nombre.charAt(0).toUpperCase();
         document.getElementById('m-nombre').innerText = chofer.nombre;
         document.getElementById('m-dni').innerText = chofer.dni;
         document.getElementById('m-correo').innerText = chofer.correo;
         document.getElementById('m-placa').innerText = chofer.placa;
-        document.getElementById('m-viajes').innerText = chofer.viajes;
-        document.getElementById('m-recaudado').innerText = `S/ ${chofer.recaudado.toFixed(2)}`;
         document.getElementById('m-rango-texto').innerText = `(${textoRango})`;
 
-        // 2. Pintamos el "Badge" de estado operativo
+        // 2. Desglose contable exacto (Empresa vs Chofer)
+        document.getElementById('m-recaudado').innerText          = `${chofer.viajes} viajes · S/ ${montoBruto.toFixed(2)}`;
+        document.getElementById('m-label-comision').innerText     = `Ganancia Flecha Veloz (${comisionPct}%)`;
+        document.getElementById('m-comision-monto').innerText     = `S/ ${montoComision.toFixed(2)}`;
+        document.getElementById('m-label-neto-chofer').innerText  = `Corresponde al Chofer (${choferPct}%)`;
+        document.getElementById('m-neto-total-chofer').innerText  = `S/ ${montoNeto.toFixed(2)}`;
+        document.getElementById('m-retirado-chofer').innerText    = `- S/ ${montoRetirado.toFixed(2)}`;
+        document.getElementById('m-pendiente-chofer').innerText   = `S/ ${pendienteLiq.toFixed(2)}`;
+
+        const estadoLiqEl = document.getElementById('m-estado-liquidacion');
+        const btnLiqEl    = document.getElementById('btn-liquidar-chofer');
+
+        if (montoBruto <= 0 && pendienteLiq <= 0) {
+            estadoLiqEl.innerText = 'Sin saldo por liquidar';
+            estadoLiqEl.style.color = '#777777';
+            btnLiqEl.innerText = 'Sin Saldo Pendiente';
+            btnLiqEl.disabled = true;
+        } else if (chofer.liquidado || pendienteLiq <= 0.01) {
+            estadoLiqEl.innerText = 'Liquidado en BD';
+            estadoLiqEl.style.color = '#10b981';
+            btnLiqEl.innerText = 'Cuenta Liquidada (Saldo S/ 0.00)';
+            btnLiqEl.disabled = true;
+        } else {
+            estadoLiqEl.innerText = 'Pendiente de Liquidación';
+            estadoLiqEl.style.color = '#eab308';
+            btnLiqEl.innerText = `Liquidar y Desembolsar S/ ${pendienteLiq.toFixed(2)}`;
+            btnLiqEl.disabled = false;
+        }
+
+        // 3. Estado operativo del vehículo
         const badge = document.getElementById('m-estado');
         if (chofer.operativo === 1 || chofer.operativo === true) {
-            badge.innerText = 'Disponible';
+            badge.innerText = 'Vehículo Operativo';
             badge.className = 'badge-verde';
         } else {
             badge.innerText = 'No operativo / Ocupado';
             badge.className = 'badge-rojo';
         }
 
-        // 3. Mostramos la ventana modal en pantalla
+        // 4. Mostrar modal y cargar historial de viajes
         document.getElementById('modal-perfil').style.display = 'flex';
         
-        // 4. Preparamos el contenedor del historial
         const contenedorViajes = document.getElementById('contenedor-historial-viajes');
-        contenedorViajes.innerHTML = `
-            <div style="text-align: center; color: #777; font-size: 11px; padding: 25px;">
-                <svg style="width:24px; height:24px; margin: 0 auto 10px auto; animation: spin 1s linear infinite;" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
-                Extrayendo registros de PostgreSQL...
-            </div>
-        `;
+        contenedorViajes.innerHTML = `<div style="text-align: center; color: #777; font-size: 11px; padding: 25px;">Extrayendo registros de PostgreSQL...</div>`;
         
         try {
-            // 5. Llamamos al Backend para traer la auditoría de este chofer específico
-            // NOTA: Si el rango es 'total', se lo pasamos literalmente para que Python quite los filtros de fecha.
-            const urlAuditoria = `/api/reportes/historial_chofer/${chofer.id}?rango=${rangoSeleccionado}`;
-            const res = await fetch(urlAuditoria);
-            
-            if (!res.ok) throw new Error("Fallo de red en el endpoint");
-            
+            const res = await fetch(`/api/reportes/historial_chofer/${chofer.id}?rango=${rangoSeleccionado}`);
             const viajes = await res.json();
             contenedorViajes.innerHTML = '';
             
-            // 6. Validamos si la respuesta está vacía
             if (!Array.isArray(viajes) || viajes.length === 0) {
-                contenedorViajes.innerHTML = `
-                    <div style="text-align: center; color: #888; font-size: 11px; padding: 15px; background: rgba(255,255,255,0.02); border-radius: 8px; border: 1px dashed rgba(255,255,255,0.05);">
-                        El conductor no ha registrado viajes en este periodo.
-                    </div>
-                `;
+                contenedorViajes.innerHTML = `<div style="text-align: center; color: #888; font-size: 11px; padding: 15px;">El conductor no registra viajes en este periodo.</div>`;
                 return;
             }
             
-            // 7. Renderizamos las "Mini Tarjetas" de los viajes
             viajes.forEach(viaje => {
-                // Definir colores semánticos basados en el Estado del Viaje
-                let colorEstado = '#eab308'; // Amarillo (En Curso)
-                if (viaje.estado === 'Completado') colorEstado = '#10b981'; // Verde
-                if (viaje.estado === 'Cancelado') colorEstado = '#ef4444'; // Rojo
+                let colorEstado = '#eab308';
+                if (viaje.estado === 'Completado' || viaje.estado === 'Atendida') colorEstado = '#10b981';
+                if (viaje.estado === 'Cancelado') colorEstado = '#ef4444';
                 
-                // Limpieza Inteligente del nombre del Pasajero
-                // Extrae "Juan Perez" si en la base de datos dice "Juan Perez - 987654321"
-                const nombrePasajeroLimpio = viaje.pasajero ? viaje.pasajero.split(' - ')[0].trim() : 'Cliente sin registrar';
-                
-                // Asegurar formato de hora correcto
+                const nombrePasajeroLimpio = viaje.pasajero ? viaje.pasajero.split(' - ')[0].trim() : 'Cliente registrado';
                 const horaViaje = viaje.hora ? viaje.hora : '--:--:--';
+                const tarifaV   = Number(viaje.tarifa || 0);
+                const comisionV = tarifaV * (comisionPct / 100);
                 
-                // Inyectamos la tarjeta en el contenedor
                 contenedorViajes.innerHTML += `
-                    <div style="background: rgba(255,255,255,0.025); border: 1px solid rgba(255,255,255,0.07); border-radius: 10px; padding: 12px; margin-bottom: 10px; transition: background 0.2s ease;">
-                        
-                        <!-- Cabecera de la Tarjeta (Cliente y Estado) -->
+                    <div style="background: rgba(255,255,255,0.025); border: 1px solid rgba(255,255,255,0.07); border-radius: 10px; padding: 12px; margin-bottom: 10px;">
                         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-                            <strong style="color: #fff; font-size: 12px; font-family: 'Inter', sans-serif;">
-                                👤 ${nombrePasajeroLimpio}
-                            </strong>
+                            <strong style="color: #fff; font-size: 12px;">👤 ${nombrePasajeroLimpio}</strong>
                             <span style="color: ${colorEstado}; background: ${colorEstado}15; padding: 3px 6px; border-radius: 4px; font-size: 9px; font-weight: 800; text-transform: uppercase; border: 1px solid ${colorEstado}40;">
                                 ${viaje.estado}
                             </span>
                         </div>
-                        
-                        <!-- Cuerpo de la Tarjeta (Rutas) -->
-                        <div style="color: #a3a3a3; font-size: 10px; font-family: 'Inter', sans-serif; display: flex; flex-direction: column; gap: 5px; margin-bottom: 8px; line-height: 1.4;">
-                            <div style="display: flex; gap: 6px;"><span style="color:#fff;">📍</span> <span>${viaje.origen}</span></div>
-                            <div style="display: flex; gap: 6px;"><span style="color:#fff;">🏁</span> <span>${viaje.destino}</span></div>
+                        <div style="color: #a3a3a3; font-size: 10px; display: flex; flex-direction: column; gap: 5px; margin-bottom: 8px;">
+                            <div>📍 ${viaje.origen}</div>
+                            <div>🏁 ${viaje.destino}</div>
                         </div>
-                        
-                        <!-- Footer de la Tarjeta (Hora y Precio) -->
                         <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 8px;">
-                            <span style="color: #666; font-size: 10px; font-weight: 500;">
-                                🕒 Hora: ${horaViaje}
-                            </span>
-                            <strong style="color: #fff; font-size: 13px;">
-                                S/ ${Number(viaje.tarifa).toFixed(2)}
-                            </strong>
+                            <span style="color: #666; font-size: 10px;">🕒 ${horaViaje}</span>
+                            <span style="font-size: 11px; color: #10b981;">App: S/ ${comisionV.toFixed(2)} | <strong style="color: #fff; font-size: 12px;">Total: S/ ${tarifaV.toFixed(2)}</strong></span>
                         </div>
-
                     </div>
                 `;
             });
-
         } catch (error) {
-            console.error("Error al extraer historial:", error);
-            contenedorViajes.innerHTML = `
-                <div style="text-align: center; color: #ef4444; font-size: 11px; padding: 15px; background: rgba(239, 68, 68, 0.05); border-radius: 8px; border: 1px solid rgba(239, 68, 68, 0.2);">
-                    Error de BD: El historial no pudo ser extraído de PostgreSQL.
-                </div>
-            `;
+            contenedorViajes.innerHTML = `<div style="text-align: center; color: #ef4444; font-size: 11px; padding: 15px;">Error al consultar el historial en PostgreSQL.</div>`;
         }
     }
 
 
     /* -----------------------------------------------------------
-       FUNCIÓN 5: CERRAR EL MODAL
+       FUNCIÓN 5: EJECUTAR LIQUIDACIÓN REAL EN BASE DE DATOS (HU-08 CA-02)
+       ----------------------------------------------------------- */
+    async function ejecutarLiquidacionChofer() {
+        if (choferSeleccionadoIndex === null) return;
+
+        const chofer = datosFlota[choferSeleccionadoIndex];
+        const comisionPct = parseFloat(localStorage.getItem('fv_comision_pct')) || 20;
+        const btnLiqEl = document.getElementById('btn-liquidar-chofer');
+
+        btnLiqEl.disabled = true;
+        btnLiqEl.innerText = 'Registrando liquidación en PostgreSQL...';
+
+        try {
+            const res = await fetch('/api/reportes/liquidar', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    id_chofer: chofer.id,
+                    comision_pct: comisionPct
+                })
+            });
+
+            const data = await res.json();
+
+            if (res.ok) {
+                // Actualizamos la tabla y las variables en memoria desde PostgreSQL
+                await cargarResumen();
+                await cargarRanking();
+
+                // Refrescamos los números dentro del modal abierto
+                const choferActualizado = datosFlota[choferSeleccionadoIndex];
+                if (choferActualizado) {
+                    document.getElementById('m-retirado-chofer').innerText = `- S/ ${Number(choferActualizado.retirado || 0).toFixed(2)}`;
+                }
+                document.getElementById('m-pendiente-chofer').innerText = 'S/ 0.00';
+                document.getElementById('m-estado-liquidacion').innerText = 'Liquidado en BD';
+                document.getElementById('m-estado-liquidacion').style.color = '#10b981';
+                btnLiqEl.innerText = 'Cuenta Liquidada (Saldo S/ 0.00)';
+
+                if (typeof notificar === 'function') {
+                    notificar(`Liquidación completada para ${chofer.nombre}: Desembolsado S/ ${Number(data.monto_liquidado).toFixed(2)} | Retenido para Flecha Veloz S/ ${Number(data.comision_empresa).toFixed(2)}`, 'success');
+                }
+            } else {
+                btnLiqEl.disabled = false;
+                btnLiqEl.innerText = 'Reintentar Liquidación';
+                if (typeof notificar === 'function') notificar(data.detail || 'Error al liquidar en BD', 'error');
+            }
+        } catch (err) {
+            btnLiqEl.disabled = false;
+            btnLiqEl.innerText = 'Reintentar Liquidación';
+            if (typeof notificar === 'function') notificar('Fallo de conexión con el servidor.', 'error');
+        }
+    }
+
+
+    /* -----------------------------------------------------------
+       FUNCIÓN 6: CERRAR EL MODAL
        ----------------------------------------------------------- */
     function cerrarModalPerfil() {
         document.getElementById('modal-perfil').style.display = 'none';
@@ -1037,9 +1510,10 @@
 
 
     /* -----------------------------------------------------------
-       ARRANQUE INICIAL (AL CARGAR LA PÁGINA)
+       ARRANQUE INICIAL
        ----------------------------------------------------------- */
-    window.onload = () => {
+    window.onload = async () => {
+        await cargarConfiguracionComercial();
         cargarResumen();
         cargarRanking();
     };
