@@ -2,7 +2,7 @@
 {% block content %}
 
 <style>
-    /* Tipografías modernas: Inter para lectura y Poppins para títulos */
+    /* Tipografías modernas: Inter para lectura y Manrope para títulos */
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap');
 
     /* =========================================================
@@ -74,6 +74,7 @@
         display: flex;
         flex-direction: column;
         align-items: center;
+        box-sizing: border-box;
     }
 
     /* =========================================================
@@ -171,7 +172,7 @@
     }
 
     /* =========================================================
-       3. ANIMACIONES GLOBALES (SCROLL REVEAL Y HOVER)
+       4. ANIMACIONES GLOBALES (SCROLL REVEAL Y HOVER)
        ========================================================= */
     .fade-up {
         opacity: 0;
@@ -185,7 +186,7 @@
     }
 
     /* =========================================================
-       4. DOCUMENTO CENTRAL Y TARJETAS ANIMADAS
+       5. DOCUMENTO CENTRAL Y TARJETAS ANIMADAS
        ========================================================= */
     .legal-document {
         width: 100%;
@@ -200,7 +201,6 @@
         transition: transform 0.4s ease, box-shadow 0.4s ease, border-color 0.4s ease;
     }
 
-    /* Efecto "Magnético" al acercar el cursor */
     .legal-document:hover {
         transform: translateY(-4px);
         box-shadow: 0 30px 60px rgba(0,0,0,0.7);
@@ -261,7 +261,7 @@
     }
 
     /* =========================================================
-       5. FORMULARIO PREMIUM DE LIBRO DE RECLAMACIONES
+       6. FORMULARIO PREMIUM DE LIBRO DE RECLAMACIONES
        ========================================================= */
     .claim-form {
         margin-top: 28px;
@@ -273,11 +273,18 @@
         border-radius: 16px;
         border: 1px solid rgba(255,255,255,0.05);
         transition: border-color 0.3s ease, background 0.3s ease;
+        box-sizing: border-box;
+        width: 100%;
     }
 
     .claim-form:hover {
         border-color: rgba(255,255,255,0.1);
         background: rgba(0,0,0,0.4);
+    }
+
+    .form-group {
+        min-width: 0;
+        width: 100%;
     }
 
     .form-group.full-width {
@@ -296,6 +303,7 @@
 
     .claim-form input, .claim-form select, .claim-form textarea {
         width: 100%;
+        max-width: 100%;
         background: rgba(255,255,255,0.04);
         border: 1px solid rgba(255,255,255,0.1);
         padding: 15px 17px;
@@ -306,6 +314,7 @@
         outline: none;
         transition: all 0.3s ease;
         box-sizing: border-box;
+        text-overflow: ellipsis;
     }
 
     .claim-form select option {
@@ -326,6 +335,7 @@
 
     .btn-claim {
         grid-column: span 2;
+        width: 100%;
         background: #ffffff;
         color: #000000;
         border: none;
@@ -347,38 +357,118 @@
         box-shadow: 0 10px 20px rgba(255,255,255,0.1);
     }
 
-    /* Ocultar barra lateral en móviles y ajustar padding */
-    @media (max-width: 800px) {
-        .legal-document {
-            padding: 38px 26px;
+    /* =========================================================
+       7. ADAPTACIÓN MÓVIL Y TABLETS (SIN DESBORDES LATERALES)
+       ========================================================= */
+    @media (max-width: 850px) {
+        .legales-page {
+            width: 100% !important;
+            max-width: 100% !important;
+            margin-left: 0 !important;
+            margin-right: 0 !important;
+            margin-top: 0 !important;
+            padding-top: 115px !important;
+            padding-bottom: 50px !important;
+            background-attachment: scroll !important;
+            overflow-x: hidden !important;
         }
+
+        .legales-container {
+            width: 100% !important;
+            max-width: 100% !important;
+            padding: 0 15px !important;
+            margin: 0 !important;
+        }
+
+        .legal-header {
+            margin-bottom: 20px;
+        }
+
+        .legal-header h1 {
+            font-size: clamp(28px, 7vw, 36px);
+            letter-spacing: -1px;
+            line-height: 1.15;
+        }
+
+        .legal-header p {
+            font-size: 14px;
+            line-height: 1.6;
+            padding: 0 4px;
+        }
+
+        /* Navegación de secciones deslizable horizontalmente en móvil */
+        .legal-nav-inline {
+            flex-direction: row;
+            flex-wrap: nowrap;
+            justify-content: flex-start;
+            gap: 20px;
+            overflow-x: auto;
+            padding: 6px 4px 10px 4px;
+            margin-bottom: 18px;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+
+        .legal-nav-inline::-webkit-scrollbar {
+            display: none;
+        }
+
+        .legal-nav-item {
+            white-space: nowrap;
+            font-size: 13px;
+            flex-shrink: 0;
+        }
+
+        .legal-document {
+            padding: 28px 20px;
+            border-radius: 18px;
+        }
+
+        .legal-document:hover {
+            transform: none;
+        }
+
+        .legal-section h2 {
+            font-size: 23px;
+            letter-spacing: -0.6px;
+        }
+
+        .legal-text-block {
+            font-size: 14px;
+            line-height: 1.7;
+        }
+
+        .legal-text-block h4 {
+            font-size: 16px;
+            margin: 22px 0 8px 0;
+        }
+
+        .legal-divider {
+            margin: 30px 0;
+        }
+
         .claim-form {
             grid-template-columns: 1fr;
-            padding: 25px;
+            gap: 18px;
+            padding: 22px 16px;
+            border-radius: 14px;
         }
-        .form-group.full-width {
-            grid-column: span 1;
-        }
+
+        .form-group.full-width,
         .btn-claim {
             grid-column: span 1;
         }
 
-        .legal-header h1 {
-            font-size: 38px;
+        .claim-form input,
+        .claim-form select,
+        .claim-form textarea {
+            font-size: 13px;
+            padding: 13px 14px;
         }
 
-        .legal-section h2 {
-            font-size: 28px;
-        }
-
-        .legal-header p {
-            max-width: 600px;
-        }
-
-        .legal-nav-inline {
-            flex-direction: column;
-            align-items: center;
-            gap: 15px;
+        .btn-claim {
+            padding: 14px;
+            font-size: 13px;
         }
     }
 </style>
