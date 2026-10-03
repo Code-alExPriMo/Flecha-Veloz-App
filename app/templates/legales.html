@@ -2,475 +2,1027 @@
 {% block content %}
 
 <style>
-    /* Tipografías modernas: Inter para lectura y Manrope para títulos */
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap');
 
     /* =========================================================
-       0. CONFIGURACIÓN DE NAVBAR Y FONDOS
+       TIPOGRAFÍAS
        ========================================================= */
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap');
+
+
+    /* =========================================================
+       0. CONFIGURACIÓN GENERAL
+       ========================================================= */
+
     html {
         scroll-behavior: smooth;
     }
-    
+
     body {
         margin: 0;
         padding: 0;
         overflow-x: hidden;
         background-color: #050505;
         font-family: 'Inter', sans-serif;
+        color: #ffffff;
+        line-height: 1.5;
     }
 
-    /* FORZAMOS LA BARRA DE NAVEGACIÓN A SER TRANSPARENTE Y OSCURA */
+
+    /* =========================================================
+       NAVBAR
+       ========================================================= */
+
     .navbar {
         background-color: transparent !important;
         border-bottom: none !important;
         position: absolute !important;
-        top: 0; left: 0; right: 0;
+        top: 0;
+        left: 0;
+        right: 0;
         z-index: 9999;
     }
-    .nav-item { color: rgba(255,255,255,0.8) !important; }
-    .nav-item:hover { color: #ffffff !important; }
-    #ui-nombre { color: #ffffff !important; }
-    #ui-rol { color: rgba(255,255,255,0.7) !important; }
-    #ui-iniciales { background-color: #ffffff !important; color: #000000 !important; }
-    .navbar-logo { filter: invert(1) brightness(100) !important; }
+
+    .nav-item {
+        color: rgba(255, 255, 255, 0.82) !important;
+        transition: color 0.2s ease;
+    }
+
+    .nav-item:hover {
+        color: #ffffff !important;
+    }
+
+    #ui-nombre {
+        color: #ffffff !important;
+    }
+
+    #ui-rol {
+        color: rgba(255, 255, 255, 0.7) !important;
+    }
+
+    #ui-iniciales {
+        background-color: #ffffff !important;
+        color: #000000 !important;
+    }
+
+    .navbar-logo {
+        filter: invert(1) brightness(100) !important;
+    }
+
 
     /* =========================================================
-       1. ESTRUCTURA PRINCIPAL DE LA PÁGINA LEGAL
+       1. FONDO PRINCIPAL
        ========================================================= */
+
     .legales-page {
         position: relative;
+
         width: 100vw;
         min-height: 100vh;
+
         margin-left: calc(-50vw + 50%);
-        margin-top: -40px; 
-        padding-top: 140px; 
-        padding-bottom: 100px;
+        margin-top: -40px;
+
+        padding-top: 125px;
+        padding-bottom: 80px;
+
         background-image: url('/static/img/portada.png');
         background-size: cover;
         background-position: center;
         background-attachment: fixed;
+
         box-sizing: border-box;
     }
+
 
     .legales-overlay {
         position: absolute;
-        top: 0; left: 0; right: 0; bottom: 0;
-        background: linear-gradient(
-            180deg,
-            rgba(0,0,0,0.88) 0%,
-            rgba(5,5,5,0.95) 40%,
-            rgba(10,10,10,0.98) 100%
-        );
+
+        inset: 0;
+
+        background:
+            linear-gradient(
+                180deg,
+                rgba(0, 0, 0, 0.82) 0%,
+                rgba(5, 5, 5, 0.94) 42%,
+                rgba(5, 5, 5, 0.985) 100%
+            );
+
         z-index: 1;
     }
 
+
+    /* =========================================================
+       2. CONTENEDOR
+       ========================================================= */
+
     .legales-container {
         position: relative;
+
         z-index: 2;
-        max-width: 1240px;
+
+        width: min(1180px, calc(100% - 36px));
+
         margin: 0 auto;
-        padding: 0 18px;
+
         display: flex;
         flex-direction: column;
+
         align-items: center;
+
         box-sizing: border-box;
     }
 
+
     /* =========================================================
-       2. CABECERA Y NAVEGACIÓN INLINE
+       3. CABECERA
        ========================================================= */
+
     .legal-header {
-        text-align: center;
-        margin-bottom: 28px;
         width: 100%;
+
+        text-align: center;
+
+        margin-bottom: 28px;
     }
 
+
     .legal-header h1 {
+        margin: 0;
+
         font-family: 'Manrope', sans-serif;
+
         color: #ffffff;
-        font-size: clamp(42px, 5vw, 58px);
+
+        font-size: clamp(34px, 4.7vw, 54px);
+
         font-weight: 800;
-        margin: 0 0 12px 0;
-        letter-spacing: -2px;
+
+        letter-spacing: -1.8px;
+
         line-height: 1.08;
+
         text-wrap: balance;
     }
 
+
     .legal-header p {
-        color: #9ca3af;
-        font-size: 16px;
-        margin: 0 auto;
-        line-height: 1.75;
-        max-width: 820px;
+        max-width: 760px;
+
+        margin: 14px auto 0;
+
+        color: #a7adb3;
+
+        font-size: 15px;
+
         font-weight: 400;
+
+        line-height: 1.7;
     }
+
+
+    /* =========================================================
+       4. NAVEGACIÓN INLINE
+       ========================================================= */
 
     .legal-nav-inline {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-        gap: 30px;
-        margin-bottom: 20px;
         width: 100%;
+
+        display: flex;
+
+        justify-content: center;
+
+        flex-wrap: wrap;
+
+        gap: 24px;
+
+        margin-bottom: 22px;
     }
+
 
     .legal-nav-item {
-        color: #888888;
-        text-decoration: none;
-        font-size: 14px;
-        font-weight: 600;
-        transition: color 0.3s ease;
         position: relative;
-        padding-bottom: 4px;
+
+        padding-bottom: 7px;
+
+        color: #858b91;
+
+        text-decoration: none;
+
+        font-size: 13px;
+
+        font-weight: 600;
+
+        white-space: nowrap;
+
+        transition:
+            color 0.25s ease;
     }
 
-    .legal-nav-item:hover, .legal-nav-item.active {
+
+    .legal-nav-item:hover,
+    .legal-nav-item.active {
         color: #ffffff;
     }
 
+
     .legal-nav-item::after {
-        content: '';
+        content: "";
+
         position: absolute;
+
+        left: 0;
+        bottom: 0;
+
         width: 0;
         height: 2px;
-        bottom: 0;
-        left: 0;
-        background-color: #ffffff;
-        transition: width 0.3s ease;
+
+        border-radius: 999px;
+
+        background: #ffffff;
+
+        transition: width 0.25s ease;
     }
+
 
     .legal-nav-item.active::after {
         width: 100%;
     }
 
+
     /* =========================================================
-       3. JERARQUÍA TIPOGRÁFICA MODERNA
+       5. TEXTO DESTACADO
        ========================================================= */
+
     .title-accent {
-        background: linear-gradient(90deg, #78d6b3 0%, #28a9d5 55%, #74d7c1 100%);
+        background:
+            linear-gradient(
+                90deg,
+                #8bd8bc,
+                #40b8d7,
+                #7bd3be
+            );
+
         -webkit-background-clip: text;
         background-clip: text;
+
         -webkit-text-fill-color: transparent;
+
         color: transparent;
     }
 
-    .legal-section h2::after {
-        content: '';
-        display: block;
-        width: 54px;
-        height: 3px;
-        margin-top: 13px;
-        border-radius: 999px;
-        background: linear-gradient(90deg, #78d6b3, #28a9d5);
-        opacity: 0.9;
-    }
-
-    .legal-text-block strong {
-        color: #ffffff;
-        font-weight: 700;
-    }
 
     /* =========================================================
-       4. ANIMACIONES GLOBALES (SCROLL REVEAL Y HOVER)
+       6. ANIMACIONES
        ========================================================= */
+
     .fade-up {
         opacity: 0;
-        transform: translateY(40px);
-        transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+
+        transform: translateY(28px);
+
+        transition:
+            opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1),
+            transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
     }
-    
+
+
     .fade-up.visible {
         opacity: 1;
+
         transform: translateY(0);
     }
 
+
     /* =========================================================
-       5. DOCUMENTO CENTRAL Y TARJETAS ANIMADAS
+       7. DOCUMENTO CENTRAL
        ========================================================= */
+
     .legal-document {
         width: 100%;
-        background: rgba(15,15,15,0.4);
+
+        background:
+            rgba(14, 14, 14, 0.48);
+
         backdrop-filter: blur(20px);
         -webkit-backdrop-filter: blur(20px);
-        border: 1px solid rgba(255,255,255,0.06);
-        border-radius: 24px;
-        padding: 52px 62px;
-        box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+
+        border:
+            1px solid rgba(255, 255, 255, 0.07);
+
+        border-radius: 20px;
+
+        padding: 46px 54px;
+
+        box-shadow:
+            0 20px 55px rgba(0, 0, 0, 0.46);
+
         box-sizing: border-box;
-        transition: transform 0.4s ease, box-shadow 0.4s ease, border-color 0.4s ease;
+
+        transition:
+            border-color 0.35s ease,
+            box-shadow 0.35s ease;
     }
+
 
     .legal-document:hover {
-        transform: translateY(-4px);
-        box-shadow: 0 30px 60px rgba(0,0,0,0.7);
-        border-color: rgba(255,255,255,0.12);
+        border-color:
+            rgba(255, 255, 255, 0.11);
+
+        box-shadow:
+            0 28px 65px rgba(0, 0, 0, 0.55);
     }
+
+
+    /* =========================================================
+       8. SECCIONES
+       ========================================================= */
 
     .legal-section {
-        scroll-margin-top: 120px; 
+        scroll-margin-top: 110px;
     }
 
-    .legal-divider {
-        border: none;
-        border-top: 1px solid rgba(255,255,255,0.08);
-        margin: 42px 0;
-    }
 
     .legal-section h2 {
-        font-family: 'Manrope', sans-serif;
-        color: #ffffff;
-        font-size: clamp(28px, 3vw, 36px);
-        font-weight: 800;
         margin: 0 0 20px 0;
-        letter-spacing: -1.2px;
-        line-height: 1.15;
+
+        font-family: 'Manrope', sans-serif;
+
+        color: #ffffff;
+
+        font-size: clamp(25px, 3vw, 34px);
+
+        font-weight: 800;
+
+        line-height: 1.18;
+
+        letter-spacing: -1px;
+
         text-wrap: balance;
     }
 
-    .legal-text-block {
-        color: #c1c1c1; 
-        font-size: 16px;
-        line-height: 1.78;
-        font-weight: 400;
-        max-width: 1040px;
+
+    .legal-section h2::after {
+        content: "";
+
+        display: block;
+
+        width: 48px;
+        height: 3px;
+
+        margin-top: 12px;
+
+        border-radius: 999px;
+
+        background:
+            linear-gradient(
+                90deg,
+                #79d3b2,
+                #2fa9d3
+            );
+
+        opacity: 0.9;
     }
 
-    .legal-text-block h4 {
-        color: #ffffff;
-        font-family: 'Manrope', sans-serif;
-        font-size: 19px;
-        margin: 28px 0 10px 0;
-        font-weight: 700;
-        line-height: 1.3;
-        letter-spacing: -0.25px;
+
+    /* =========================================================
+       9. TEXTOS
+       ========================================================= */
+
+    .legal-text-block {
+        max-width: 100%;
+
+        color: #c4c8cc;
+
+        font-size: 15px;
+
+        font-weight: 400;
+
+        line-height: 1.78;
     }
+
+
+    .legal-text-block strong {
+        color: #ffffff;
+
+        font-weight: 700;
+    }
+
 
     .legal-text-block p {
-        margin: 0 0 16px 0; 
+        margin: 0 0 16px 0;
     }
 
-    .legal-text-block ul {
-        padding-left: 20px;
-        margin-bottom: 22px;
+
+    .legal-text-block h4 {
+        margin: 27px 0 9px;
+
+        color: #ffffff;
+
+        font-family: 'Manrope', sans-serif;
+
+        font-size: 18px;
+
+        font-weight: 700;
+
+        line-height: 1.35;
+
+        letter-spacing: -0.2px;
     }
+
+
+    .legal-text-block ul {
+        margin:
+            0 0 20px 0;
+
+        padding-left: 20px;
+    }
+
 
     .legal-text-block li {
         margin-bottom: 8px;
-        padding-left: 10px;
+
+        padding-left: 7px;
     }
+
 
     /* =========================================================
-       6. FORMULARIO PREMIUM DE LIBRO DE RECLAMACIONES
+       10. SEPARADORES
        ========================================================= */
-    .claim-form {
-        margin-top: 28px;
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 25px;
-        background: rgba(0,0,0,0.3);
-        padding: 40px;
-        border-radius: 16px;
-        border: 1px solid rgba(255,255,255,0.05);
-        transition: border-color 0.3s ease, background 0.3s ease;
-        box-sizing: border-box;
-        width: 100%;
+
+    .legal-divider {
+        border: none;
+
+        border-top:
+            1px solid rgba(255, 255, 255, 0.08);
+
+        margin: 38px 0;
     }
+
+
+    /* =========================================================
+       11. FORMULARIO
+       ========================================================= */
+
+    .claim-form {
+        width: 100%;
+
+        margin-top: 26px;
+
+        display: grid;
+
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+
+        gap: 20px;
+
+        padding: 30px;
+
+        background:
+            rgba(0, 0, 0, 0.28);
+
+        border:
+            1px solid rgba(255,255,255,0.06);
+
+        border-radius: 15px;
+
+        box-sizing: border-box;
+
+        transition:
+            background 0.3s ease,
+            border-color 0.3s ease;
+    }
+
 
     .claim-form:hover {
-        border-color: rgba(255,255,255,0.1);
-        background: rgba(0,0,0,0.4);
+        background:
+            rgba(0, 0, 0, 0.34);
+
+        border-color:
+            rgba(255,255,255,0.09);
     }
 
+
     .form-group {
-        min-width: 0;
         width: 100%;
+
+        min-width: 0;
     }
+
 
     .form-group.full-width {
         grid-column: span 2;
     }
 
+
     .claim-form label {
         display: block;
-        color: #9ca3af;
-        font-size: 12px;
-        text-transform: uppercase;
-        letter-spacing: 0.8px;
+
+        margin-bottom: 8px;
+
+        color: #969da3;
+
+        font-size: 11px;
+
         font-weight: 600;
-        margin-bottom: 10px;
+
+        text-transform: uppercase;
+
+        letter-spacing: 0.7px;
     }
 
-    .claim-form input, .claim-form select, .claim-form textarea {
+
+    .claim-form input,
+    .claim-form select,
+    .claim-form textarea {
         width: 100%;
+
         max-width: 100%;
-        background: rgba(255,255,255,0.04);
-        border: 1px solid rgba(255,255,255,0.1);
-        padding: 15px 17px;
-        border-radius: 10px;
+
+        padding: 13px 15px;
+
+        background:
+            rgba(255,255,255,0.045);
+
+        border:
+            1px solid rgba(255,255,255,0.10);
+
+        border-radius: 9px;
+
         color: #ffffff;
+
         font-family: 'Inter', sans-serif;
-        font-size: 14px;
+
+        font-size: 13px;
+
+        line-height: 1.5;
+
         outline: none;
-        transition: all 0.3s ease;
+
         box-sizing: border-box;
-        text-overflow: ellipsis;
+
+        transition:
+            border-color 0.25s ease,
+            background 0.25s ease,
+            box-shadow 0.25s ease;
     }
+
 
     .claim-form select option {
-        background-color: #111;
-        color: #fff;
+        background: #111111;
+
+        color: #ffffff;
     }
 
-    .claim-form input:focus, .claim-form select:focus, .claim-form textarea:focus {
-        border-color: rgba(255,255,255,0.4);
-        background: rgba(255,255,255,0.08);
-        box-shadow: 0 0 15px rgba(255,255,255,0.05);
+
+    .claim-form input::placeholder,
+    .claim-form textarea::placeholder {
+        color:
+            rgba(255,255,255,0.30);
     }
+
+
+    .claim-form input:focus,
+    .claim-form select:focus,
+    .claim-form textarea:focus {
+        border-color:
+            rgba(255,255,255,0.32);
+
+        background:
+            rgba(255,255,255,0.07);
+
+        box-shadow:
+            0 0 0 3px
+            rgba(255,255,255,0.035);
+    }
+
 
     .claim-form textarea {
+        min-height: 135px;
+
         resize: vertical;
-        min-height: 140px;
     }
+
+
+    /* =========================================================
+       12. BOTÓN RECLAMACIÓN
+       ========================================================= */
 
     .btn-claim {
         grid-column: span 2;
+
         width: 100%;
+
+        margin-top: 5px;
+
+        padding: 14px 18px;
+
         background: #ffffff;
+
         color: #000000;
+
         border: none;
-        padding: 16px;
-        border-radius: 10px;
+
+        border-radius: 9px;
+
         font-family: 'Manrope', sans-serif;
+
+        font-size: 12px;
+
         font-weight: 800;
-        font-size: 14px;
-        cursor: pointer;
-        transition: all 0.3s ease;
+
         text-transform: uppercase;
-        letter-spacing: 1px;
-        margin-top: 10px;
+
+        letter-spacing: 0.8px;
+
+        cursor: pointer;
+
+        transition:
+            background 0.25s ease,
+            transform 0.25s ease,
+            box-shadow 0.25s ease;
     }
+
 
     .btn-claim:hover {
-        background: #e5e7eb;
-        transform: translateY(-3px);
-        box-shadow: 0 10px 20px rgba(255,255,255,0.1);
+        background: #e7e9eb;
+
+        transform:
+            translateY(-2px);
+
+        box-shadow:
+            0 10px 24px
+            rgba(255,255,255,0.08);
     }
 
+
     /* =========================================================
-       7. ADAPTACIÓN MÓVIL Y TABLETS (SIN DESBORDES LATERALES)
+       13. TABLET
        ========================================================= */
-    @media (max-width: 850px) {
-        .legales-page {
-            width: 100% !important;
-            max-width: 100% !important;
-            margin-left: 0 !important;
-            margin-right: 0 !important;
-            margin-top: 0 !important;
-            padding-top: 115px !important;
-            padding-bottom: 50px !important;
-            background-attachment: scroll !important;
-            overflow-x: hidden !important;
-        }
+
+    @media (max-width: 950px) {
 
         .legales-container {
-            width: 100% !important;
-            max-width: 100% !important;
-            padding: 0 15px !important;
-            margin: 0 !important;
+            width: min(100% - 30px, 900px);
         }
 
-        .legal-header {
-            margin-bottom: 20px;
+        .legal-document {
+            padding: 38px 34px;
         }
 
         .legal-header h1 {
-            font-size: clamp(28px, 7vw, 36px);
-            letter-spacing: -1px;
-            line-height: 1.15;
+            font-size: clamp(32px, 6vw, 46px);
         }
+
+        .legal-text-block {
+            font-size: 14.5px;
+        }
+
+        .claim-form {
+            padding: 25px;
+        }
+    }
+
+
+    /* =========================================================
+       14. CELULAR
+       ========================================================= */
+
+    @media (max-width: 700px) {
+
+        .legales-page {
+
+            width: 100% !important;
+
+            margin-left: 0 !important;
+            margin-right: 0 !important;
+
+            margin-top: 0 !important;
+
+            padding-top: 105px;
+            padding-bottom: 45px;
+
+            background-attachment: scroll !important;
+        }
+
+
+        .legales-container {
+
+            width: 100% !important;
+
+            padding: 0 14px;
+
+            margin: 0 !important;
+        }
+
+
+        /* -------------------------
+           Cabecera
+           ------------------------- */
+
+        .legal-header {
+
+            margin-bottom: 18px;
+        }
+
+
+        .legal-header h1 {
+
+            font-size:
+                clamp(29px, 8vw, 38px);
+
+            letter-spacing:
+                -1.1px;
+
+            line-height:
+                1.12;
+        }
+
 
         .legal-header p {
-            font-size: 14px;
-            line-height: 1.6;
+
+            max-width: 100%;
+
+            margin-top: 11px;
+
             padding: 0 4px;
+
+            font-size: 13.5px;
+
+            line-height: 1.65;
         }
 
-        /* Navegación de secciones deslizable horizontalmente en móvil */
+
+        /* -------------------------
+           Navegación
+           ------------------------- */
+
         .legal-nav-inline {
-            flex-direction: row;
-            flex-wrap: nowrap;
+
             justify-content: flex-start;
+
+            flex-wrap: nowrap;
+
             gap: 20px;
+
             overflow-x: auto;
-            padding: 6px 4px 10px 4px;
-            margin-bottom: 18px;
+
+            padding:
+                5px 4px 10px;
+
+            margin-bottom: 15px;
+
             scrollbar-width: none;
+
             -ms-overflow-style: none;
         }
+
 
         .legal-nav-inline::-webkit-scrollbar {
             display: none;
         }
 
+
         .legal-nav-item {
-            white-space: nowrap;
-            font-size: 13px;
+
             flex-shrink: 0;
+
+            font-size: 12px;
+
+            padding-bottom: 6px;
         }
+
+
+        /* -------------------------
+           Documento
+           ------------------------- */
 
         .legal-document {
-            padding: 28px 20px;
-            border-radius: 18px;
+
+            padding:
+                27px 19px;
+
+            border-radius: 17px;
+
+            box-shadow:
+                0 16px 36px
+                rgba(0,0,0,0.45);
         }
+
 
         .legal-document:hover {
+
             transform: none;
+
+            box-shadow:
+                0 16px 36px
+                rgba(0,0,0,0.45);
         }
+
+
+        /* -------------------------
+           Títulos
+           ------------------------- */
 
         .legal-section h2 {
-            font-size: 23px;
-            letter-spacing: -0.6px;
+
+            font-size:
+                clamp(22px, 6.4vw, 27px);
+
+            letter-spacing:
+                -0.7px;
+
+            line-height:
+                1.18;
+
+            margin-bottom: 18px;
         }
+
+
+        .legal-section h2::after {
+
+            width: 42px;
+
+            height: 2px;
+
+            margin-top: 10px;
+        }
+
+
+        /* -------------------------
+           Texto
+           ------------------------- */
 
         .legal-text-block {
+
             font-size: 14px;
-            line-height: 1.7;
+
+            line-height: 1.72;
         }
+
+
+        .legal-text-block p {
+
+            margin-bottom: 14px;
+        }
+
 
         .legal-text-block h4 {
+
             font-size: 16px;
-            margin: 22px 0 8px 0;
+
+            margin-top: 22px;
+
+            margin-bottom: 8px;
         }
+
+
+        .legal-text-block ul {
+
+            padding-left: 18px;
+
+            margin-bottom: 18px;
+        }
+
+
+        .legal-text-block li {
+
+            padding-left: 4px;
+
+            margin-bottom: 7px;
+        }
+
+
+        /* -------------------------
+           Separadores
+           ------------------------- */
 
         .legal-divider {
-            margin: 30px 0;
+
+            margin:
+                28px 0;
         }
 
+
+        /* -------------------------
+           Formulario
+           ------------------------- */
+
         .claim-form {
+
             grid-template-columns: 1fr;
-            gap: 18px;
-            padding: 22px 16px;
-            border-radius: 14px;
+
+            gap: 16px;
+
+            padding:
+                20px 15px;
+
+            margin-top: 21px;
+
+            border-radius: 13px;
         }
+
 
         .form-group.full-width,
         .btn-claim {
-            grid-column: span 1;
+
+            grid-column:
+                span 1;
         }
+
+
+        .claim-form label {
+
+            margin-bottom: 7px;
+
+            font-size: 10px;
+        }
+
 
         .claim-form input,
         .claim-form select,
         .claim-form textarea {
+
+            padding:
+                12px 13px;
+
             font-size: 13px;
-            padding: 13px 14px;
+
+            border-radius: 8px;
         }
 
+
+        .claim-form textarea {
+
+            min-height:
+                125px;
+        }
+
+
         .btn-claim {
-            padding: 14px;
+
+            padding:
+                13px 15px;
+
+            font-size:
+                11px;
+
+            margin-top:
+                3px;
+        }
+
+    }
+
+
+    /* =========================================================
+       15. CELULAR PEQUEÑO
+       ========================================================= */
+
+    @media (max-width: 380px) {
+
+        .legales-page {
+            padding-top: 95px;
+        }
+
+
+        .legales-container {
+            padding: 0 11px;
+        }
+
+
+        .legal-document {
+            padding:
+                24px 16px;
+        }
+
+
+        .legal-header h1 {
+            font-size: 28px;
+        }
+
+
+        .legal-header p {
             font-size: 13px;
         }
+
+
+        .legal-text-block {
+            font-size: 13.5px;
+        }
+
+
+        .legal-section h2 {
+            font-size: 21px;
+        }
+
+
+        .claim-form {
+            padding:
+                18px 13px;
+        }
+
     }
+
+
 </style>
 
 <div class="legales-page">
