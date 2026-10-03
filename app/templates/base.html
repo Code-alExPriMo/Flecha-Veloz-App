@@ -23,6 +23,15 @@
         --border-color: #e5e7eb; 
     }
 
+    *, *::before, *::after {
+        box-sizing: border-box;
+    }
+
+    html, body {
+        max-width: 100%;
+        overflow-x: hidden;
+    }
+
     body { 
         margin: 0; 
         padding: 0; 
@@ -102,6 +111,15 @@
         align-items: center;
         font-weight: 600;
         font-size: 13px;
+        overflow: hidden;
+        flex-shrink: 0;
+    }
+
+    .profile-avatar img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
     }
 
     .dropdown-menu {
@@ -199,7 +217,7 @@
             <nav class="nav-links">
                 <a href="/dashboard" class="nav-item">Inicio</a>
                 
-                <!-- Botones con ID para filtrarlos por Rol (HU-10) -->
+                <!-- Botones con ID para filtrarlos por Rol -->
                 <a href="/registro_chofer" class="nav-item" id="menu-registro">Registrar Chofer</a>
                 <a href="/panel_chofer" class="nav-item" id="menu-panel">Panel Chofer</a>
                 <a href="/central" class="nav-item" id="menu-central">Central Operativa</a>
@@ -210,7 +228,7 @@
 
         <div class="profile-container" id="profileBtn">
             <div class="profile-trigger">
-                <div style="text-align: right; line-height: 1.2;">
+                <div class="profile-text-box" style="text-align: right; line-height: 1.2;">
                     <span id="ui-nombre" style="display: block; font-weight: 600; font-size: 14px; color: var(--text-main);">Cargando...</span>
                     <span id="ui-rol" style="font-size: 12px; color: var(--text-muted);">...</span>
                 </div>
@@ -219,7 +237,7 @@
 
             <div class="dropdown-menu" id="dropdownMenu">
                 <div class="dropdown-header">
-                    <div id="ui-nombre-menu" style="font-weight: 600; font-size: 14px;">Cargando...</div>
+                    <div id="ui-nombre-menu" style="font-weight: 600; font-size: 14px; color: #111827;">Cargando...</div>
                     <div id="ui-correo" style="font-size: 12px; color: var(--text-muted); margin-top: 4px;">...</div>
                 </div>
                 <a href="/ajustes" class="dropdown-item">Ajustes de cuenta</a>
@@ -235,7 +253,154 @@
     </main>
 
     <!-- =========================================================
-         LÓGICA DEL SISTEMA (3 ROLES ESTRICTOS SEGÚN HU-10)
+         MOTOR GLOBAL DE ADAPTACIÓN MÓVIL (APLICA A TODO EL SISTEMA)
+         ========================================================= -->
+    <style>
+        @media (max-width: 850px) {
+            html, body {
+                width: 100% !important;
+                max-width: 100vw !important;
+                overflow-x: hidden !important;
+                position: relative;
+            }
+
+            /* 1. Barra de navegación compacta en 2 niveles para celulares */
+            .navbar {
+                height: auto !important;
+                min-height: 60px !important;
+                padding: 10px 16px !important;
+                flex-wrap: wrap !important;
+                gap: 8px !important;
+                background: rgba(10, 10, 10, 0.92) !important;
+                backdrop-filter: blur(16px) !important;
+                -webkit-backdrop-filter: blur(16px) !important;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+            }
+
+            .nav-left {
+                width: 100% !important;
+                flex-direction: column !important;
+                align-items: flex-start !important;
+                gap: 10px !important;
+            }
+
+            .navbar-logo {
+                height: 34px !important;
+                filter: invert(1) brightness(100) !important;
+            }
+
+            /* Ubicamos el avatar de perfil arriba a la derecha sin empujar el ancho */
+            .profile-container {
+                position: absolute !important;
+                top: 10px !important;
+                right: 16px !important;
+            }
+
+            .profile-text-box {
+                display: none !important;
+            }
+
+            #ui-iniciales {
+                background-color: #ffffff !important;
+                color: #000000 !important;
+                width: 34px !important;
+                height: 34px !important;
+            }
+
+            /* Menú deslizable horizontalmente tipo App Móvil */
+            .nav-links {
+                width: 100% !important;
+                display: flex !important;
+                gap: 8px !important;
+                overflow-x: auto !important;
+                padding: 6px 0 2px 0 !important;
+                border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
+                scrollbar-width: none !important;
+                -ms-overflow-style: none !important;
+            }
+
+            .nav-links::-webkit-scrollbar {
+                display: none !important;
+            }
+
+            .nav-item {
+                white-space: nowrap !important;
+                font-size: 12px !important;
+                padding: 6px 12px !important;
+                background: rgba(255, 255, 255, 0.06) !important;
+                border: 1px solid rgba(255, 255, 255, 0.08) !important;
+                border-radius: 999px !important;
+                color: #ffffff !important;
+            }
+
+            /* 2. Neutralizar el desborde lateral en todas las páginas */
+            .content-area {
+                padding: 0 !important;
+                margin: 0 !important;
+                width: 100% !important;
+                max-width: 100% !important;
+                overflow-x: hidden !important;
+            }
+
+            .dashboard-page,
+            .central-page,
+            .chofer-page,
+            .ajustes-page {
+                width: 100% !important;
+                max-width: 100% !important;
+                margin-left: 0 !important;
+                margin-right: 0 !important;
+                margin-top: 0 !important;
+                padding-top: 118px !important;
+                padding-bottom: 45px !important;
+                background-attachment: scroll !important;
+                overflow-x: hidden !important;
+            }
+
+            .dashboard-container,
+            .central-container,
+            .panel-container,
+            .ajustes-container {
+                width: 100% !important;
+                max-width: 100% !important;
+                padding-left: 15px !important;
+                padding-right: 15px !important;
+                margin-left: 0 !important;
+                margin-right: 0 !important;
+                box-sizing: border-box !important;
+            }
+
+            /* 3. Modales y Alertas perfettamente cuadrados en pantalla móvil */
+            .modal-oculto {
+                padding: 12px !important;
+            }
+
+            .modal-contenido,
+            .modal-contenido-retiro,
+            .modal-contenido-agenda,
+            .modal-contenido-amplio {
+                width: 100% !important;
+                max-width: 100% !important;
+                padding: 20px 16px !important;
+                border-radius: 16px !important;
+            }
+
+            .toast-container {
+                top: 12px !important;
+                right: 12px !important;
+                left: 12px !important;
+            }
+
+            .toast-msg {
+                width: 100% !important;
+                font-size: 13px !important;
+                padding: 14px 16px !important;
+            }
+        }
+    </style>
+
+    <!-- =========================================================
+         LÓGICA DEL SISTEMA (3 ROLES ESTRICTOS Y FOTO DE PERFIL)
          ========================================================= -->
     <script>
         // 1. Desplegar el menú del perfil al hacer clic
@@ -249,47 +414,44 @@
             }
         });
 
-        // 2. Inyectar datos y aplicar reglas de seguridad por Rol (RBAC - HU-10)
+        // 2. Inyectar datos y aplicar reglas de seguridad por Rol
         window.addEventListener('DOMContentLoaded', () => {
+            const idUsuario = localStorage.getItem('id_usuario');
             const nombre = localStorage.getItem('usuarioNombre');
             const correo = localStorage.getItem('usuarioCorreo');
             const rol = localStorage.getItem('usuarioRol') || '';
             const idRol = String(localStorage.getItem('id_rol')); 
             const rutaActual = window.location.pathname;
 
-            // Si no hay sesión activa, redirigir al Login
             if (!nombre) {
                 window.location.href = "/";
                 return;
             }
 
             // ========================================================
-            // 🚨 A. EL GUARDIÁN DE RUTAS (SECURITY CHECK POR URL)
+            // 🚨 A. GUARDIÁN DE RUTAS POR ROL
             // ========================================================
             const rutasExclusivasGerente = ['/reportes', '/registro_chofer'];
             const rutasOperativasAdmin   = ['/central', '/registro_cliente'];
             const rutasExclusivasChofer  = ['/panel_chofer'];
 
-            // Regla para CHOFER (Rol 3): Si intenta entrar a módulos de Admin o Gerente -> redirigir a su panel
             if (idRol === "3" && (rutasExclusivasGerente.includes(rutaActual) || rutasOperativasAdmin.includes(rutaActual))) {
                 window.location.replace('/panel_chofer');
                 return;
             }
 
-            // Regla para ADMINISTRATIVO (Rol 2 - HU-10 CA-01): No puede entrar a rutas exclusivas de Gerencia ni de Chofer
             if (idRol === "2" && (rutasExclusivasGerente.includes(rutaActual) || rutasExclusivasChofer.includes(rutaActual))) {
                 window.location.replace('/central');
                 return;
             }
 
-            // Regla para GERENTE (Rol 1 - HU-10 CA-02): Tiene acceso a todo excepto al panel móvil exclusivo del Chofer
             if (idRol === "1" && rutasExclusivasChofer.includes(rutaActual)) {
                 window.location.replace('/dashboard');
                 return;
             }
 
             // ========================================================
-            // 👤 B. PINTAR DATOS VISUALES DEL USUARIO
+            // 👤 B. PINTAR DATOS Y FOTO DE PERFIL DEL USUARIO
             // ========================================================
             document.getElementById('ui-nombre').textContent = nombre;
             document.getElementById('ui-nombre-menu').textContent = nombre;
@@ -301,7 +463,14 @@
             if (palabras.length > 1) {
                 iniciales += palabras[1].charAt(0);
             }
-            document.getElementById('ui-iniciales').textContent = iniciales.toUpperCase();
+
+            const avatarNavbar = document.getElementById('ui-iniciales');
+            const fotoGuardada = idUsuario ? localStorage.getItem(`fv_foto_usuario_${idUsuario}`) : null;
+            if (fotoGuardada && avatarNavbar) {
+                avatarNavbar.innerHTML = `<img src="${fotoGuardada}" alt="Perfil">`;
+            } else if (avatarNavbar) {
+                avatarNavbar.textContent = iniciales.toUpperCase();
+            }
 
             const saludo = document.getElementById('saludo-dashboard');
             if (saludo) {
@@ -309,7 +478,7 @@
             }
 
             // ========================================================
-            // 🛡️ C. FILTRO VISUAL ESTRICTO POR ROLES (HU-10 CA-01 y CA-02)
+            // 🛡️ C. FILTRO VISUAL ESTRICTO POR ROLES
             // ========================================================
             const menuRegistroChofer  = document.getElementById('menu-registro');
             const menuPanelChofer     = document.getElementById('menu-panel');
@@ -318,7 +487,7 @@
             const menuRegistroCliente = document.getElementById('menu-registro-cliente');
 
             if (idRol === "1") {
-                // 👑 ROL 1: GERENTE (HU-10 CA-02: Funciones de administrativos + herramientas gerenciales)
+                // ROL 1: GERENTE
                 if (menuRegistroChofer)  menuRegistroChofer.style.display = "block";
                 if (menuReportes)        menuReportes.style.display = "block";
                 if (menuCentral)         menuCentral.style.display = "block"; 
@@ -326,16 +495,14 @@
                 if (menuPanelChofer)     menuPanelChofer.style.display = "none"; 
 
             } else if (idRol === "2") {
-                // 🎧 ROL 2: ADMINISTRATIVO (HU-10 CA-01: Gestiona reservas y clientes, NO ve opciones de gerencia)
+                // ROL 2: ADMINISTRATIVO
                 if (menuRegistroChofer)  menuRegistroChofer.style.display = "none";
                 if (menuReportes)        menuReportes.style.display = "none";
                 if (menuCentral)         menuCentral.style.display = "block"; 
                 if (menuRegistroCliente) menuRegistroCliente.style.display = "block";
                 if (menuPanelChofer)     menuPanelChofer.style.display = "none"; 
 
-                // Escáner profundo para ocultarle al Administrativo los botones de Gerencia en el Dashboard
-                const todosLosElementos = document.querySelectorAll('a, button');
-                todosLosElementos.forEach(el => {
+                document.querySelectorAll('a, button').forEach(el => {
                     const href = (el.getAttribute('href') || '').toLowerCase();
                     const texto = (el.innerText || '').toLowerCase();
                     if (
@@ -350,16 +517,14 @@
                 });
 
             } else if (idRol === "3") { 
-                // 🚗 ROL 3: CHOFER (HU-10 CA-01: Solo ve su panel de chofer)
+                // ROL 3: CHOFER
                 if (menuRegistroChofer)  menuRegistroChofer.style.display = "none";
                 if (menuReportes)        menuReportes.style.display = "none";
                 if (menuCentral)         menuCentral.style.display = "none"; 
                 if (menuRegistroCliente) menuRegistroCliente.style.display = "none";
                 if (menuPanelChofer)     menuPanelChofer.style.display = "block"; 
 
-                // Escáner profundo para ocultarle al Chofer todos los botones de Admin y Gerencia en cualquier vista
-                const todosLosElementos = document.querySelectorAll('a, button');
-                todosLosElementos.forEach(el => {
+                document.querySelectorAll('a, button').forEach(el => {
                     const href = (el.getAttribute('href') || '').toLowerCase();
                     const texto = (el.innerText || '').toLowerCase();
                     if (
@@ -378,12 +543,16 @@
             }
         });
 
-        // 3. Destruir la sesión correctamente
+        // 3. Destruir la sesión correctamente (conservando fotos y configuraciones del sistema)
         const btnLogout = document.getElementById('btn-logout');
         if (btnLogout) {
             btnLogout.addEventListener('click', function(e) {
                 e.preventDefault(); 
-                localStorage.clear(); 
+                localStorage.removeItem('id_usuario');
+                localStorage.removeItem('id_rol');
+                localStorage.removeItem('usuarioNombre');
+                localStorage.removeItem('usuarioCorreo');
+                localStorage.removeItem('usuarioRol');
                 window.location.href = "/"; 
             });
         }
